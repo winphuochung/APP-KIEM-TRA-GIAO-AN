@@ -17,12 +17,11 @@ except ImportError:
 
 logger = logging.getLogger("supabase_client")
 
+from app.config import DATA_DIR, get_file_path
+
 # Helper to load .env manually if python-dotenv is not installed
 def load_env_file():
-    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env")
-    if not os.path.exists(env_path):
-        env_path = r"D:\APP-KIEM-TRA-GIAO-AN\.env"
-    
+    env_path = get_file_path(".env")
     if os.path.exists(env_path):
         try:
             with open(env_path, "r", encoding="utf-8") as f:
@@ -33,6 +32,7 @@ def load_env_file():
                         os.environ.setdefault(k.strip(), v.strip())
         except Exception as e:
             logger.warning(f"Error loading .env file: {e}")
+
 
 load_env_file()
 
@@ -104,7 +104,7 @@ def sync_notebook_to_supabase(notebook_data: dict = None):
     if not client:
         return {"status": "error", "message": "Supabase client chưa sẵn sàng"}
     
-    data_file = r"D:\APP-KIEM-TRA-GIAO-AN\data\so_tay_to_truong.json"
+    data_file = os.path.join(DATA_DIR, "so_tay_to_truong.json")
     if notebook_data is None:
         if not os.path.exists(data_file):
             return {"status": "error", "message": "Không tìm thấy file dữ liệu so_tay_to_truong.json"}
@@ -207,7 +207,7 @@ def sync_drive_logs_to_supabase(log_data: dict = None):
     if not client:
         return {"status": "error", "message": "Supabase client chưa sẵn sàng"}
 
-    data_file = r"D:\APP-KIEM-TRA-GIAO-AN\data\drive_monitoring_log.json"
+    data_file = os.path.join(DATA_DIR, "drive_monitoring_log.json")
     if log_data is None and os.path.exists(data_file):
         try:
             with open(data_file, "r", encoding="utf-8") as f:

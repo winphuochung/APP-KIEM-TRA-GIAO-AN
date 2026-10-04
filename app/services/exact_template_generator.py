@@ -258,8 +258,11 @@ def generate_weekly_plan_exact_template(output_path, include_signature=True):
     r_sign_title.font.size = Pt(13)
     r_sign_title.font.bold = True
 
-    # Chèn ảnh chữ ký nếu có
-    sig_img_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\signature_thang.png"
+    from app.config import get_file_path
+    sig_img_path = get_file_path("signature_thang.png")
+    if not os.path.exists(sig_img_path):
+        sig_img_path = get_file_path(os.path.join("data", "signature_thang.png"))
+
     if include_signature and os.path.exists(sig_img_path):
         p_sig_img = c_right.add_paragraph()
         p_sig_img.alignment = WD_ALIGN_PARAGRAPH.CENTER

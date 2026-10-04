@@ -34,9 +34,12 @@ def set_table_borders(table, color="7F7F7F", sz="4", val="single"):
     )
     tblPr.append(borders)
 
+from app.config import CORRECTED_DIR, get_file_path
+
 def generate_inspection_report(teacher_name="Phạm Thị Cúc", inspector_name="Lê Văn Thắng", period_str="Tuần 1 đến tuần 4", date_str="ngày 03 tháng 10 năm 2026", output_path=None):
     if output_path is None:
-        output_path = r"D:\APP-KIEM-TRA-GIAO-AN\BIEN_BAN_KIEM_TRA_GIAO_AN.docx"
+        output_path = os.path.join(CORRECTED_DIR, "BIEN_BAN_KIEM_TRA_GIAO_AN.docx")
+
 
     doc = docx.Document()
     

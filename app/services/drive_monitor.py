@@ -10,9 +10,11 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
-DATA_DIR = r"D:\APP-KIEM-TRA-GIAO-AN\data"
+from app.config import DATA_DIR, get_file_path, CORRECTED_DIR
+
 LOG_FILE = os.path.join(DATA_DIR, "drive_monitoring_log.json")
 EMAIL_LOG_FILE = os.path.join(DATA_DIR, "email_notifications.json")
+
 
 DRIVE_ROOT_URL = "https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing"
 
@@ -272,7 +274,7 @@ def export_drive_monitoring_report_word(output_path=None):
     đạt chuẩn Thể thức văn bản hành chính theo Nghị định 30/2020/NĐ-CP.
     """
     if output_path is None:
-        output_path = r"D:\APP-KIEM-TRA-GIAO-AN\BAO_CAO_GIAM_SAT_TIEN_DO_GIAO_AN_GOOGLE_DRIVE.docx"
+        output_path = os.path.join(CORRECTED_DIR, "BAO_CAO_GIAM_SAT_TIEN_DO_GIAO_AN_GOOGLE_DRIVE.docx")
 
     if os.path.exists(LOG_FILE):
         with open(LOG_FILE, "r", encoding="utf-8") as f:
@@ -545,7 +547,9 @@ def export_drive_monitoring_report_word(output_path=None):
     c0_b.add_run("HIỆU TRƯỞNG").font.bold = True
 
     c1_b = t_sign.rows[1].cells[1]
-    sig_img_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\signature_thang.png"
+    sig_img_path = get_file_path("signature_thang.png")
+    if not os.path.exists(sig_img_path):
+        sig_img_path = get_file_path(os.path.join("data", "signature_thang.png"))
     if os.path.exists(sig_img_path):
         p_img = c1_b.paragraphs[0]
         p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER

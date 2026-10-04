@@ -21,11 +21,14 @@ def set_cell_background(cell, fill_hex):
     shading_elm = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{fill_hex}"/>')
     cell._tc.get_or_add_tcPr().append(shading_elm)
 
+from app.config import DATA_DIR, CORRECTED_DIR, get_file_path
+
 def generate_9_cycles_monitoring_word(output_path=None):
     if output_path is None:
-        output_path = r"D:\APP-KIEM-TRA-GIAO-AN\BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx"
+        output_path = os.path.join(CORRECTED_DIR, "BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx")
 
-    json_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\drive_full_cycles_report.json"
+    json_path = os.path.join(DATA_DIR, "drive_full_cycles_report.json")
+
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -286,7 +289,9 @@ def generate_9_cycles_monitoring_word(output_path=None):
     c0_name.add_run("HIỆU TRƯỞNG").font.bold = True
 
     c1_box = t_sign.rows[1].cells[1]
-    sig_img_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\signature_thang.png"
+    sig_img_path = get_file_path("signature_thang.png")
+    if not os.path.exists(sig_img_path):
+        sig_img_path = get_file_path(os.path.join("data", "signature_thang.png"))
     if os.path.exists(sig_img_path):
         p_sig = c1_box.paragraphs[0]
         p_sig.alignment = WD_ALIGN_PARAGRAPH.CENTER

@@ -8,8 +8,10 @@ from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
-DATA_DIR = r"D:\APP-KIEM-TRA-GIAO-AN\data"
+from app.config import DATA_DIR, get_file_path, CORRECTED_DIR
+
 LIVE_REPORT_PATH = os.path.join(DATA_DIR, "drive_live_exact_report.json")
+
 GOOGLE_DRIVE_URL = "https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing"
 
 # Thông tin 8 giáo viên thuộc Tổ Toán - KHTN - Công nghệ
@@ -728,7 +730,7 @@ def export_teacher_inspection_report_word(teacher_id, period_str="Tuần 1 đế
             return s.strip('_')
         t_slug = unaccent(t_info["name"])
         period_slug = unaccent(period_str)
-        output_path = os.path.join(r"D:\APP-KIEM-TRA-GIAO-AN", f"BIEN_BAN_KIEM_TRA_GIAO_AN_{t_slug}_{period_slug}.docx")
+        output_path = os.path.join(CORRECTED_DIR, f"BIEN_BAN_KIEM_TRA_GIAO_AN_{t_slug}_{period_slug}.docx")
 
     doc = docx.Document()
 
@@ -1059,7 +1061,9 @@ def export_teacher_inspection_report_word(teacher_id, period_str="Tuần 1 đế
     r_gv_n.font.size = Pt(11)
 
     c1_box = t_sign.rows[1].cells[1]
-    sig_img_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\signature_thang.png"
+    sig_img_path = get_file_path("signature_thang.png")
+    if not os.path.exists(sig_img_path):
+        sig_img_path = get_file_path(os.path.join("data", "signature_thang.png"))
     if os.path.exists(sig_img_path):
         p_sig = c1_box.paragraphs[0]
         p_sig.alignment = WD_ALIGN_PARAGRAPH.CENTER

@@ -18,6 +18,8 @@ from app.services.schedule_generator import (
     parse_plan_to_weeks
 )
 
+from app.config import UPLOAD_DIR, CORRECTED_DIR, DATA_DIR, BASE_DIR, get_file_path
+
 app = FastAPI(title="Hệ sinh thái Kiểm định Giáo dục Số Toàn diện", version="2.0.0")
 
 app.add_middleware(
@@ -27,11 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-UPLOAD_DIR = r"D:\APP-KIEM-TRA-GIAO-AN\data\uploads"
-CORRECTED_DIR = r"D:\APP-KIEM-TRA-GIAO-AN\data\corrected"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-os.makedirs(CORRECTED_DIR, exist_ok=True)
 
 @app.get("/api/teachers")
 def list_teachers():
@@ -55,12 +52,12 @@ def teacher_competency(teacher_id: str):
 @app.post("/api/inspect-sample")
 def inspect_sample_file(sample_index: int = Form(0), teacher_name: str = Form("Phạm Thị Cúc")):
     sample_files = [
-        r"D:\APP-KIEM-TRA-GIAO-AN\data\Co_Cuc\Cô Cúc\KHTN 7\KHTN 7 tuần 1-4\Tuần 1-2 Tiết 1-5  BÀI 1 MỞ ĐẦU KHTN.docx",
-        r"D:\APP-KIEM-TRA-GIAO-AN\data\Co_Cuc\Cô Cúc\KHTN 7\KHTN 7 tuần 1-4\Tuần 2-3  Tiết 6-9  Bài 2  Nguyên tử - KHTN7 - CTST.docx",
-        r"D:\APP-KIEM-TRA-GIAO-AN\data\Co_Cuc\Cô Cúc\KHTN 7\KHTN 7 tuần 1-4\Tuần 3-4, Tiết 10-13  -CHỦ ĐỀ 1 - BÀI 3- NTHH.docx",
-        r"D:\APP-KIEM-TRA-GIAO-AN\data\Co_Cuc\Cô Cúc\KHTN 7\KHTN 7 tuần 1-4\Tuần 4-5  -Tiết 14-18  Bài 4- SƠ LƯỢC BẢNG TUẦN TOÀN CÁC NTHH-KHTN 7-CTST-ST.docx",
-        r"D:\APP-KIEM-TRA-GIAO-AN\data\Co_Cuc\Cô Cúc\KHTN 9\KHTN 9 Tuần 1-4\Tuần 2 - Tiết 1-2   Bài 36-Khái quát về di truyền học-Sinh9- KNTT.docx",
-        r"D:\APP-KIEM-TRA-GIAO-AN\data\Co_Cuc\Cô Cúc\KHTN 9\KHTN 9 Tuần 1-4\Tuần 3,4,5,6 - Tiết 3,4,5,6  BÀI 37- khtn 9- kntt.docx"
+        get_file_path("data/Co_Cuc/Cô Cúc/KHTN 7/KHTN 7 tuần 1-4/Tuần 1-2 Tiết 1-5  BÀI 1 MỞ ĐẦU KHTN.docx"),
+        get_file_path("data/Co_Cuc/Cô Cúc/KHTN 7/KHTN 7 tuần 1-4/Tuần 2-3  Tiết 6-9  Bài 2  Nguyên tử - KHTN7 - CTST.docx"),
+        get_file_path("data/Co_Cuc/Cô Cúc/KHTN 7/KHTN 7 tuần 1-4/Tuần 3-4, Tiết 10-13  -CHỦ ĐỀ 1 - BÀI 3- NTHH.docx"),
+        get_file_path("data/Co_Cuc/Cô Cúc/KHTN 7/KHTN 7 tuần 1-4/Tuần 4-5  -Tiết 14-18  Bài 4- SƠ LƯỢC BẢNG TUẦN TOÀN CÁC NTHH-KHTN 7-CTST-ST.docx"),
+        get_file_path("data/Co_Cuc/Cô Cúc/KHTN 9/KHTN 9 Tuần 1-4/Tuần 2 - Tiết 1-2   Bài 36-Khái quát về di truyền học-Sinh9- KNTT.docx"),
+        get_file_path("data/Co_Cuc/Cô Cúc/KHTN 9/KHTN 9 Tuần 1-4/Tuần 3,4,5,6 - Tiết 3,4,5,6  BÀI 37- khtn 9- kntt.docx")
     ]
     if sample_index < 0 or sample_index >= len(sample_files):
         sample_index = 0
@@ -103,7 +100,7 @@ def download_file(path: str):
 
 @app.get("/api/export-report")
 def export_report_endpoint(teacher: str = "Phạm Thị Cúc", inspector: str = "Lê Văn Thắng", period: str = "Tuần 1 đến tuần 4"):
-    out_path = r"D:\APP-KIEM-TRA-GIAO-AN\BIEN_BAN_KIEM_TRA_GIAO_AN.docx"
+    out_path = os.path.join(CORRECTED_DIR, "BIEN_BAN_KIEM_TRA_GIAO_AN.docx")
     generate_inspection_report(teacher_name=teacher, inspector_name=inspector, period_str=period, output_path=out_path)
     return FileResponse(out_path, filename=os.path.basename(out_path), media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
@@ -114,13 +111,13 @@ def export_report_endpoint(teacher: str = "Phạm Thị Cúc", inspector: str = 
 @app.get("/api/schedule/sample-plan")
 def get_sample_plan_schedule(week: int = 5):
     """Sử dụng file kế hoạch hoạt động tổ có sẵn trong hệ thống"""
-    sample_pdf = r"D:\APP-KIEM-TRA-GIAO-AN\2026-2027 Kế hoạch GD tổ Toán-KHTN-C.Nghệ.pdf"
+    sample_pdf = get_file_path("2026-2027 Kế hoạch GD tổ Toán-KHTN-C.Nghệ.pdf")
     if not os.path.exists(sample_pdf):
-        # Thử tìm file pdf bất kỳ trong thư mục
-        for f in os.listdir(r"D:\APP-KIEM-TRA-GIAO-AN"):
+        for f in os.listdir(BASE_DIR):
             if f.endswith(".pdf") and "K" in f:
-                sample_pdf = os.path.join(r"D:\APP-KIEM-TRA-GIAO-AN", f)
+                sample_pdf = os.path.join(BASE_DIR, f)
                 break
+
 
     data = generate_weekly_schedule_data(
         plan_path_or_text=sample_pdf if os.path.exists(sample_pdf) else None,
@@ -178,7 +175,7 @@ async def export_schedule_docx(request: Request):
 @app.get("/api/schedule/download-template-docx")
 def download_template_docx():
     """Tải file Word Kế hoạch tuần mẫu chuẩn của Tổ chuyên môn"""
-    fpath = r"D:\APP-KIEM-TRA-GIAO-AN\KE_HOACH_HOAT_DONG_TUAN_04_TO_TOAN_KHTN_CN.docx"
+    fpath = os.path.join(CORRECTED_DIR, "KE_HOACH_HOAT_DONG_TUAN_04_TO_TOAN_KHTN_CN.docx")
     if not os.path.exists(fpath):
         from app.services.exact_template_generator import generate_weekly_plan_exact_template
         generate_weekly_plan_exact_template(fpath, include_signature=True)
@@ -200,7 +197,7 @@ from app.services.drive_monitor import (
 @app.get("/api/drive/status")
 def get_drive_monitoring_status(refresh: bool = False):
     """Quét và trả về tình trạng cập nhật giáo án trên Google Drive của 8 GV"""
-    log_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\drive_monitoring_log.json"
+    log_path = os.path.join(DATA_DIR, "drive_monitoring_log.json")
     if not refresh and os.path.exists(log_path):
         try:
             with open(log_path, "r", encoding="utf-8") as f:
@@ -234,7 +231,7 @@ def download_drive_report_docx():
 @app.get("/api/drive/detailed-matrix")
 def get_detailed_matrix():
     """Lấy dữ liệu chi tiết 8 giáo viên qua 9 chu kỳ tuần (Tuần 1 đến tuần 35)"""
-    mat_path = r"D:\APP-KIEM-TRA-GIAO-AN\data\drive_full_cycles_report.json"
+    mat_path = os.path.join(DATA_DIR, "drive_full_cycles_report.json")
     try:
         if os.path.exists(mat_path):
             with open(mat_path, "r", encoding="utf-8") as f:
@@ -247,7 +244,7 @@ def get_detailed_matrix():
 def download_9cycles_docx():
     """Xuất Báo cáo chi tiết 9 chu kỳ tuần ra file Word .docx chuẩn NĐ 30"""
     from app.services.cycle_report_generator import generate_9_cycles_monitoring_word
-    fpath = r"D:\APP-KIEM-TRA-GIAO-AN\BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx"
+    fpath = os.path.join(CORRECTED_DIR, "BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx")
     if not os.path.exists(fpath):
         generate_9_cycles_monitoring_word(fpath)
     return FileResponse(
@@ -255,6 +252,7 @@ def download_9cycles_docx():
         filename="BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx",
         media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
+
 
 @app.get("/api/inspection/data")
 def get_inspection_data(teacher_id: str = "thanh", period: str = "Tuần 1 đến tuần 4", subject: str = "all"):
@@ -365,7 +363,7 @@ def api_supabase_sync_all():
 @app.get("/api/supabase/schema-sql")
 def api_supabase_schema_sql():
     """Lấy câu lệnh SQL để khởi tạo bảng dữ liệu trên Supabase SQL Editor"""
-    sql_file = r"D:\APP-KIEM-TRA-GIAO-AN\supabase_schema.sql"
+    sql_file = get_file_path("supabase_schema.sql")
     if os.path.exists(sql_file):
         with open(sql_file, "r", encoding="utf-8") as f:
             return {"sql": f.read()}
