@@ -7,6 +7,7 @@
       "config": {
         "includeFiles": [
           "app/**",
+          "app/static/**",
           "data/**",
           "*.png",
           "*.pdf",

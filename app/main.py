@@ -446,9 +446,27 @@ def api_supabase_schema_sql():
             return {"sql": f.read()}
     return {"sql": "-- File schema.sql không tồn tại"}
 
-# Phục vụ giao diện tĩnh
+# Phục vụ giao diện tĩnh cho Vercel & Local
 static_path = os.path.join(os.path.dirname(__file__), "static")
-app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
+if not os.path.exists(static_path):
+    static_path = os.path.join(BASE_DIR, "app", "static")
+
+@app.get("/")
+def read_root():
+    index_path = os.path.join(static_path, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path, media_type="text/html")
+    return JSONResponse({"status": "ok", "message": "Hệ thống Kiểm định Giáo dục Số đang chạy thành công!"})
+
+@app.get("/logo.png")
+def read_logo():
+    logo_path = os.path.join(static_path, "logo.png")
+    if os.path.exists(logo_path):
+        return FileResponse(logo_path, media_type="image/png")
+    return JSONResponse({"error": "Logo not found"}, status_code=404)
+
+if os.path.exists(static_path):
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 
 if __name__ == "__main__":
