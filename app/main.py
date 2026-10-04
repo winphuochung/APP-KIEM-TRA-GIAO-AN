@@ -10,7 +10,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.services.inspector import inspect_lesson_plan
 from app.services.corrector import correct_document
 from app.services.report_generator import generate_inspection_report
-from app.services.competency import TEACHERS_DATA, get_heatmap_matrix, get_bi_overview
+from app.services.competency import (
+    TEACHERS_DATA,
+    get_heatmap_matrix,
+    get_bi_overview,
+    add_teacher_data,
+    update_teacher_data,
+    delete_teacher_data
+)
+from app.services.teacher_parser import parse_teachers_from_file
+from app.services.supabase_client import sync_teachers_to_supabase
 from app.services.schedule_generator import (
     generate_weekly_schedule_data,
     export_schedule_to_word,
@@ -33,6 +42,74 @@ app.add_middleware(
 @app.get("/api/teachers")
 def list_teachers():
     return {"teachers": TEACHERS_DATA}
+
+@app.post("/api/teachers/add")
+async def api_add_teacher(request: Request):
+    payload = await request.json()
+    new_teacher = add_teacher_data(payload)
+    try:
+        sync_teachers_to_supabase()
+    except Exception:
+        pass
+    return {"status": "success", "message": f"Đã thêm giáo viên {new_teacher.get('name')} thành công!", "teacher": new_teacher}
+
+@app.post("/api/teachers/update")
+async def api_update_teacher(request: Request):
+    payload = await request.json()
+    t_id = payload.get("id")
+    if not t_id:
+        raise HTTPException(status_code=400, detail="Thiếu id giáo viên")
+    updated = update_teacher_data(t_id, payload)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Không tìm thấy giáo viên")
+    try:
+        sync_teachers_to_supabase()
+    except Exception:
+        pass
+    return {"status": "success", "message": f"Đã cập nhật thông tin giáo viên {updated.get('name')}!", "teacher": updated}
+
+@app.delete("/api/teachers/{teacher_id}")
+def api_delete_teacher(teacher_id: str):
+    success = delete_teacher_data(teacher_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Không tìm thấy giáo viên để xóa")
+    try:
+        sync_teachers_to_supabase()
+    except Exception:
+        pass
+    return {"status": "success", "message": "Đã xóa giáo viên khỏi danh sách!"}
+
+@app.post("/api/teachers/import-file")
+async def api_import_teachers_file(file: UploadFile = File(...), mode: str = Form("append")):
+    target_path = os.path.join(UPLOAD_DIR, file.filename)
+    with open(target_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    extracted = parse_teachers_from_file(target_path)
+    if not extracted:
+        raise HTTPException(status_code=400, detail="Không trích xuất được danh sách giáo viên từ file. Vui lòng kiểm tra định dạng tệp Word/PDF/Excel!")
+
+    if mode == "replace":
+        TEACHERS_DATA.clear()
+
+    added_count = 0
+    for t_obj in extracted:
+        add_teacher_data(t_obj)
+        added_count += 1
+
+    try:
+        sync_teachers_to_supabase()
+    except Exception:
+        pass
+
+    return {
+        "status": "success",
+        "imported_count": added_count,
+        "filename": file.filename,
+        "message": f"Đã trích xuất và nhập thành công {added_count} giáo viên từ tệp {file.filename}!",
+        "teachers": TEACHERS_DATA
+    }
+
 
 @app.get("/api/heatmap")
 def heatmap_data():

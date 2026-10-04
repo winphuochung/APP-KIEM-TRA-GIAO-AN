@@ -188,3 +188,44 @@ def get_bi_overview():
             "scores": [8.4, 8.6, 8.8, 9.2]
         }
     }
+
+def add_teacher_data(teacher_obj: dict):
+    from app.services.teacher_parser import generate_teacher_id
+    t_id = teacher_obj.get("id") or generate_teacher_id(teacher_obj.get("name", ""))
+    existing_ids = [t["id"] for t in TEACHERS_DATA]
+    if t_id in existing_ids:
+        t_id = f"{t_id}_{len(existing_ids)+1}"
+    
+    teacher_obj["id"] = t_id
+    if "title" not in teacher_obj or not teacher_obj["title"]:
+        teacher_obj["title"] = f"{teacher_obj.get('name', '')}"
+    if "completion_rate" not in teacher_obj:
+        teacher_obj["completion_rate"] = 100
+    if "progress_status" not in teacher_obj:
+        teacher_obj["progress_status"] = "Đúng tiến độ"
+    if "tii_score" not in teacher_obj:
+        teacher_obj["tii_score"] = 88
+    if "car_score" not in teacher_obj:
+        teacher_obj["car_score"] = 90
+    if "radar" not in teacher_obj:
+        teacher_obj["radar"] = {"pedagogy": 9.0, "bloom": 8.8, "digital": 8.5, "format": 8.8, "stem": 8.5}
+
+    if "subjects" not in teacher_obj or not teacher_obj["subjects"]:
+        teacher_obj["subjects"] = [teacher_obj.get("subject_str", "Chuyên môn")]
+
+    TEACHERS_DATA.append(teacher_obj)
+    return teacher_obj
+
+def update_teacher_data(teacher_id: str, teacher_obj: dict):
+    for idx, t in enumerate(TEACHERS_DATA):
+        if t["id"] == teacher_id:
+            TEACHERS_DATA[idx].update(teacher_obj)
+            return TEACHERS_DATA[idx]
+    return None
+
+def delete_teacher_data(teacher_id: str):
+    global TEACHERS_DATA
+    initial_count = len(TEACHERS_DATA)
+    TEACHERS_DATA[:] = [t for t in TEACHERS_DATA if t["id"] != teacher_id]
+    return len(TEACHERS_DATA) < initial_count
+

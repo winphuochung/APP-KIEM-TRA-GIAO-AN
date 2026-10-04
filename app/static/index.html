@@ -123,6 +123,10 @@
         <i class="fa-solid fa-file-invoice text-purple-600"></i>
         <span>Báo cáo sơ kết tháng</span>
       </button>
+      <button onclick="switchTab('teachers')" id="tab-btn-teachers" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-users-gear text-indigo-600"></i>
+        <span>Quản lý Giáo viên</span>
+      </button>
     </div>
   </nav>
 
@@ -1317,6 +1321,54 @@
       </div>
     </section>
 
+    <!-- ========================================== -->
+    <!-- TAB 10: QUẢN LÝ DANH SÁCH GIÁO VIÊN -->
+    <!-- ========================================== -->
+    <section id="tab-teachers" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-users-gear text-indigo-600"></i>
+              <span>Quản lý Danh sách Giáo viên Tổ Chuyên môn</span>
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">Điều chỉnh, thêm, bớt giáo viên và cập nhật danh sách tự động từ file Word (.docx), PDF (.pdf), Excel (.xlsx/.xls) hoặc CSV.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="openImportTeacherFileModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold text-xs transition shadow-sm flex items-center space-x-1.5 cursor-pointer">
+              <i class="fa-solid fa-file-import text-sm"></i>
+              <span>📁 Nhập từ Tệp (Word/PDF/Excel)</span>
+            </button>
+            <button onclick="openAddTeacherModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold text-xs transition shadow-sm flex items-center space-x-1.5 cursor-pointer">
+              <i class="fa-solid fa-user-plus text-sm"></i>
+              <span>+ Thêm Giáo viên mới</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 uppercase font-bold border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-4 text-center w-12">STT</th>
+                <th class="py-3 px-4">Mã GV</th>
+                <th class="py-3 px-4">Họ và Tên</th>
+                <th class="py-3 px-4">Chức vụ</th>
+                <th class="py-3 px-4">Môn giảng dạy</th>
+                <th class="py-3 px-4">Lớp giảng dạy</th>
+                <th class="py-3 px-4">Chủ nhiệm</th>
+                <th class="py-3 px-4 text-center">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="teachers-management-tbody" class="divide-y divide-slate-100 font-medium">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- FOOTER -->
@@ -1330,7 +1382,7 @@
     let radarChartInstance = null;
 
     function switchTab(tabId) {
-      ['dashboard', 'heatmap', 'inspect', 'competency', 'export', 'schedule', 'drive', 'notebook', 'monthly-report'].forEach(t => {
+      ['dashboard', 'heatmap', 'inspect', 'competency', 'export', 'schedule', 'drive', 'notebook', 'monthly-report', 'teachers'].forEach(t => {
         const sec = document.getElementById('tab-' + t);
         const btn = document.getElementById('tab-btn-' + t);
         if (t === tabId) {
@@ -1364,6 +1416,9 @@
       }
       if (tabId === 'monthly-report') {
         loadMonthlyReportData();
+      }
+      if (tabId === 'teachers') {
+        loadTeachersManagementTable();
       }
     }
 
@@ -2913,6 +2968,219 @@
       }
     }
 
+    // =========================================================================
+    // QUẢN LÝ DANH SÁCH GIÁO VIÊN (CRUD & FILE IMPORT)
+    // =========================================================================
+    let allTeachersDataCache = [];
+
+    async function loadTeachersManagementTable() {
+      try {
+        const res = await fetch('/api/teachers');
+        if (!res.ok) throw new Error('Không thể tải danh sách giáo viên');
+        const data = await res.json();
+        allTeachersDataCache = data.teachers || [];
+        renderTeachersManagementTable(allTeachersDataCache);
+      } catch (err) {
+        console.error('Lỗi tải danh sách giáo viên:', err);
+        showScheduleNotification('Lỗi tải danh sách giáo viên: ' + err.message, 'error');
+      }
+    }
+
+    function renderTeachersManagementTable(teachers) {
+      const tbody = document.getElementById('teachers-management-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (!teachers || teachers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400 font-medium">Chưa có giáo viên nào trong danh sách</td></tr>`;
+        return;
+      }
+
+      teachers.forEach((t, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+        
+        const subjectsStr = Array.isArray(t.subjects) ? t.subjects.join(', ') : (t.subjects || '');
+        const classesStr = Array.isArray(t.classes) ? t.classes.join(', ') : (t.classes || '');
+        const homeroomStr = t.homeroom || '-';
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 text-center font-bold text-slate-400">${idx + 1}</td>
+          <td class="py-3 px-4 font-mono font-bold text-indigo-700 text-[11px]">${t.id}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${t.name}</td>
+          <td class="py-3 px-4 text-slate-600">${t.role || 'Giáo viên'}</td>
+          <td class="py-3 px-4 text-slate-700"><span class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded font-medium">${subjectsStr}</span></td>
+          <td class="py-3 px-4 text-slate-600">${classesStr}</td>
+          <td class="py-3 px-4 text-slate-600">${homeroomStr !== '-' ? '<span class="bg-emerald-50 text-emerald-700 font-semibold px-2 py-0.5 rounded border border-emerald-200">' + homeroomStr + '</span>' : '-'}</td>
+          <td class="py-3 px-4 text-center">
+            <div class="flex items-center justify-center space-x-2">
+              <button onclick="openEditTeacherModal('${t.id}')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Sửa</span>
+              </button>
+              <button onclick="deleteTeacher('${t.id}', '${t.name}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer">
+                <i class="fa-solid fa-trash-can"></i>
+                <span>Xóa</span>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openAddTeacherModal() {
+      document.getElementById('teacher-form-title').innerText = 'Thêm Giáo viên Mới';
+      document.getElementById('teacher-id-input').value = '';
+      document.getElementById('teacher-id-input').disabled = false;
+      document.getElementById('teacher-name-form-input').value = '';
+      document.getElementById('teacher-role-input').value = 'Giáo viên';
+      document.getElementById('teacher-subjects-input').value = '';
+      document.getElementById('teacher-classes-input').value = '';
+      document.getElementById('teacher-homeroom-input').value = '';
+      document.getElementById('teacher-edit-mode').value = 'add';
+
+      const modal = document.getElementById('modal-teacher-edit');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function openEditTeacherModal(teacherId) {
+      const teacher = allTeachersDataCache.find(t => t.id === teacherId);
+      if (!teacher) {
+        alert('Không tìm thấy thông tin giáo viên');
+        return;
+      }
+
+      document.getElementById('teacher-form-title').innerText = 'Điều chỉnh Thông tin Giáo viên';
+      document.getElementById('teacher-id-input').value = teacher.id;
+      document.getElementById('teacher-id-input').disabled = true;
+      document.getElementById('teacher-name-form-input').value = teacher.name || '';
+      document.getElementById('teacher-role-input').value = teacher.role || 'Giáo viên';
+      document.getElementById('teacher-subjects-input').value = Array.isArray(teacher.subjects) ? teacher.subjects.join(', ') : (teacher.subjects || '');
+      document.getElementById('teacher-classes-input').value = Array.isArray(teacher.classes) ? teacher.classes.join(', ') : (teacher.classes || '');
+      document.getElementById('teacher-homeroom-input').value = teacher.homeroom || '';
+      document.getElementById('teacher-edit-mode').value = 'edit';
+
+      const modal = document.getElementById('modal-teacher-edit');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeTeacherModal() {
+      const modal = document.getElementById('modal-teacher-edit');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function handleSaveTeacher(event) {
+      event.preventDefault();
+      const mode = document.getElementById('teacher-edit-mode').value;
+      const id = document.getElementById('teacher-id-input').value.trim();
+      const name = document.getElementById('teacher-name-form-input').value.trim();
+      const role = document.getElementById('teacher-role-input').value.trim();
+      const subjectsStr = document.getElementById('teacher-subjects-input').value.trim();
+      const classesStr = document.getElementById('teacher-classes-input').value.trim();
+      const homeroom = document.getElementById('teacher-homeroom-input').value.trim();
+
+      if (!name) {
+        alert('Vui lòng nhập họ và tên giáo viên');
+        return;
+      }
+
+      const payload = {
+        id: id,
+        name: name,
+        role: role,
+        subjects: subjectsStr ? subjectsStr.split(',').map(s => s.trim()).filter(Boolean) : [],
+        classes: classesStr ? classesStr.split(',').map(c => c.trim()).filter(Boolean) : [],
+        homeroom: homeroom || null
+      };
+
+      const endpoint = mode === 'add' ? '/api/teachers/add' : '/api/teachers/update';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Thao tác thất bại');
+
+        closeTeacherModal();
+        await loadTeachersManagementTable();
+        showScheduleNotification(data.message || 'Lưu thông tin giáo viên thành công!', 'success');
+      } catch (err) {
+        alert('Lỗi lưu thông tin giáo viên: ' + err.message);
+      }
+    }
+
+    async function deleteTeacher(teacherId, teacherName) {
+      if (!confirm(`Bạn có chắc chắn muốn xóa giáo viên "${teacherName}" (Mã: ${teacherId}) khỏi danh sách tổ chuyên môn?`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/teachers/${encodeURIComponent(teacherId)}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Xóa thất bại');
+
+        await loadTeachersManagementTable();
+        showScheduleNotification(data.message || `Đã xóa giáo viên ${teacherName}`, 'success');
+      } catch (err) {
+        alert('Lỗi xóa giáo viên: ' + err.message);
+      }
+    }
+
+    function openImportTeacherFileModal() {
+      document.getElementById('teacher-file-input').value = '';
+      document.getElementById('import-mode-append').checked = true;
+      const modal = document.getElementById('modal-teacher-import');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeImportTeacherModal() {
+      const modal = document.getElementById('modal-teacher-import');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function handleImportTeacherFile(event) {
+      event.preventDefault();
+      const fileInput = document.getElementById('teacher-file-input');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Vui lòng chọn tệp tin Word (.docx), PDF (.pdf) hoặc Excel (.xlsx/.xls)');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const mode = document.querySelector('input[name="import_mode"]:checked').value;
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('mode', mode);
+
+      const btnSubmit = document.getElementById('btn-submit-import-file');
+      const origText = btnSubmit.innerHTML;
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc tệp & trích xuất...`;
+
+      try {
+        const res = await fetch('/api/teachers/import-file', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Trích xuất thất bại');
+
+        closeImportTeacherModal();
+        await loadTeachersManagementTable();
+        showScheduleNotification(data.message || `Đã trích xuất và nạp thành công ${data.teachers_parsed} giáo viên!`, 'success');
+      } catch (err) {
+        alert('Lỗi đọc và trích xuất file giáo viên: ' + err.message);
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = origText;
+      }
+    }
+
     window.onload = function() {
       loadDashboardData();
       checkSupabaseStatus();
@@ -3049,6 +3317,131 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT TEACHER -->
+  <div id="modal-teacher-edit" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 flex flex-col">
+      <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
+        <h3 id="teacher-form-title" class="font-bold text-sm tracking-wide text-white">Thêm Giáo viên Mới</h3>
+        <button onclick="closeTeacherModal()" class="text-slate-400 hover:text-white transition text-lg px-2 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSaveTeacher(event)" class="p-6 space-y-4 text-xs">
+        <input type="hidden" id="teacher-edit-mode" value="add" />
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Mã Giáo viên (ID):</label>
+          <input type="text" id="teacher-id-input" placeholder="Tự động tạo nếu để trống (VD: thang, cuc)" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-mono text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Họ và Tên Giáo viên <span class="text-rose-500">*</span>:</label>
+          <input type="text" id="teacher-name-form-input" required placeholder="VD: Lê Văn Thắng" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Chức vụ / Vai trò:</label>
+          <select id="teacher-role-input" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <option value="Tổ trưởng">Tổ trưởng</option>
+            <option value="Tổ phó">Tổ phó</option>
+            <option value="Giáo viên" selected>Giáo viên</option>
+            <option value="Giáo viên Thính giảng">Giáo viên Thính giảng</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Môn giảng dạy (phân cách bằng dấu phẩy):</label>
+          <input type="text" id="teacher-subjects-input" placeholder="VD: Hóa 9, KHTN 7" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Lớp giảng dạy (phân cách bằng dấu phẩy):</label>
+          <input type="text" id="teacher-classes-input" placeholder="VD: 9A1, 9A2, 7A1" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Lớp Chủ nhiệm (nếu có):</label>
+          <input type="text" id="teacher-homeroom-input" placeholder="VD: 9A1" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+
+        <div class="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+          <button type="button" onclick="closeTeacherModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition cursor-pointer">
+            Hủy
+          </button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition shadow-sm cursor-pointer flex items-center space-x-1">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Lưu Thông Tin</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: IMPORT TEACHERS FROM FILE -->
+  <div id="modal-teacher-import" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 flex flex-col">
+      <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-file-import text-emerald-400 text-lg"></i>
+          <h3 class="font-bold text-sm tracking-wide text-white">Nhập Danh sách Giáo viên từ Tệp tin</h3>
+        </div>
+        <button onclick="closeImportTeacherModal()" class="text-slate-400 hover:text-white transition text-lg px-2 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleImportTeacherFile(event)" class="p-6 space-y-4 text-xs">
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-900 p-3 rounded-xl space-y-1">
+          <p class="font-bold flex items-center gap-1.5 text-xs">
+            <i class="fa-solid fa-circle-info text-emerald-600"></i>
+            <span>Hỗ trợ định dạng tệp tin đa dạng:</span>
+          </p>
+          <ul class="list-disc list-inside text-[11px] text-emerald-800 space-y-0.5 pl-1">
+            <li><strong>Microsoft Excel</strong> (.xlsx, .xls, .csv)</li>
+            <li><strong>Microsoft Word</strong> (.docx) - Bảng biểu hoặc danh sách dòng</li>
+            <li><strong>Tài liệu PDF</strong> (.pdf) - Bảng phân công giảng dạy</li>
+          </ul>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Chọn Tệp tin tải lên:</label>
+          <input type="file" id="teacher-file-input" accept=".docx,.pdf,.xlsx,.xls,.csv" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200 cursor-pointer" />
+        </div>
+
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-700">Chế độ Nhập dữ liệu:</label>
+          <div class="space-y-2">
+            <label class="flex items-start space-x-2 p-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+              <input type="radio" id="import-mode-append" name="import_mode" value="append" checked class="mt-0.5 text-emerald-600 focus:ring-emerald-500" />
+              <div>
+                <span class="font-bold text-slate-800 block">Bổ sung thêm vào danh sách hiện tại</span>
+                <span class="text-[11px] text-slate-500">Giữ nguyên các giáo viên hiện có, cập nhật hoặc thêm giáo viên mới từ tệp tin.</span>
+              </div>
+            </label>
+            <label class="flex items-start space-x-2 p-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+              <input type="radio" id="import-mode-replace" name="import_mode" value="replace" class="mt-0.5 text-rose-600 focus:ring-rose-500" />
+              <div>
+                <span class="font-bold text-slate-800 block">Thay thế toàn bộ danh sách</span>
+                <span class="text-[11px] text-slate-500">Xóa danh sách giáo viên hiện tại và thay bằng danh sách mới trong tệp tin.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+          <button type="button" onclick="closeImportTeacherModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition cursor-pointer">
+            Hủy
+          </button>
+          <button type="submit" id="btn-submit-import-file" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition shadow-sm cursor-pointer flex items-center space-x-1.5">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span>Trích xuất & Cập nhật</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
