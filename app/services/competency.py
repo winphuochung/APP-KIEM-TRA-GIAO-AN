@@ -240,8 +240,8 @@ def get_bi_overview():
 def add_teacher_data(teacher_obj: dict):
     global TEACHERS_DATA
     from app.services.teacher_parser import generate_teacher_id
-    t_id = teacher_obj.get("id") or generate_teacher_id(teacher_obj.get("name", ""))
-    existing_ids = [t["id"] for t in TEACHERS_DATA]
+    t_id = str(teacher_obj.get("id") or generate_teacher_id(teacher_obj.get("name", ""))).lower().strip()
+    existing_ids = [str(t["id"]).lower().strip() for t in TEACHERS_DATA]
     if t_id in existing_ids:
         t_id = f"{t_id}_{len(existing_ids)+1}"
     
@@ -259,35 +259,49 @@ def add_teacher_data(teacher_obj: dict):
     if "radar" not in teacher_obj:
         teacher_obj["radar"] = {"pedagogy": 9.0, "bloom": 8.8, "digital": 8.5, "format": 8.8, "stem": 8.5}
 
-    if "subjects" not in teacher_obj or not teacher_obj["subjects"]:
-        teacher_obj["subjects"] = [teacher_obj.get("subject_str", "Chuyên môn")]
-    if "classes" not in teacher_obj:
-        teacher_obj["classes"] = []
-    if "homeroom" not in teacher_obj:
-        teacher_obj["homeroom"] = ""
+    subjs = teacher_obj.get("subjects") or [teacher_obj.get("subject_str", "Chuyên môn")]
+    teacher_obj["subjects"] = [s.strip() for s in subjs if s.strip()] if isinstance(subjs, list) else [str(subjs).strip()]
+    
+    cls = teacher_obj.get("classes") or []
+    teacher_obj["classes"] = [c.strip() for c in cls if c.strip()] if isinstance(cls, list) else [str(cls).strip()]
+    
+    teacher_obj["homeroom"] = str(teacher_obj.get("homeroom") or "").strip()
 
     TEACHERS_DATA.append(teacher_obj)
     save_teachers_data()
+    try:
+        from app.services.supabase_client import sync_teachers_to_supabase
+        sync_teachers_to_supabase()
+    except Exception:
+        pass
     return teacher_obj
 
 def update_teacher_data(teacher_id: str, teacher_obj: dict):
     global TEACHERS_DATA
+    target_id = str(teacher_id).lower().strip()
     for idx, t in enumerate(TEACHERS_DATA):
-        if t["id"] == teacher_id:
+        if str(t["id"]).lower().strip() == target_id:
             if "name" in teacher_obj and teacher_obj["name"]:
-                t["name"] = teacher_obj["name"]
-                t["title"] = teacher_obj["name"]
+                t["name"] = teacher_obj["name"].strip()
+                t["title"] = teacher_obj["name"].strip()
             if "role" in teacher_obj:
-                t["role"] = teacher_obj["role"]
+                t["role"] = str(teacher_obj["role"]).strip()
             if "subjects" in teacher_obj:
-                t["subjects"] = teacher_obj["subjects"] if isinstance(teacher_obj["subjects"], list) else [teacher_obj["subjects"]]
+                subjs = teacher_obj["subjects"]
+                t["subjects"] = [s.strip() for s in subjs if s.strip()] if isinstance(subjs, list) else [str(subjs).strip()]
             if "classes" in teacher_obj:
-                t["classes"] = teacher_obj["classes"] if isinstance(teacher_obj["classes"], list) else [teacher_obj["classes"]]
+                cls = teacher_obj["classes"]
+                t["classes"] = [c.strip() for c in cls if c.strip()] if isinstance(cls, list) else [str(cls).strip()]
             if "homeroom" in teacher_obj:
-                t["homeroom"] = teacher_obj["homeroom"] or ""
+                t["homeroom"] = str(teacher_obj["homeroom"] or "").strip()
             
             TEACHERS_DATA[idx] = t
             save_teachers_data()
+            try:
+                from app.services.supabase_client import sync_teachers_to_supabase
+                sync_teachers_to_supabase()
+            except Exception:
+                pass
             return t
     return None
 

@@ -3031,8 +3031,12 @@
 
     function openAddTeacherModal() {
       document.getElementById('teacher-form-title').innerText = 'Thêm Giáo viên Mới';
-      document.getElementById('teacher-id-input').value = '';
-      document.getElementById('teacher-id-input').disabled = false;
+      const idInput = document.getElementById('teacher-id-input');
+      idInput.value = '';
+      idInput.readOnly = false;
+      idInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
+      idInput.classList.add('bg-slate-50');
+      document.getElementById('teacher-id-hidden').value = '';
       document.getElementById('teacher-name-form-input').value = '';
       document.getElementById('teacher-role-input').value = 'Giáo viên';
       document.getElementById('teacher-subjects-input').value = '';
@@ -3052,8 +3056,12 @@
       }
 
       document.getElementById('teacher-form-title').innerText = 'Điều chỉnh Thông tin Giáo viên';
-      document.getElementById('teacher-id-input').value = teacher.id;
-      document.getElementById('teacher-id-input').disabled = true;
+      const idInput = document.getElementById('teacher-id-input');
+      idInput.value = teacher.id;
+      idInput.readOnly = true;
+      idInput.classList.add('bg-slate-100', 'cursor-not-allowed');
+      idInput.classList.remove('bg-slate-50');
+      document.getElementById('teacher-id-hidden').value = teacher.id;
       document.getElementById('teacher-name-form-input').value = teacher.name || '';
       document.getElementById('teacher-role-input').value = teacher.role || 'Giáo viên';
       document.getElementById('teacher-subjects-input').value = Array.isArray(teacher.subjects) ? teacher.subjects.join(', ') : (teacher.subjects || '');
@@ -3073,7 +3081,9 @@
     async function handleSaveTeacher(event) {
       event.preventDefault();
       const mode = document.getElementById('teacher-edit-mode').value;
-      const id = document.getElementById('teacher-id-input').value.trim();
+      const hiddenId = document.getElementById('teacher-id-hidden').value.trim();
+      const inputId = document.getElementById('teacher-id-input').value.trim();
+      const id = hiddenId || inputId;
       const name = document.getElementById('teacher-name-form-input').value.trim();
       const role = document.getElementById('teacher-role-input').value.trim();
       const subjectsStr = document.getElementById('teacher-subjects-input').value.trim();
@@ -3091,7 +3101,7 @@
         role: role,
         subjects: subjectsStr ? subjectsStr.split(',').map(s => s.trim()).filter(Boolean) : [],
         classes: classesStr ? classesStr.split(',').map(c => c.trim()).filter(Boolean) : [],
-        homeroom: homeroom || null
+        homeroom: homeroom || ''
       };
 
       const endpoint = mode === 'add' ? '/api/teachers/add' : '/api/teachers/update';
@@ -3332,6 +3342,7 @@
 
       <form onsubmit="handleSaveTeacher(event)" class="p-6 space-y-4 text-xs">
         <input type="hidden" id="teacher-edit-mode" value="add" />
+        <input type="hidden" id="teacher-id-hidden" value="" />
 
         <div>
           <label class="block font-bold text-slate-700 mb-1">Mã Giáo viên (ID):</label>

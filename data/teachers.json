@@ -3,14 +3,15 @@
     "id": "cuc",
     "name": "Phạm Thị Cúc",
     "title": "Phạm Thị Cúc",
-    "role": "Tổ phó chuyên môn - GV KHTN",
+    "role": "Tổ phó chuyên môn - KHTN & Sinh",
     "subjects": [
       "KHTN 7",
       "Sinh 9"
     ],
     "classes": [
       "7A2",
-      "9A2"
+      "9A2",
+      "9A3"
     ],
     "homeroom": "9A2",
     "completion_rate": 100,
