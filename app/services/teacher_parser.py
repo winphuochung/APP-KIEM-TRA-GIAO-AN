@@ -1,16 +1,34 @@
 import os
 import re
-import docx
-import pypdf
-import openpyxl
+
+try:
+    import docx
+except ImportError:
+    docx = None
+
+try:
+    import pypdf
+except ImportError:
+    pypdf = None
+
+try:
+    import openpyxl
+except ImportError:
+    openpyxl = None
 
 def parse_teachers_from_file(file_path: str) -> list:
     ext = os.path.splitext(file_path)[1].lower()
     if ext in [".xlsx", ".xls"]:
+        if openpyxl is None:
+            raise ValueError("Thư viện openpyxl chưa được cài đặt trên máy chủ.")
         return parse_excel_teachers(file_path)
     elif ext == ".docx":
+        if docx is None:
+            raise ValueError("Thư viện python-docx chưa được cài đặt trên máy chủ.")
         return parse_docx_teachers(file_path)
     elif ext == ".pdf":
+        if pypdf is None:
+            raise ValueError("Thư viện pypdf chưa được cài đặt trên máy chủ.")
         return parse_pdf_teachers(file_path)
     elif ext in [".txt", ".csv"]:
         return parse_txt_csv_teachers(file_path)
