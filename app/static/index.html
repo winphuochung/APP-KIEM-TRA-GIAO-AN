@@ -3473,6 +3473,176 @@
       }
     }
 
+    // ==========================================
+    // GOOGLE DRIVE API & LIVE SYNC FUNCTIONS
+    // ==========================================
+    function openDriveApiModal() {
+      const modal = document.getElementById('drive-api-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        checkDriveApiAuthStatus();
+      }
+    }
+
+    function closeDriveApiModal() {
+      const modal = document.getElementById('drive-api-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    }
+
+    async function checkDriveApiAuthStatus() {
+      const icon = document.getElementById('drive-api-card-icon');
+      const title = document.getElementById('drive-api-card-title');
+      const desc = document.getElementById('drive-api-card-desc');
+      if (title) title.innerText = 'Đang kiểm tra kết nối Google Drive API...';
+      
+      try {
+        const res = await fetch('/api/drive/api-auth-status');
+        const data = await res.json();
+        
+        let statusParts = [];
+        let isConfigured = false;
+        
+        if (data.api_key_configured) {
+          statusParts.push('Đã cấu hình API Key (' + data.api_key_preview + ')');
+          isConfigured = true;
+        }
+        if (data.service_account_configured) {
+          statusParts.push('Service Account: ' + (data.service_account_email || 'Hoạt động'));
+          isConfigured = true;
+        }
+        
+        if (isConfigured) {
+          if (icon) icon.className = 'w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-400';
+          if (title) title.innerHTML = '<span class="text-emerald-700 font-bold">Google Drive API: Đã kích hoạt</span>';
+          if (desc) desc.innerText = statusParts.join(' | ');
+        } else {
+          if (icon) icon.className = 'w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-400';
+          if (title) title.innerHTML = '<span class="text-amber-700 font-bold">Chưa cấu hình API Key / Service Account</span>';
+          if (desc) desc.innerText = 'Dán API Key hoặc tải lên tệp JSON Service Account bên dưới để kích hoạt quét tự động.';
+        }
+      } catch (err) {
+        if (icon) icon.className = 'w-3 h-3 rounded-full bg-rose-500';
+        if (title) title.innerText = 'Lỗi kết nối API';
+        if (desc) desc.innerText = err.message;
+      }
+    }
+
+    async function saveDriveApiKey() {
+      const input = document.getElementById('drive-api-key-input');
+      const val = input ? input.value.trim() : '';
+      if (!val) {
+        alert('Vui lòng nhập Google Drive API Key!');
+        return;
+      }
+      
+      try {
+        const res = await fetch('/api/drive/configure-api-key', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_key: val })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Lỗi lưu API Key');
+        alert('Thành công: ' + data.message);
+        if (input) input.value = '';
+        checkDriveApiAuthStatus();
+      } catch (err) {
+        alert('Lỗi: ' + err.message);
+      }
+    }
+
+    async function uploadServiceAccountJson() {
+      const fileInput = document.getElementById('service-account-file-input');
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        alert('Vui lòng chọn tệp service_account_credentials.json!');
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      
+      try {
+        const res = await fetch('/api/drive/upload-service-account', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Lỗi tải lên Service Account');
+        alert('Thành công: ' + data.message);
+        fileInput.value = '';
+        checkDriveApiAuthStatus();
+      } catch (err) {
+        alert('Lỗi tải tệp: ' + err.message);
+      }
+    }
+
+    async function syncDriveLiveApi() {
+      const btn = document.getElementById('btn-sync-drive-live-api');
+      const resBox = document.getElementById('drive-api-sync-result');
+      const origText = btn ? btn.innerHTML : '';
+      
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang quét Google Drive API...</span>';
+      }
+      if (resBox) {
+        resBox.classList.remove('hidden');
+        resBox.innerText = 'Đang kết nối Google Drive API v3 và đồng bộ toàn bộ 8 giáo viên...';
+      }
+      
+      try {
+        const res = await fetch('/api/drive/sync-live-api', { method: 'POST' });
+        const data = await res.json();
+        if (resBox) {
+          resBox.innerText = JSON.stringify(data, null, 2);
+        }
+        if (data.status === 'success') {
+          alert('Đồng bộ Google Drive API thành công: ' + data.message);
+          if (typeof loadDashboardData === 'function') loadDashboardData();
+          if (typeof loadDriveMonitoringData === 'function') loadDriveMonitoringData();
+        } else {
+          alert('Thông báo: ' + (data.message || data.detail || 'Đã gửi yêu cầu đồng bộ.'));
+        }
+      } catch (err) {
+        if (resBox) resBox.innerText = 'Lỗi đồng bộ API: ' + err.message;
+        alert('Lỗi đồng bộ Google Drive API: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origText;
+        }
+      }
+    }
+
+    async function triggerZeroConfigDriveSync() {
+      const btn = document.getElementById('btn-sync-zero-config');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang đồng bộ...</span>';
+      }
+      try {
+        const res = await fetch('/api/drive/sync-zero-config', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          alert('Đồng bộ thành công! ' + data.message);
+          if (typeof loadDashboardData === 'function') loadDashboardData();
+          if (typeof loadDriveMonitoringData === 'function') loadDriveMonitoringData();
+        } else {
+          alert('Kết quả đồng bộ: ' + (data.message || JSON.stringify(data)));
+        }
+      } catch (err) {
+        alert('Lỗi đồng bộ Drive: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origText;
+        }
+      }
+    }
+
     window.onload = function() {
       loadDashboardData();
       checkSupabaseStatus();
