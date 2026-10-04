@@ -14,3 +14,5 @@ tmp/
 *.tmp
 uvicorn_out.log
 uvicorn_err.log
+.Agent/
+.agent/
