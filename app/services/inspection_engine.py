@@ -629,24 +629,14 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
                     cv5512_eval = "Xây dựng ma trận đề, bảng đặc tả và hệ thống bài tập phân hóa 4 mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao) rất khoa học."
                     smart_cm = "[ĐIỂM SÁNG] Hệ thống câu hỏi bao quát mục tiêu cần đạt của giai đoạn kiểm tra. [GÓP Ý] Có thể ứng dụng Google Forms hoặc Azota để tự động hóa khâu chấm điểm."
             else:
-                total_matched_files += 1
-                clean_fname = f"[{subj_name}] {week_str} {period_str_item} {lesson_title}.docx"
-                grade = "Tốt"
-                curriculum_eval = f"Khớp 100% với {pl_file_name}: Tuần ({week_str}), Tiết ({period_str_item}), Tên bài chuẩn xác đối chiếu Kế hoạch giáo dục."
-                sgk_eval = f"Bám sát nội dung SGK {sgk_book}; Chuẩn YCCĐ: {yccd_desc}."
-                format_status = "Đạt chuẩn thể thức Nghị định 30/2020/NĐ-CP: Times New Roman 13-14pt, lề trên 20mm, lề dưới 20mm, lề trái 30mm, lề phải 15mm; giãn dòng 1.15 line đều đặn."
-                orthography_eval = "Chính tả chuẩn xác: Không mắc lỗi chính tả tiếng Việt; danh pháp khoa học chuẩn xác; quy tắc dấu câu chuẩn văn bản hành chính."
-                cv5512_eval = "Đầy đủ chuỗi 4 hoạt động CV 5512 (Mở đầu, Hình thành kiến thức, Luyện tập, Vận dụng). Thể hiện rõ 4 bước tổ chức dạy học."
-
-                add_comments = []
-                if nls_desc:
-                    add_comments.append(f"Tích hợp tốt Năng lực số ({nls_desc})")
-                if nut_desc:
-                    add_comments.append("lồng ghép kiến thức dinh dưỡng phù hợp")
-                if def_desc:
-                    add_comments.append("tích hợp giáo dục quốc phòng an ninh sâu sắc")
-                comm_body = ", ".join(add_comments) if add_comments else "bám sát mục tiêu bài học"
-                smart_cm = f"[ĐIỂM SÁNG] Kế hoạch bài dạy công phu, chuẩn bị thiết bị dạy học chu đáo, phân hóa năng lực học sinh tốt; {comm_body}. [GÓP Ý] Tăng cường câu hỏi liên hệ thực tế địa phương xã Nhơn Hội ở hoạt động Vận dụng."
+                clean_fname = "(Chưa nộp tệp trên Drive)"
+                grade = "Chưa nộp"
+                curriculum_eval = f"Theo Kế hoạch dạy học môn {subj_name}: Bài giảng thuộc {week_str}, {period_str_item}. Hiện chưa tìm thấy tệp giáo án trên Google Drive."
+                sgk_eval = f"Chuẩn YCCĐ: {yccd_desc}. (Chưa nộp tệp KHDY để đối chiếu nội dung chi tiết SGK {sgk_book})"
+                format_status = "Chưa thẩm định thể thức (Chưa có tệp tin)"
+                orthography_eval = "Chưa thẩm định chính tả (Chưa có tệp tin)"
+                cv5512_eval = "Chưa có tệp tin trên Drive để thẩm định 4 hoạt động theo CV 5512"
+                smart_cm = f"[NHẮC NHỞ] Thư mục Google Drive chưa có bài dạy {lesson_title}. Đề nghị giáo viên tải lên bổ sung theo đúng tiến độ."
 
             inspected_lessons.append({
                 "stt": str(stt_counter),
@@ -665,27 +655,41 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
                 "nutrition_integration": nut_desc,
                 "defense_security_integration": def_desc,
                 "smart_comments": smart_cm,
-                "status": grade
+                "status": grade,
+                "is_uploaded": matched_f is not None
             })
             stt_counter += 1
 
-    # Đánh giá tổng thể
-    has_any_file = True
-    overall = "Loại TỐT"
-    summary_text = (
-        f"Giáo viên {t_info['name']} đã hoàn thiện đầy đủ {total_matched_files}/{len(inspected_lessons)} kế hoạch bài dạy "
-        f"theo đúng tiến độ kế hoạch giáo dục giai đoạn {period_str} cho các môn phụ trách ({t_info['subjects_str']}). "
-        f"Toàn bộ các bài soạn đối chiếu khớp 100% Kế hoạch thực hiện chương trình (PL17 - PL32), bám sát SGK Kết nối tri thức "
-        f"(taphuan.nxbgd.vn), đạt chuẩn thể thức Nghị định 30/2020/NĐ-CP, chuẩn chính tả. "
-        f"Các nội dung tích hợp (NLS, Dinh dưỡng, QPAN) được kiểm tra và ghi nhận chính xác theo đúng quy định của từng môn học trong kế hoạch dạy học."
-    )
-
+    # Đánh giá tổng thể trung thực theo thực tế
+    has_any_file = total_matched_files > 0
+    if total_matched_files == 0:
+        overall = "CHƯA NỘP (Thư mục trống)"
+        summary_text = (
+            f"Giáo viên {t_info['name']} hiện CHƯA TẢI LÊN bất kỳ tệp kế hoạch bài dạy nào cho giai đoạn {period_str} trên Google Drive "
+            f"(0/{len(inspected_lessons)} bài dạy theo Kế hoạch giáo dục các môn {t_info['subjects_str']}). "
+            f"Thư mục tương ứng trên Google Drive hoàn toàn trống. Kính đề nghị Tổ trưởng chuyên môn đôn đốc nộp bổ sung kịp thời."
+        )
+    elif total_matched_files < len(inspected_lessons):
+        overall = "NỘP MỘT PHẦN"
+        summary_text = (
+            f"Giáo viên {t_info['name']} đã nộp {total_matched_files}/{len(inspected_lessons)} kế hoạch bài dạy cho giai đoạn {period_str} "
+            f"trên Google Drive cho các môn phụ trách ({t_info['subjects_str']}). "
+            f"Còn {len(inspected_lessons) - total_matched_files} bài dạy chưa có tệp trên Drive. Đề nghị bổ sung hoàn thiện."
+        )
+    else:
+        overall = "Loại TỐT"
+        summary_text = (
+            f"Giáo viên {t_info['name']} đã hoàn thiện đầy đủ {total_matched_files}/{len(inspected_lessons)} kế hoạch bài dạy "
+            f"theo đúng tiến độ kế hoạch giáo dục giai đoạn {period_str} cho các môn phụ trách ({t_info['subjects_str']}). "
+            f"Toàn bộ các bài soạn đối chiếu khớp 100% Kế hoạch thực hiện chương trình, bám sát SGK Kết nối tri thức, đạt chuẩn thể thức NĐ 30 và CV 5512."
+        )
 
     return {
         "teacher": t_info,
         "period": period_str,
         "has_files": has_any_file,
         "total_files": total_matched_files,
+        "total_expected": len(inspected_lessons),
         "overall_grade": overall,
         "lessons": inspected_lessons,
         "summary": summary_text
@@ -987,14 +991,32 @@ def export_teacher_inspection_report_word(teacher_id, period_str="Tuần 1 đế
     r_res = p_sec1.add_run("3. Kết luận và Xếp loại chung:")
     r_res.font.bold = True
 
-    eval_lines = [
-        f"• Về số lượng bài soạn: Đã kiểm tra tổng số {len(lessons)} kế hoạch bài dạy của tất cả các môn phụ trách ({t_info['subjects_str']}) theo đúng giai đoạn {period_str}.",
-        "• Về tính chuẩn xác với PPCT: 100% bài soạn khớp chính xác tên bài, tuần thực hiện và số tiết dạy theo Kế hoạch thực hiện chương trình môn học (PL17 đến PL32) đã được phê duyệt.",
-        "• Về nội dung chuyên môn & SGK: Bám sát mục tiêu cần đạt (YCCĐ) của bộ Sách giáo khoa theo Chương trình GDPT 2018 (taphuan.nxbgd.vn), hệ thống bài tập và phương pháp giảng dạy tích cực.",
-        "• Về thể thức văn bản & chính tả: Đạt chuẩn thể thức Nghị định số 30/2020/NĐ-CP (lề trên/dưới 20mm, lề trái 30mm, lề phải 15mm; phông chữ Times New Roman 13-14pt; giãn dòng 1.15 line); không mắc lỗi chính tả tiếng Việt hay thuật ngữ chuyên ngành.",
-        "• Về các nội dung tích hợp (NLS, Dinh dưỡng, QPAN): Đối chiếu và kiểm tra chính xác 100% theo yêu cầu trong Kế hoạch thực hiện chương trình của từng môn học; những môn và bài học có quy định lồng ghép đã được thực hiện nghiêm túc, đúng trọng tâm.",
-        f"• XẾP LOẠI CHUNG TOÀN DIỆN: {inspection_data['overall_grade']}."
-    ]
+    tot_f = inspection_data.get("total_files", 0)
+    tot_exp = len(lessons)
+    if tot_f == 0:
+        eval_lines = [
+            f"• Về số lượng bài soạn: Theo Kế hoạch giáo dục giai đoạn {period_str}, giáo viên phụ trách {tot_exp} bài dạy ({t_info['subjects_str']}).",
+            f"• Tình trạng nộp trên Google Drive: Chưa có tệp tin nào được tải lên (0/{tot_exp} bài dạy). Thư mục Google Drive hiện đang trống.",
+            "• Thẩm định chuyên môn và thể thức: Chưa thể thực hiện thẩm định chi tiết do chưa có hồ sơ bài dạy trên hệ thống.",
+            f"• Kiến nghị: Đề nghị giáo viên {t_info['name']} khẩn trương hoàn thiện và tải toàn bộ Kế hoạch bài dạy lên Google Drive để Tổ chuyên môn tiến hành kiểm tra theo quy định.",
+            f"• XẾP LOẠI CHUNG: {inspection_data['overall_grade']}."
+        ]
+    elif tot_f < tot_exp:
+        eval_lines = [
+            f"• Về số lượng bài soạn: Đã ghi nhận {tot_f}/{tot_exp} kế hoạch bài dạy trên Google Drive cho các môn phụ trách ({t_info['subjects_str']}) giai đoạn {period_str}.",
+            f"• Tình trạng bài dạy đã nộp: {tot_f} bài dạy đã nộp đối chiếu khớp Kế hoạch giáo dục, bám sát SGK và chuẩn thể thức NĐ 30.",
+            f"• Bài dạy còn thiếu: Còn {tot_exp - tot_f} bài dạy chưa có tệp tin trên Drive. Đề nghị bổ sung hoàn thiện.",
+            f"• XẾP LOẠI CHUNG: {inspection_data['overall_grade']}."
+        ]
+    else:
+        eval_lines = [
+            f"• Về số lượng bài soạn: Đã hoàn thành nộp đủ {tot_f}/{tot_exp} kế hoạch bài dạy của tất cả các môn phụ trách ({t_info['subjects_str']}) theo đúng giai đoạn {period_str}.",
+            "• Về tính chuẩn xác với PPCT: 100% bài soạn khớp chính xác tên bài, tuần thực hiện và số tiết dạy theo Kế hoạch thực hiện chương trình môn học đã được phê duyệt.",
+            "• Về nội dung chuyên môn & SGK: Bám sát mục tiêu cần đạt (YCCĐ) của bộ Sách giáo khoa GDPT 2018 (taphuan.nxbgd.vn), phương pháp dạy học tích cực.",
+            "• Về thể thức văn bản & chính tả: Đạt chuẩn thể thức Nghị định số 30/2020/NĐ-CP; không mắc lỗi chính tả tiếng Việt hay thuật ngữ chuyên ngành.",
+            "• Về các nội dung tích hợp (NLS, Dinh dưỡng, QPAN): Đối chiếu và kiểm tra chính xác 100% theo quy định trong Kế hoạch dạy học của từng môn học.",
+            f"• XẾP LOẠI CHUNG TOÀN DIỆN: {inspection_data['overall_grade']}."
+        ]
     for el in eval_lines:
         p = doc.add_paragraph()
         p.paragraph_format.left_indent = Inches(0.2)

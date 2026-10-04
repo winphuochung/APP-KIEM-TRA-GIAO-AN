@@ -1,182 +1,64 @@
 {
-  "scan_time": "04/10/2026 09:38",
+  "scan_time": "04/10/2026 11:20",
   "drive_root_url": "https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing",
   "total_teachers": 8,
-  "completed_count": 8,
+  "completed_count": 5,
   "teachers": [
-    {
-      "id": "cuc",
-      "teacher_name": "Phạm Thị Cúc",
-      "folder_name": "Cô Cúc",
-      "drive_id": "1Y57MXplWyQitPENHEQO4McKd7hlLHBtV",
-      "folder_url": "https://drive.google.com/drive/folders/1Y57MXplWyQitPENHEQO4McKd7hlLHBtV?usp=sharing",
-      "subjects": "KHTN 7, Sinh 9",
-      "subfolders": [
-        "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
-        "Tuần 13 đến tuần 16",
-        "Tuần 17 đến tuần 20",
-        "Tuần 21 đến tuần 24",
-        "Tuần 25 đến tuần 28",
-        "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
-      ],
-      "file_count": 36,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 36 tệp)",
-      "week1_4_count": 4,
-      "week5_8_count": 4
-    },
-    {
-      "id": "hang",
-      "teacher_name": "Lê Thị Thúy Hằng",
-      "folder_name": "Cô Hằng",
-      "drive_id": "1jfXZGd-nH9kgVRsJDg_ldIUFdbR4-MUI",
-      "folder_url": "https://drive.google.com/drive/folders/1jfXZGd-nH9kgVRsJDg_ldIUFdbR4-MUI?usp=sharing",
-      "subjects": "CN 6, CN 7, HĐTN 6, 7, 9",
-      "subfolders": [
-        "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
-        "Tuần 13 đến tuần 16",
-        "Tuần 17 đến tuần 20",
-        "Tuần 21 đến tuần 24",
-        "Tuần 25 đến tuần 28",
-        "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
-      ],
-      "file_count": 90,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 90 tệp)",
-      "week1_4_count": 10,
-      "week5_8_count": 10
-    },
-    {
-      "id": "ke",
-      "teacher_name": "Hà Thị Kế",
-      "folder_name": "Cô Kế",
-      "drive_id": "10aAFjxR95vKnmLzyvcU7OivbD3GTP88r",
-      "folder_url": "https://drive.google.com/drive/folders/10aAFjxR95vKnmLzyvcU7OivbD3GTP88r?usp=sharing",
-      "subjects": "HĐTN 8, KHTN 6, KHTN 8",
-      "subfolders": [
-        "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
-        "Tuần 13 đến tuần 16",
-        "Tuần 17 đến tuần 20",
-        "Tuần 21 đến tuần 24",
-        "Tuần 25 đến tuần 28",
-        "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
-      ],
-      "file_count": 54,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 54 tệp)",
-      "week1_4_count": 6,
-      "week5_8_count": 6
-    },
-    {
-      "id": "linh",
-      "teacher_name": "Phạm Thị Mỹ Linh",
-      "folder_name": "Cô Linh",
-      "drive_id": "1slzRqoYLd7pkSfeK3sxDBwzS_5fYA7vd",
-      "folder_url": "https://drive.google.com/drive/folders/1slzRqoYLd7pkSfeK3sxDBwzS_5fYA7vd?usp=sharing",
-      "subjects": "Toán 8, Toán 9",
-      "subfolders": [
-        "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
-        "Tuần 13 đến tuần 16",
-        "Tuần 17 đến tuần 20",
-        "Tuần 21 đến tuần 24",
-        "Tuần 25 đến tuần 28",
-        "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
-      ],
-      "file_count": 36,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 36 tệp)",
-      "week1_4_count": 4,
-      "week5_8_count": 4
-    },
     {
       "id": "thuy",
       "teacher_name": "Lê Thị Thu Thủy",
       "folder_name": "Cô Thủy",
       "drive_id": "1vRyDMAB4lLyxDyPgYsit2VdO7ZcPyuNi",
       "folder_url": "https://drive.google.com/drive/folders/1vRyDMAB4lLyxDyPgYsit2VdO7ZcPyuNi?usp=sharing",
-      "subjects": "Toán 6, Toán 7, Toán 8",
+      "subjects": [
+        "Toán 6",
+        "Toán 7",
+        "Toán 8"
+      ],
       "subfolders": [
         "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
         "Tuần 13 đến tuần 16",
         "Tuần 17 đến tuần 20",
         "Tuần 21 đến tuần 24",
         "Tuần 25 đến tuần 28",
         "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
       ],
-      "file_count": 54,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 54 tệp)",
-      "week1_4_count": 6,
-      "week5_8_count": 6
+      "file_count": 0,
+      "last_updated": "04/10/2026 11:19",
+      "status": "CHƯA NỘP (Thư mục trống)",
+      "notes": "Thư mục trên Google Drive chưa có tệp giáo án nào (0/9 chu kỳ tuần)",
+      "week1_4_count": 0,
+      "week5_8_count": 0
     },
     {
-      "id": "trang",
-      "teacher_name": "Nguyễn Thị Thùy Trang",
-      "folder_name": "Cô Trang",
-      "drive_id": "1OwIYYK7ENQ4f3aXwS6RrnuA8Mgl7_qKj",
-      "folder_url": "https://drive.google.com/drive/folders/1OwIYYK7ENQ4f3aXwS6RrnuA8Mgl7_qKj?usp=sharing",
-      "subjects": "CN 8, CN 9",
+      "id": "cuc",
+      "teacher_name": "Phạm Thị Cúc",
+      "folder_name": "Cô Cúc",
+      "drive_id": "1Y57MXplWyQitPENHEQO4McKd7hlLHBtV",
+      "folder_url": "https://drive.google.com/drive/folders/1Y57MXplWyQitPENHEQO4McKd7hlLHBtV?usp=sharing",
+      "subjects": [
+        "KHTN 7",
+        "Sinh 9"
+      ],
       "subfolders": [
         "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
         "Tuần 13 đến tuần 16",
         "Tuần 17 đến tuần 20",
         "Tuần 21 đến tuần 24",
         "Tuần 25 đến tuần 28",
         "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
-      ],
-      "file_count": 36,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 36 tệp)",
-      "week1_4_count": 4,
-      "week5_8_count": 4
-    },
-    {
-      "id": "thanh",
-      "teacher_name": "Nguyễn Chí Thành",
-      "folder_name": "Thầy Thành",
-      "drive_id": "1_hZDldFUOUvjJnkw9-Dm8I3kJbUCc5Hr",
-      "folder_url": "https://drive.google.com/drive/folders/1_hZDldFUOUvjJnkw9-Dm8I3kJbUCc5Hr?usp=sharing",
-      "subjects": "HĐTN 8, KHTN 6, 8, 9",
-      "subfolders": [
-        "Tuần 1 đến tuần 4",
+        "Tuần 33 đến tuần 35",
         "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
-        "Tuần 13 đến tuần 16",
-        "Tuần 17 đến tuần 20",
-        "Tuần 21 đến tuần 24",
-        "Tuần 25 đến tuần 28",
-        "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
+        "Tuần 9 đến tuần 12"
       ],
-      "file_count": 72,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 72 tệp)",
-      "week1_4_count": 8,
+      "file_count": 17,
+      "last_updated": "04/10/2026 11:19",
+      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
+      "notes": "Đã nộp 17 tệp (Tuần 1-4: 9 tệp, Tuần 5-8: 8 tệp). Tuần 9 đến 35: Chưa nộp",
+      "week1_4_count": 9,
       "week5_8_count": 8
     },
     {
@@ -185,24 +67,174 @@
       "folder_name": "Thầy Thắng (Tổ trưởng)",
       "drive_id": "1S1wipWDzCGRaEonbFDFClIzmui1yEXZJ",
       "folder_url": "https://drive.google.com/drive/folders/1S1wipWDzCGRaEonbFDFClIzmui1yEXZJ?usp=sharing",
-      "subjects": "Hóa 9, KHTN 7, Toán 9",
+      "subjects": [
+        "Hóa 9",
+        "KHTN 7",
+        "Toán 9"
+      ],
       "subfolders": [
         "Tuần 1 đến tuần 4",
-        "Tuần 5 đến tuần 8",
-        "Tuần 9 đến tuần 12",
         "Tuần 13 đến tuần 16",
         "Tuần 17 đến tuần 20",
         "Tuần 21 đến tuần 24",
         "Tuần 25 đến tuần 28",
         "Tuần 29 đến tuần 32",
-        "Tuần 33 đến tuần 35"
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
       ],
-      "file_count": 54,
-      "last_updated": "04/10/2026 08:30",
-      "status": "100% Hoàn thành 9 chu kỳ",
-      "notes": "Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng 54 tệp)",
-      "week1_4_count": 6,
-      "week5_8_count": 6
+      "file_count": 0,
+      "last_updated": "04/10/2026 11:19",
+      "status": "CHƯA NỘP (Thư mục trống)",
+      "notes": "Thư mục trên Google Drive chưa có tệp giáo án nào (0/9 chu kỳ tuần)",
+      "week1_4_count": 0,
+      "week5_8_count": 0
+    },
+    {
+      "id": "linh",
+      "teacher_name": "Phạm Thị Mỹ Linh",
+      "folder_name": "Cô Linh",
+      "drive_id": "1slzRqoYLd7pkSfeK3sxDBwzS_5fYA7vd",
+      "folder_url": "https://drive.google.com/drive/folders/1slzRqoYLd7pkSfeK3sxDBwzS_5fYA7vd?usp=sharing",
+      "subjects": [
+        "Toán 8",
+        "Toán 9"
+      ],
+      "subfolders": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
+      ],
+      "file_count": 0,
+      "last_updated": "04/10/2026 11:19",
+      "status": "CHƯA NỘP (Thư mục trống)",
+      "notes": "Thư mục trên Google Drive chưa có tệp giáo án nào (0/9 chu kỳ tuần)",
+      "week1_4_count": 0,
+      "week5_8_count": 0
+    },
+    {
+      "id": "ke",
+      "teacher_name": "Hà Thị Kế",
+      "folder_name": "Cô Kế",
+      "drive_id": "10aAFjxR95vKnmLzyvcU7OivbD3GTP88r",
+      "folder_url": "https://drive.google.com/drive/folders/10aAFjxR95vKnmLzyvcU7OivbD3GTP88r?usp=sharing",
+      "subjects": [
+        "KHTN 6",
+        "KHTN 8",
+        "HĐTN 8"
+      ],
+      "subfolders": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
+      ],
+      "file_count": 21,
+      "last_updated": "04/10/2026 11:19",
+      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
+      "notes": "Đã nộp 21 tệp (Tuần 1-4: 13 tệp, Tuần 5-8: 8 tệp). Tuần 9 đến 35: Chưa nộp",
+      "week1_4_count": 13,
+      "week5_8_count": 8
+    },
+    {
+      "id": "trang",
+      "teacher_name": "Nguyễn Thị Thùy Trang",
+      "folder_name": "Cô Trang",
+      "drive_id": "1OwIYYK7ENQ4f3aXwS6RrnuA8Mgl7_qKj",
+      "folder_url": "https://drive.google.com/drive/folders/1OwIYYK7ENQ4f3aXwS6RrnuA8Mgl7_qKj?usp=sharing",
+      "subjects": [
+        "CN 8",
+        "CN 9"
+      ],
+      "subfolders": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
+      ],
+      "file_count": 9,
+      "last_updated": "04/10/2026 11:19",
+      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
+      "notes": "Đã nộp 9 tệp (Tuần 1-4: 4 tệp, Tuần 5-8: 5 tệp). Tuần 9 đến 35: Chưa nộp",
+      "week1_4_count": 4,
+      "week5_8_count": 5
+    },
+    {
+      "id": "thanh",
+      "teacher_name": "Nguyễn Chí Thành",
+      "folder_name": "Thầy Thành",
+      "drive_id": "1_hZDldFUOUvjJnkw9-Dm8I3kJbUCc5Hr",
+      "folder_url": "https://drive.google.com/drive/folders/1_hZDldFUOUvjJnkw9-Dm8I3kJbUCc5Hr?usp=sharing",
+      "subjects": [
+        "KHTN 6",
+        "KHTN 8",
+        "KHTN 9",
+        "HĐTN 8"
+      ],
+      "subfolders": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
+      ],
+      "file_count": 3,
+      "last_updated": "04/10/2026 11:19",
+      "status": "Đã nộp Tuần 1-4",
+      "notes": "Đã nộp 3 tệp Chu kỳ 1 (Tuần 1-4). Chưa nộp từ Tuần 5 trở đi",
+      "week1_4_count": 3,
+      "week5_8_count": 0
+    },
+    {
+      "id": "hang",
+      "teacher_name": "Lê Thị Thúy Hằng",
+      "folder_name": "Cô Hằng",
+      "drive_id": "1jfXZGd-nH9kgVRsJDg_ldIUFdbR4-MUI",
+      "folder_url": "https://drive.google.com/drive/folders/1jfXZGd-nH9kgVRsJDg_ldIUFdbR4-MUI?usp=sharing",
+      "subjects": [
+        "CN 6",
+        "CN 7",
+        "HĐTN 6",
+        "HĐTN 7",
+        "HĐTN 9"
+      ],
+      "subfolders": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
+      ],
+      "file_count": 35,
+      "last_updated": "04/10/2026 11:19",
+      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
+      "notes": "Đã nộp 35 tệp (Tuần 1-4: 15 tệp, Tuần 5-8: 20 tệp). Tuần 9 đến 35: Chưa nộp",
+      "week1_4_count": 15,
+      "week5_8_count": 20
     }
   ]
 }

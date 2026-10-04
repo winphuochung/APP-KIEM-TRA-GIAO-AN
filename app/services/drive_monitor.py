@@ -133,18 +133,18 @@ def scan_google_drive_status():
             t5_8_count = t5_8.get("file_count", 0)
             tot_f = t_val.get("total_files", 0)
             
-            if tot_f >= 36:
-                status = "100% Hoàn thành 9 chu kỳ"
-                notes = f"Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng {tot_f} tệp)"
-            elif t1_4_count > 0 and t5_8_count > 0:
-                status = "Hoàn thành Tuần 1-4 & Tuần 5-8"
-                notes = f"Đã nộp Tuần 1-4 ({t1_4_count} tệp) và Tuần 5-8 ({t5_8_count} tệp)"
+            if t1_4_count > 0 and t5_8_count > 0:
+                status = "Đã nộp Tuần 1-4 & Tuần 5-8"
+                notes = f"Đã nộp {tot_f} tệp (Tuần 1-4: {t1_4_count} tệp, Tuần 5-8: {t5_8_count} tệp). Tuần 9 đến 35: Chưa nộp"
             elif t1_4_count > 0 and t5_8_count == 0:
-                status = "Đã nộp Tuần 1-4 (Chưa nộp Tuần 5-8)"
-                notes = f"Đã nộp Tuần 1-4 ({t1_4_count} tệp); Thư mục Tuần 5-8 đang trống"
+                status = "Đã nộp Tuần 1-4"
+                notes = f"Đã nộp {tot_f} tệp Chu kỳ 1 (Tuần 1-4). Chưa nộp từ Tuần 5 trở đi"
+            elif t5_8_count > 0:
+                status = "Đã nộp Tuần 5-8"
+                notes = f"Đã nộp {t5_8_count} tệp Tuần 5-8. Tuần 1-4 đang trống"
             else:
                 status = "CHƯA NỘP (Thư mục trống)"
-                notes = "Chưa cập nhật tệp giáo án nào từ Tuần 1 đến Tuần 35"
+                notes = "Thư mục trên Google Drive chưa có tệp giáo án nào (0/9 chu kỳ tuần)"
                 
             monitoring_results.append({
                 "id": t_key,
@@ -209,6 +209,15 @@ def send_notification_to_email(recipient="thangphuochung1@gmail.com", snapshot=N
     subject = f"BÁO CÁO GIÁM SÁT TIẾN ĐỘ NỘP GIÁO ÁN GOOGLE DRIVE - TỔ TOÁN-KHTN-CN ({scan_time})"
     
     # Soạn nội dung email
+    submitted_1_4 = [t for t in snapshot.get("teachers", []) if t.get("week1_4_count", 0) > 0]
+    submitted_5_8 = [t for t in snapshot.get("teachers", []) if t.get("week5_8_count", 0) > 0]
+    unsubmitted = [t for t in snapshot.get("teachers", []) if t.get("file_count", 0) == 0]
+    total_files = sum(t.get("file_count", 0) for t in snapshot.get("teachers", []))
+
+    sub_1_4_names = ", ".join([f"{t['teacher_name']} ({t.get('week1_4_count', 0)} tệp)" for t in submitted_1_4])
+    sub_5_8_names = ", ".join([f"{t['teacher_name']} ({t.get('week5_8_count', 0)} tệp)" for t in submitted_5_8])
+    unsub_names = ", ".join([t['teacher_name'] for t in unsubmitted])
+
     email_body = f"""Kính gửi: Thầy Lê Văn Thắng - Tổ trưởng Tổ Toán – KHTN – Công nghệ,
 Trường: TH & THCS Phước Hưng.
 
@@ -217,18 +226,21 @@ Hệ thống AI Senior Education Inspector thông báo kết quả giám sát t�
 📍 THƯ MỤC GIÁM SÁT:
 Link Google Drive: {snapshot.get('drive_root_url', DRIVE_ROOT_URL)}
 Thời điểm kiểm tra: {scan_time}
-Tổng số giáo viên: {snapshot.get('total_teachers', 8)} Thầy/Cô
-Tình trạng nộp: 
-- Tuần 1 đến tuần 4: 05/08 GV đã nộp (Cô Cúc: 9 tệp, Cô Hằng: 15 tệp, Cô Kế: 12 tệp, Cô Thủy: 20 tệp, Thầy Thành: 30 tệp). 03 GV chưa nộp (Cô Linh, Cô Trang, Thầy Thắng).
-- Tuần 5 đến tuần 8: 03/08 GV đã nộp sớm (Cô Cúc: 8 tệp, Cô Hằng: 19 tệp, Cô Kế: 5 tệp). 05 GV còn lại đang trong thời gian tiếp nhận.
-- Tuần 9 đến tuần 35: 0/8 GV (chưa đến thời hạn).
+Tổng số giáo viên trong tổ: {snapshot.get('total_teachers', 8)} Thầy/Cô
+Tổng số tệp tin giáo án thực tế trên Drive: {total_files} tệp (.docx, .pdf)
+
+TÌNH TRẠNG NỘP THỰC TẾ: 
+- Tuần 1 đến tuần 4: {len(submitted_1_4)}/08 GV đã nộp ({sub_1_4_names}).
+- Tuần 5 đến tuần 8: {len(submitted_5_8)}/08 GV đã nộp ({sub_5_8_names}).
+- Giáo viên chưa có tệp tin nào trên Drive (0/9 chu kỳ): {len(unsubmitted)} Thầy/Cô ({unsub_names}).
+- Tuần 9 đến tuần 35: 0/8 GV (chưa đến thời hạn kiểm tra).
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CHI TIẾT TIẾN ĐỘ TỪNG GIÁO VIÊN:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
     for idx, t in enumerate(snapshot.get("teachers", []), start=1):
-        email_body += f"""{idx}. {t['teacher_name']} ({t['subjects']})
+        email_body += f"""{idx}. {t['teacher_name']} ({', '.join(t['subjects']) if isinstance(t['subjects'], list) else t['subjects']})
    - Thư mục Drive: {t['folder_name']}
    - Thời gian cập nhật gần nhất: {t['last_updated']}
    - Số lượng tệp tin ghi nhận: {t['file_count']} tệp (.docx, .pdf)
@@ -239,9 +251,9 @@ CHI TIẾT TIẾN ĐỘ TỪNG GIÁO VIÊN:
 
     email_body += f"""
 ĐÁNH GIÁ CHUNG CỦA HỆ THỐNG:
-1. Đã có 5/8 giáo viên hoàn thành đầy đủ giáo án đợt 1 (Tuần 1-4) với tổng cộng 86 tệp tin được phân loại theo từng môn học rõ ràng.
-2. Có 3 giáo viên (Cô Cúc, Cô Hằng, Cô Kế) đã nộp sớm giáo án Tuần 5 đến Tuần 8 với 32 tệp tin.
-3. Kính đề nghị Tổ trưởng chuyên môn nhắc nhở các đồng chí chưa nộp Tuần 1-4 (Cô Linh, Cô Trang, Thầy Thắng) khẩn trương tải lên, đồng thời đôn đốc hoàn thiện giáo án Tuần 5-8 theo đúng kế hoạch.
+1. Đã có {len(submitted_1_4)}/8 giáo viên nộp KHDY đợt 1 (Tuần 1-4) với tổng cộng {sum(t.get('week1_4_count', 0) for t in submitted_1_4)} tệp tin.
+2. Có {len(submitted_5_8)} giáo viên ({', '.join([t['teacher_name'] for t in submitted_5_8])}) đã nộp trước giáo án Tuần 5 đến Tuần 8 với {sum(t.get('week5_8_count', 0) for t in submitted_5_8)} tệp tin.
+3. Có {len(unsubmitted)} giáo viên ({unsub_names}) chưa tải lên bất kỳ tệp tin giáo án nào trên Google Drive. Kính đề nghị Tổ trưởng chuyên môn nhắc nhở khẩn trương nộp bù theo đúng kế hoạch.
 
 Trân trọng thông báo,
 HỆ SINH THÁI KIỂM ĐỊNH GIÁO DỤC SỐ TOÀN DIỆN
@@ -480,11 +492,20 @@ def export_drive_monitoring_report_word(output_path=None):
     r_sec1 = p_sec1.add_run("I. ĐÁNH GIÁ CHUNG:")
     r_sec1.font.bold = True
 
+    submitted_1_4 = [t for t in teachers if t.get("week1_4_count", 0) > 0]
+    submitted_5_8 = [t for t in teachers if t.get("week5_8_count", 0) > 0]
+    unsubmitted = [t for t in teachers if t.get("file_count", 0) == 0]
+    total_files = sum(t.get("file_count", 0) for t in teachers)
+
+    sub_1_4_str = ", ".join([f"{t['teacher_name']}: {t.get('week1_4_count', 0)} tệp" for t in submitted_1_4])
+    sub_5_8_str = ", ".join([f"{t['teacher_name']}: {t.get('week5_8_count', 0)} tệp" for t in submitted_5_8])
+    unsub_str = ", ".join([t['teacher_name'] for t in unsubmitted])
+
     eval_items = [
-        "1. Về tiến độ Tuần 1 đến Tuần 4: Đã có 05/08 giáo viên hoàn thành nộp giáo án với tổng cộng 86 tệp tin được phân loại theo môn học (Cô Cúc: 9 tệp, Cô Hằng: 15 tệp, Cô Kế: 12 tệp, Cô Thủy: 20 tệp, Thầy Thành: 30 tệp). Còn 03 giáo viên (Cô Linh, Cô Trang, Thầy Thắng) chưa cập nhật tệp lên thư mục Drive.",
-        "2. Về tiến độ Tuần 5 đến Tuần 8: Đã có 03/08 giáo viên hoàn thành nộp sớm với tổng số 32 tệp tin (Cô Cúc: 8 tệp, Cô Hằng: 19 tệp, Cô Kế: 5 tệp). Các giáo viên còn lại đang trong quá trình tiếp tục tải lên theo kế hoạch hoạt động tuần 04.",
-        "3. Về chất lượng hồ sơ: Các giáo án đã tải lên đều tuân thủ tốt Công văn 5512/BGDĐT, định dạng .docx rõ ràng, tích hợp đầy đủ mục tiêu phẩm chất, năng lực và kế hoạch sử dụng thiết bị dạy học.",
-        "4. Đề nghị: Tổ trưởng chuyên môn tiến hành nhắc nhở 03 giáo viên chưa nộp đợt 1 khẩn trương hoàn thành hồ sơ, đồng thời đôn đốc việc hoàn thiện giáo án đợt 2 theo đúng tiến độ quy định."
+        f"1. Về tiến độ Tuần 1 đến Tuần 4: Đã có {len(submitted_1_4)}/08 giáo viên nộp KHDY với tổng cộng {sum(t.get('week1_4_count', 0) for t in submitted_1_4)} tệp tin ({sub_1_4_str}). Có {len(unsubmitted)} giáo viên ({unsub_str}) chưa cập nhật tệp tin nào lên thư mục Google Drive.",
+        f"2. Về tiến độ Tuần 5 đến Tuần 8: Đã có {len(submitted_5_8)}/08 giáo viên nộp sớm với tổng cộng {sum(t.get('week5_8_count', 0) for t in submitted_5_8)} tệp tin ({sub_5_8_str}).",
+        f"3. Về tiến độ Tuần 9 đến Tuần 35: Hiện tại tất cả 08 giáo viên chưa tải lên (0 tệp) do chưa đến chu kỳ kiểm tra tiếp theo.",
+        f"4. Kiến nghị: Kính đề nghị Tổ trưởng chuyên môn nhắc nhở {len(unsubmitted)} giáo viên ({unsub_str}) khẩn trương cập nhật giáo án lên Google Drive phục vụ công tác kiểm tra, duyệt giáo án định kỳ."
     ]
     for it in eval_items:
         p = doc.add_paragraph()

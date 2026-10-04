@@ -160,14 +160,9 @@ def perform_zero_config_drive_sync():
                 scanned_teachers_count += 1
                 total_files_scanned += f_count
                 
-                # Cập nhật thông tin nếu có tệp tin quét được
-                if t_record["total_files"] > 0:
-                    live_report[t_id] = t_record
-                else:
-                    existing = live_report.get(t_id, {})
-                    existing["last_updated"] = now_str
-                    live_report[t_id] = existing
-            except Exception:
+                # Cập nhật 100% chuẩn xác theo thực tế trên Drive (kể cả khi 0 tệp / chưa nộp)
+                live_report[t_id] = t_record
+            except Exception as e:
                 pass
 
     # Lưu lại kết quả vào drive_live_exact_report.json

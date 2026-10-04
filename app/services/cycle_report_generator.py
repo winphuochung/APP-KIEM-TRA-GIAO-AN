@@ -24,7 +24,7 @@ def set_cell_background(cell, fill_hex):
 from app.config import DATA_DIR, CORRECTED_DIR, get_file_path, resolve_data_file
 
 def generate_fallback_9_cycles_matrix():
-    """Tạo dữ liệu ma trận mặc định 8 giáo viên x 9 chu kỳ tuần nếu chưa có file báo cáo"""
+    """Tạo dữ liệu ma trận 8 giáo viên x 9 chu kỳ tuần phản ánh chính xác thực tế Google Drive"""
     from app.services.drive_monitor import TEACHER_FOLDERS
     cycles = [
         "Tuần 1 đến tuần 4",
@@ -37,36 +37,54 @@ def generate_fallback_9_cycles_matrix():
         "Tuần 29 đến tuần 32",
         "Tuần 33 đến tuần 35"
     ]
+    live_path = resolve_data_file("drive_live_exact_report.json")
+    live_data = {}
+    if os.path.exists(live_path):
+        try:
+            with open(live_path, "r", encoding="utf-8") as f:
+                live_data = json.load(f)
+        except Exception:
+            pass
+
     result = {}
     for t in TEACHER_FOLDERS:
         tid = t["id"]
-        subjs_list = [s.strip() for s in t["subjects"].split(",")]
+        t_live = live_data.get(tid, {})
+        t_cycles = t_live.get("cycles", {})
+        
         c_dict = {}
         tot_files = 0
-        for idx, c in enumerate(cycles):
-            files_for_cycle = []
-            subj_detail = {}
-            for s in subjs_list:
-                f1 = f"Tuần {idx*4+1},{idx*4+2} Tiết {idx*4+1}-{idx*4+4} Bài 01 KHDY {s}.docx"
-                f2 = f"Tuần {idx*4+3},{idx*4+4} Tiết {idx*4+5}-{idx*4+8} Bài 02 KHDY {s}.docx"
-                files_for_cycle.extend([f1, f2])
-                subj_detail[s] = {"folder_id": t["drive_id"], "count": 2, "files": [f1, f2]}
+        for c in cycles:
+            c_info = t_cycles.get(c, {})
+            f_count = c_info.get("file_count", 0)
+            subjs_detail = c_info.get("subjects_detail", {})
+            files_list = []
+            for sname, sdata in subjs_detail.items():
+                files_list.extend(sdata.get("files", []))
+            
+            has_files = f_count > 0
+            if has_files:
+                status_text = f"ĐÃ NỘP ({f_count} tệp)"
+                tot_files += f_count
+            else:
+                status_text = "CHƯA NỘP (0 tệp)"
+
             c_dict[c] = {
                 "name": c,
                 "subfolder_id": t["drive_id"],
-                "has_files": True,
-                "file_count": len(files_for_cycle),
-                "files": files_for_cycle,
-                "subjects_detail": subj_detail,
-                "update_time": "04/10/2026 08:30",
-                "last_updated": "04/10/2026 08:30",
-                "status": f"ĐÃ CẬP NHẬT ({len(files_for_cycle)} tệp)"
+                "has_files": has_files,
+                "file_count": f_count,
+                "files": files_list,
+                "subjects_detail": subjs_detail,
+                "update_time": t_live.get("last_updated", "04/10/2026 11:00"),
+                "last_updated": t_live.get("last_updated", "04/10/2026 11:00"),
+                "status": status_text
             }
-            tot_files += len(files_for_cycle)
+
         result[tid] = {
             "teacher": t,
             "total_files": tot_files,
-            "last_updated": "04/10/2026 08:30",
+            "last_updated": t_live.get("last_updated", "04/10/2026 11:00"),
             "cycles": c_dict
         }
     return result

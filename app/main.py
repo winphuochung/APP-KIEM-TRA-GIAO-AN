@@ -452,14 +452,16 @@ def get_inspection_drive_files(teacher_id: str = "thanh", period: str = "Tuần 
         for fn in sinfo.get("files", []):
             files.append({"subject": subject, "name": fn, "display": os.path.basename(fn)})
 
-    # Nếu chưa có tệp quét thực tế, tự động nạp bài dạy mẫu theo PPCT
-    if not files and t_info:
-        subjs = t_info.get("subjects", [])
-        target_subjs = subjs if subject == "all" else [subject]
-        for sname in target_subjs:
-            files.append({"subject": sname, "name": f"Giao_an_mau_{sname}_giai_doan_1.docx", "display": f"[{sname}] Kế hoạch bài dạy chuẩn PPCT ({period})"})
+    is_empty = len(files) == 0
+    message = "Đã tìm thấy tệp tin thực tế trên Google Drive" if not is_empty else f"Thư mục Google Drive của {t_info.get('name', teacher_id)} ({period}) hiện đang trống (0 tệp tin)."
 
-    return {"files": files, "teacher": t_info}
+    return {
+        "files": files,
+        "teacher": t_info,
+        "is_empty": is_empty,
+        "total_files": len(files),
+        "message": message
+    }
 
 
 # =========================================================================
