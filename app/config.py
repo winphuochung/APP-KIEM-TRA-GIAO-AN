@@ -41,3 +41,16 @@ def get_file_path(relative_path):
 DATA_DIR = get_writable_dir("data")
 UPLOAD_DIR = get_writable_dir("data", "uploads")
 CORRECTED_DIR = get_writable_dir("data", "corrected")
+
+def resolve_data_file(filename):
+    """Tìm đường dẫn đọc file dữ liệu bằng cách rà soát DATA_DIR, get_file_path và BASE_DIR/data."""
+    candidates = [
+        os.path.join(DATA_DIR, filename),
+        get_file_path(os.path.join("data", filename)),
+        os.path.join(BASE_DIR, "data", filename)
+    ]
+    for p in candidates:
+        if os.path.exists(p):
+            return p
+    return candidates[0]
+

@@ -131,8 +131,12 @@ def scan_google_drive_status():
             
             t1_4_count = t1_4.get("file_count", 0)
             t5_8_count = t5_8.get("file_count", 0)
+            tot_f = t_val.get("total_files", 0)
             
-            if t1_4_count > 0 and t5_8_count > 0:
+            if tot_f >= 36:
+                status = "100% Hoàn thành 9 chu kỳ"
+                notes = f"Đã nộp đầy đủ giáo án 9 chu kỳ tuần (Tuần 1 đến Tuần 35, tổng {tot_f} tệp)"
+            elif t1_4_count > 0 and t5_8_count > 0:
                 status = "Hoàn thành Tuần 1-4 & Tuần 5-8"
                 notes = f"Đã nộp Tuần 1-4 ({t1_4_count} tệp) và Tuần 5-8 ({t5_8_count} tệp)"
             elif t1_4_count > 0 and t5_8_count == 0:
@@ -556,7 +560,10 @@ def export_drive_monitoring_report_word(output_path=None):
         p_img.paragraph_format.space_before = Pt(4)
         p_img.paragraph_format.space_after = Pt(2)
         r_sig = p_img.add_run()
-        r_sig.add_picture(sig_img_path, width=Inches(1.4))
+        try:
+            r_sig.add_picture(sig_img_path, width=Inches(1.4))
+        except Exception:
+            pass
         p_n = c1_b.add_paragraph()
         p_n.alignment = WD_ALIGN_PARAGRAPH.CENTER
         r_name = p_n.add_run("Lê Văn Thắng")
@@ -570,5 +577,10 @@ def export_drive_monitoring_report_word(output_path=None):
         r_name.font.bold = True
         r_name.font.size = Pt(12)
 
+    if isinstance(output_path, (str, bytes, os.PathLike)):
+        out_dir = os.path.dirname(output_path)
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
     doc.save(output_path)
     return output_path
+

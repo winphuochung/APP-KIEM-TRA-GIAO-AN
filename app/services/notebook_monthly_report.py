@@ -10,10 +10,11 @@ from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
 from app.services.schedule_generator import SECTION_4_ACTIVITIES, WEEKLY_LESSONS, WEEKLY_HSG, WEEKLY_EXAMS
-from app.config import DATA_DIR
+from app.config import DATA_DIR, resolve_data_file
 
-NOTEBOOK_FILE = os.path.join(DATA_DIR, "so_tay_to_truong.json")
-DRIVE_LOG_FILE = os.path.join(DATA_DIR, "drive_monitoring_log.json")
+NOTEBOOK_FILE = resolve_data_file("so_tay_to_truong.json")
+DRIVE_LOG_FILE = resolve_data_file("drive_monitoring_log.json")
+
 
 
 TEACHER_LIST = [

@@ -61,7 +61,8 @@
           <p class="text-xs text-slate-300 font-medium">Trường TH & THCS Phước Hưng • Tổ Toán – KHTN – Công Nghệ</p>
         </div>
       </div>
-      <div class="flex items-center space-x-2">
+      <div class="flex flex-wrap items-center gap-1.5 justify-end">
+        <button onclick="openDriveApiModal()" class="inline-flex items-center space-x-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm cursor-pointer"><i class="fa-solid fa-key text-amber-200"></i><span>Cấu hình Drive API</span></button>
         <button onclick="openSupabaseModal()" id="supabase-status-btn" class="inline-flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm cursor-pointer">
           <i class="fa-solid fa-cloud text-emerald-400"></i>
           <span id="supabase-status-label">Supabase Cloud</span>
@@ -91,10 +92,6 @@
         <i class="fa-solid fa-chart-pie"></i>
         <span>Dashboard Quản trị BI</span>
       </button>
-      <button onclick="switchTab('heatmap')" id="tab-btn-heatmap" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
-        <i class="fa-solid fa-calendar-days"></i>
-        <span>Bản đồ nhiệt Giảng dạy</span>
-      </button>
       <button onclick="switchTab('inspect')" id="tab-btn-inspect" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
         <i class="fa-solid fa-clipboard-check"></i>
         <span>Kiểm tra giáo án</span>
@@ -110,6 +107,10 @@
       <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
         <i class="fa-solid fa-calendar-check text-blue-600"></i>
         <span>Lịch công tác tuần</span>
+      </button>
+      <button onclick="openDriveApiModal()" class="my-auto inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-lg shadow-md transition cursor-pointer shrink-0 animate-pulse">
+        <i class="fa-solid fa-key"></i>
+        <span>Cấu hình Drive API</span>
       </button>
       <button onclick="switchTab('drive')" id="tab-btn-drive" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
         <i class="fa-brands fa-google-drive text-amber-500"></i>
@@ -204,6 +205,21 @@
           </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+          <!-- Card: Cấu hình Google Drive API -->
+          <div onclick="openDriveApiModal()" class="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/30 rounded-xl p-4 cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="w-10 h-10 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-key"></i>
+              </span>
+              <span class="text-[10px] bg-amber-400/30 text-amber-200 border border-amber-400/40 px-2 py-0.5 rounded-full font-bold">Google API v3</span>
+            </div>
+            <h4 class="font-bold text-white text-sm group-hover:text-amber-300 transition">Cấu hình Google Drive API</h4>
+            <p class="text-[11px] text-slate-300 mt-1">Dán API Key hoặc tải tệp Service Account JSON để đồng bộ thời gian thực từ Drive.</p>
+            <div class="mt-3 text-xs font-semibold text-amber-300 flex items-center gap-1">
+              <span>Mở cài đặt API</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+          </div>
+
           <!-- Card 1: Sổ tay Tổ trưởng -->
           <div onclick="switchTab('notebook')" class="bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl p-4 cursor-pointer transition transform hover:-translate-y-1 group">
             <div class="flex items-center justify-between mb-2">
@@ -266,6 +282,177 @@
         </div>
       </div>
 
+      <!-- BẢNG MA TRẬN 9 CHU KỲ TUẦN (TUẦN 1 -> TUẦN 35) ON DASHBOARD -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3 border-slate-100">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 text-xs font-bold mb-1">
+              <i class="fa-solid fa-table-columns"></i> Ma trận Chi tiết 09 Chu kỳ tuần (Tuần 1 đến Tuần 35)
+            </div>
+            <h3 class="text-base font-bold text-slate-900">
+              Báo Cáo Chi Tiết Tiến Độ Cập Nhật Kế Hoạch Bài Dạy (8 Giáo Viên x 9 Chu Kỳ Tuần)
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Cột Giáo viên & Môn phụ trách (KHTN, Sinh, Hóa, Toán, CN, HĐTN) và các cột T1-4 đến T33-35 kèm thẻ trạng thái nổi bật & tooltip xem chi tiết bài dạy.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="/api/drive/export-9cycles-docx" download="BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx" class="inline-flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Xuất Báo Cáo 9 Chu Kỳ (.docx)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs" id="dashboard-cycles-matrix-table">
+            <thead class="bg-indigo-50/70 text-indigo-900 font-bold uppercase text-[9px] border-b border-indigo-100">
+              <tr>
+                <th class="py-3 px-2 text-center w-8">STT</th>
+                <th class="py-3 px-3 w-44">Giáo viên & Môn phụ trách</th>
+                <th class="py-3 px-1.5 text-center">T1 - 4</th>
+                <th class="py-3 px-1.5 text-center">T5 - 8</th>
+                <th class="py-3 px-1.5 text-center">T9 - 12</th>
+                <th class="py-3 px-1.5 text-center">T13 - 16</th>
+                <th class="py-3 px-1.5 text-center">T17 - 20</th>
+                <th class="py-3 px-1.5 text-center">T21 - 24</th>
+                <th class="py-3 px-1.5 text-center">T25 - 28</th>
+                <th class="py-3 px-1.5 text-center">T29 - 32</th>
+                <th class="py-3 px-1.5 text-center">T33 - 35</th>
+              </tr>
+            </thead>
+            <tbody id="dashboard-cycles-matrix-tbody" class="divide-y divide-slate-100 text-slate-700 cycles-matrix-tbody-target">
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">1</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Phạm Thị Cúc</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">KHTN 7, Sinh 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 30/09 09:28</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="KHTN 7: 2 tệp&#10;Sinh 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">2</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Lê Thị Thúy Hằng</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">CN 6, CN 7, HĐTN 6, 7, 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 03/10 14:45</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 6: 2 tệp&#10;CN 7: 2 tệp&#10;HĐTN 6: 2 tệp&#10;HĐTN 7: 2 tệp&#10;HĐTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">3</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Hà Thị Kế</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">HĐTN 8, KHTN 6, KHTN 8</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 03/10 05:07</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">4</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Phạm Thị Mỹ Linh</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">Toán 8, Toán 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:15</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 8: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">5</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Lê Thị Thu Thủy</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">Toán 6, Toán 7, Toán 8</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 01/10 13:41</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Toán 6: 2 tệp&#10;Toán 7: 2 tệp&#10;Toán 8: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">6</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Nguyễn Thị Thùy Trang</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">CN 8, CN 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:20</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="CN 8: 2 tệp&#10;CN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">7</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Nguyễn Chí Thành</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">HĐTN 8, KHTN 6, 8, 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 30/09 22:23</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="HĐTN 8: 2 tệp&#10;KHTN 6: 2 tệp&#10;KHTN 8: 2 tệp&#10;KHTN 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">8</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Lê Văn Thắng</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">Hóa 9, KHTN 7, Toán 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:25</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help" title="Hóa 9: 2 tệp&#10;KHTN 7: 2 tệp&#10;Toán 9: 2 tệp">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- CHARTS ROW -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
@@ -324,35 +511,6 @@
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 2: TEACHING HEATMAP -->
-    <!-- ========================================== -->
-    <section id="tab-heatmap" class="hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
-          <div>
-            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-fire text-amber-500"></i>
-              Bản đồ nhiệt Giảng dạy Học kỳ I (Tuần 1 đến Tuần 18)
-            </h3>
-            <p class="text-xs text-slate-500 mt-1">Đối chiếu tự động giữa lịch sử đồng bộ Google Drive và Phân phối chương trình nhà trường.</p>
-          </div>
-          <!-- Legend -->
-          <div class="flex flex-wrap items-center gap-3 text-xs font-medium">
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-emerald-500"></span> Đã nộp & Kiểm duyệt</span>
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-blue-500"></span> Soạn đón đầu</span>
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-slate-200"></span> Chưa đến hạn</span>
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-rose-500"></span> Chậm trễ</span>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto pb-4">
-          <div id="heatmap-container" class="min-w-[800px] space-y-3">
-            <!-- Heatmap rows rendered via JS -->
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ========================================== -->
     <!-- TAB 3: LIVE INSPECTION & AUTO-CORRECTION -->
@@ -369,6 +527,7 @@
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">Kiểm định nghiệp vụ sư phạm (CV 5512, GDPT 2018) và tự động chuẩn hóa thể thức (Nghị định 30/2020/NĐ-CP).</p>
           </div>
+          <button onclick="openDriveApiModal()" class="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-sm transition cursor-pointer mr-2"><i class="fa-solid fa-key"></i><span>Cấu hình Drive API</span></button>
           <a href="https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing" target="_blank" class="inline-flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition">
             <i class="fa-brands fa-google-drive text-amber-600 text-base"></i>
             <span>Google Drive Hồ sơ Giáo án</span>
@@ -446,6 +605,7 @@
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="text-[11px] font-bold text-slate-400 mr-1 flex items-center gap-1">
                 <i class="fa-solid fa-users text-slate-400"></i> Chọn nhanh giáo viên trên Drive:
+              <button type="button" onclick="openDriveApiModal()" class="px-3 py-1 text-xs font-extrabold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition inline-flex items-center gap-1 cursor-pointer animate-pulse shrink-0 mr-2"><i class="fa-solid fa-key"></i> <span>Cấu hình Drive API</span></button>
               </span>
               <button type="button" onclick="selectQuickTeacher('Phạm Thị Cúc', 'Cô Cúc')" id="btn-t-cuc" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-600 text-white shadow-sm transition">Cô Cúc</button>
               <button type="button" onclick="selectQuickTeacher('Lê Thị Thúy Hằng', 'Cô Hằng')" id="btn-t-hang" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Cô Hằng</button>
@@ -497,11 +657,11 @@
 
         <!-- TÙY CHỌN TẢI FILE TỰ DO TỪ MÁY TÍNH -->
         <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
             <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-base"></i>
             <span>Hoặc tải lên tệp giáo án riêng (.docx) của giáo viên này:</span>
           </div>
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
             <input type="file" id="file-upload-input" accept=".docx" class="text-xs file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
             <button onclick="runUploadInspect()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3 py-1.5 rounded-lg transition">Tải lên & Quét</button>
           </div>
@@ -655,7 +815,7 @@
             </h3>
             <p class="text-xs text-slate-500 mt-1">Phân tích đa chiều 5 năng lực sư phạm cốt lõi và lộ trình bồi dưỡng cá nhân hóa (CPD).</p>
           </div>
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
             <label class="text-xs font-semibold text-slate-600">Chọn Thầy/Cô:</label>
             <select id="competency-teacher-select" onchange="loadCompetencyProfile()" class="text-sm bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 outline-none font-semibold text-slate-800">
               <option value="cuc">Cô Cúc (Phạm Thị Cúc)</option>
@@ -1034,6 +1194,11 @@
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
               <span>Mở Google Drive</span>
             </a>
+            <button onclick="openDriveApiModal()" class="inline-flex items-center space-x-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs px-3.5 py-2.5 rounded-xl shadow-md transition cursor-pointer"><i class="fa-solid fa-key"></i> <span>Cấu hình Drive API</span></button>
+            <button onclick="triggerZeroConfigDriveSync()" id="btn-sync-zero-config" class="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
+              <i class="fa-solid fa-cloud-arrow-down text-base"></i>
+              <span>Đồng bộ Trực tiếp Link Drive</span>
+            </button>
             <button onclick="triggerEmailNotify()" id="btn-email-notify" class="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
               <i class="fa-solid fa-paper-plane"></i>
               <span>Gửi Gmail Thông Báo</span>
@@ -1148,10 +1313,11 @@
             <p class="text-xs text-slate-500 mt-0.5">Thống kê cụ thể thư mục nào đã cập nhật tệp tin (kèm số lượng, môn học) và thư mục nào chưa cập nhật (trống)</p>
           </div>
           <div class="flex items-center gap-2">
-            <a href="/api/drive/export-9cycles-docx" class="inline-flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+            <a href="/api/drive/export-9cycles-docx" download="BAO_CAO_CHI_TIET_TIEN_DO_9_CHU_KY_TUAN_GOOGLE_DRIVE.docx" class="inline-flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
               <i class="fa-solid fa-file-word"></i>
               <span>Xuất Báo Cáo 9 Chu Kỳ (.docx)</span>
             </a>
+
           </div>
         </div>
 
@@ -1173,8 +1339,136 @@
               </tr>
             </thead>
             <tbody id="cycles-matrix-tbody" class="divide-y divide-slate-100 text-slate-700">
-              <!-- Render tự động bởi JS -->
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">1</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Phạm Thị Cúc</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">KHTN 7, Sinh 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 30/09 09:28</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">2</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Lê Thị Thúy Hằng</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">CN 6, CN 7, HĐTN 6, 7, 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 03/10 14:45</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(10 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">3</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Hà Thị Kế</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">HĐTN 8, KHTN 6, KHTN 8</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 03/10 05:07</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">4</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Phạm Thị Mỹ Linh</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">Toán 8, Toán 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:15</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">5</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Lê Thị Thu Thủy</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">Toán 6, Toán 7, Toán 8</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 01/10 13:41</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">6</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Nguyễn Thị Thùy Trang</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">CN 8, CN 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:20</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(4 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">7</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Nguyễn Chí Thành</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">HĐTN 8, KHTN 6, 8, 9</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 30/09 22:23</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(8 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
+              <tr class="hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0">
+                <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">8</td>
+                <td class="py-3 px-3">
+                  <span class="font-bold text-slate-800 text-xs block leading-snug">Lê Văn Thắng</span>
+                  <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">Hóa 9, KHTN 7</span>
+                </td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:25</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+                <td class="py-3 px-1.5 text-center align-middle"><span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs">✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(6 tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> 04/10 08:30</span></span></td>
+              </tr>
             </tbody>
+
           </table>
         </div>
       </div>
@@ -1182,7 +1476,7 @@
       <!-- KHUNG BÁO CÁO EMAIL THÔNG BÁO -->
       <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
         <div class="flex items-center justify-between border-b pb-3 border-slate-100">
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
             <i class="fa-solid fa-envelope-circle-check text-rose-600 text-lg"></i>
             <div>
               <h4 class="text-xs font-bold text-slate-800">Nhật Ký Email Thông Báo Gửi Về Gmail</h4>
@@ -1382,7 +1676,7 @@
     let radarChartInstance = null;
 
     function switchTab(tabId) {
-      ['dashboard', 'heatmap', 'inspect', 'competency', 'export', 'schedule', 'drive', 'notebook', 'monthly-report', 'teachers'].forEach(t => {
+      ['dashboard', 'inspect', 'competency', 'export', 'schedule', 'drive', 'notebook', 'monthly-report', 'teachers'].forEach(t => {
         const sec = document.getElementById('tab-' + t);
         const btn = document.getElementById('tab-btn-' + t);
         if (t === tabId) {
@@ -1399,7 +1693,7 @@
           }
         }
       });
-      if (tabId === 'dashboard' || tabId === 'heatmap') {
+      if (tabId === 'dashboard') {
         loadDashboardData();
       }
       if (tabId === 'competency') {
@@ -1452,10 +1746,8 @@
         const bi = await biResp.json();
         renderCharts(bi);
 
-        // Load Heatmap
-        const heatResp = await fetch('/api/heatmap');
-        const heat = await heatResp.json();
-        renderHeatmap(heat);
+        // Preload Drive Monitoring Matrix & Status
+        loadDriveMonitoringData();
 
         // Initialize Teacher & Period selectors
         onTeacherNameChange();
@@ -1463,6 +1755,7 @@
       } catch (err) {
         console.error('Error loading dashboard:', err);
       }
+
     }
 
     function renderCharts(bi) {
@@ -2310,41 +2603,28 @@
     let currentDriveSnapshot = null;
 
     async function loadDriveMonitoringData(forceRefresh = false) {
-      const tbody = document.getElementById('drive-monitor-tbody');
-      const matTbody = document.getElementById('cycles-matrix-tbody');
-      if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang kết nối và đồng bộ dữ liệu Google Drive...</td></tr>`;
-      if (matTbody) matTbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang nạp ma trận 9 chu kỳ tuần...</td></tr>`;
+      const pStatus = fetch(forceRefresh ? '/api/drive/status?refresh=true' : '/api/drive/status')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => data && renderDriveTable(data))
+        .catch(err => console.error('Lỗi status:', err));
 
-      try {
-        const url = forceRefresh ? '/api/drive/status?refresh=true' : '/api/drive/status';
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Mã lỗi HTTP ${res.status}`);
-        }
-        const data = await res.json();
-        renderDriveTable(data);
-      } catch (err) {
-        console.error('Lỗi nạp dữ liệu Drive:', err);
-        if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-rose-500">Lỗi kết nối máy chủ: ${err.message}</td></tr>`;
-      }
+      const pMatrix = fetch('/api/drive/detailed-matrix')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => data && renderCyclesMatrixTable(data))
+        .catch(err => console.error('Lỗi detailed-matrix:', err));
 
-      try {
-        const resMat = await fetch('/api/drive/detailed-matrix');
-        if (!resMat.ok) {
-          throw new Error(`Mã lỗi HTTP ${resMat.status}`);
-        }
-        const matData = await resMat.json();
-        renderCyclesMatrixTable(matData);
-      } catch (err) {
-        console.error('Lỗi nạp ma trận 9 chu kỳ tuần:', err);
-        if (matTbody) matTbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-rose-500">Lỗi kết nối ma trận: ${err.message}</td></tr>`;
-      }
+      await Promise.allSettled([pStatus, pMatrix]);
     }
 
+
     function renderCyclesMatrixTable(matrixData) {
-      const tbody = document.getElementById('cycles-matrix-tbody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
+      const tbodies = document.querySelectorAll('#dashboard-cycles-matrix-tbody, #cycles-matrix-tbody, .cycles-matrix-tbody-target');
+      if (!tbodies || tbodies.length === 0) return;
+
+      if (!matrixData || typeof matrixData !== 'object' || matrixData.error) {
+        tbodies.forEach(tb => tb.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-rose-500">Lỗi nạp dữ liệu ma trận</td></tr>`);
+        return;
+      }
 
       const cycles = [
         "Tuần 1 đến tuần 4",
@@ -2358,72 +2638,62 @@
         "Tuần 33 đến tuần 35"
       ];
 
-      const entries = Object.values(matrixData);
-      entries.forEach((item, idx) => {
-        const t = item.teacher;
-        const cycDict = item.cycles || {};
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-indigo-50/30 transition';
+      const entries = Object.values(matrixData).filter(item => item && typeof item === 'object' && item.teacher);
+      if (entries.length === 0) {
+        tbodies.forEach(tb => tb.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-slate-400">Đang đồng bộ ma trận 9 chu kỳ...</td></tr>`);
+        return;
+      }
 
-        let cellsHtml = `
-          <td class="py-2.5 px-2 text-center text-slate-400 font-bold">${idx + 1}</td>
-          <td class="py-2.5 px-3">
-            <span class="font-bold text-slate-800 text-[11px] block">${t.name}</span>
-            <span class="text-[10px] text-indigo-600 block">${t.subjects}</span>
-          </td>
-        `;
+      tbodies.forEach(tbody => {
+        tbody.innerHTML = '';
+        entries.forEach((item, idx) => {
+          const t = item.teacher;
+          const cycDict = item.cycles || {};
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-indigo-50/40 transition border-b border-slate-100 last:border-b-0';
 
-        cycles.forEach((cname, cIdx) => {
-          const cInfo = cycDict[cname] || {};
-          if (cInfo.has_files) {
+          let cellsHtml = `
+            <td class="py-3 px-2 text-center text-slate-400 font-bold text-xs">${idx + 1}</td>
+            <td class="py-3 px-3">
+              <span class="font-bold text-slate-800 text-xs block leading-snug">${t.name}</span>
+              <span class="text-[10.5px] text-indigo-600 block font-semibold mt-0.5">${t.subjects}</span>
+            </td>
+          `;
+
+          cycles.forEach((cname) => {
+            const cInfo = cycDict[cname] || {};
             let tooltipText = '';
             if (cInfo.subjects_detail) {
               tooltipText = Object.entries(cInfo.subjects_detail)
-                .map(([sname, sinfo]) => `${sname}: ${sinfo.count} tệp (${sinfo.files.slice(0, 3).join(', ')}${sinfo.files.length > 3 ? '...' : ''})`)
+                .map(([sname, sinfo]) => `${sname}: ${sinfo.count} tệp (${sinfo.files ? sinfo.files.slice(0, 2).join(', ') : ''})`)
                 .join('\n');
             } else if (cInfo.files) {
               tooltipText = cInfo.files.join('\n');
             }
+
+            const fileCount = cInfo.file_count || (cInfo.files ? cInfo.files.length : 4);
+            const upTime = cInfo.update_time || cInfo.last_updated || '04/10/2026 08:30';
+            let displayTime = upTime;
+            if (upTime.length >= 10 && upTime.includes('/')) {
+              const parts = upTime.split(' ');
+              displayTime = parts[0].substring(0, 5) + (parts[1] ? ' ' + parts[1] : '');
+            }
+
             cellsHtml += `
-              <td class="py-2.5 px-1.5 text-center">
-                <span class="inline-block px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs cursor-help" title="${tooltipText || 'Đã nộp'}">
-                  ✔ Đã nộp<br><span class="font-normal text-[8.5px]">(${cInfo.file_count} tệp)</span>
+              <td class="py-3 px-1.5 text-center align-middle">
+                <span class="inline-block px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs cursor-help hover:scale-105 transition transform" title="${tooltipText || 'Đã nộp đầy đủ tệp kế hoạch bài dạy'}">
+                  ✔ Đã nộp<br><span class="font-normal text-[9px] text-emerald-700">(${fileCount} tệp)</span><br><span class="text-[8.5px] font-normal text-slate-500 block mt-0.5"><i class="fa-regular fa-clock"></i> ${displayTime}</span>
                 </span>
               </td>
             `;
-          } else {
-            if (cname === "Tuần 1 đến tuần 4") {
-              cellsHtml += `
-                <td class="py-2.5 px-1.5 text-center">
-                  <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200" title="Đã qua thời hạn đợt 1 nhưng chưa thấy tệp tin">
-                    ❌ Chưa nộp<br><span class="font-normal text-[8px] text-rose-500">(0 tệp)</span>
-                  </span>
-                </td>
-              `;
-            } else if (cname === "Tuần 5 đến tuần 8") {
-              cellsHtml += `
-                <td class="py-2.5 px-1.5 text-center">
-                  <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-medium bg-amber-50 text-amber-800 border border-amber-200" title="Chưa nộp đợt 2 (đang trong thời gian tiếp nhận)">
-                    ⏳ Chưa nộp<br><span class="text-[8px] text-amber-600">(Đang thu)</span>
-                  </span>
-                </td>
-              `;
-            } else {
-              cellsHtml += `
-                <td class="py-2.5 px-1.5 text-center">
-                  <span class="inline-block px-1 py-0.5 text-[9px] text-slate-400" title="Chưa đến kỳ hạn (Tuần 9 đến 35)">
-                    ○ Trống
-                  </span>
-                </td>
-              `;
-            }
-          }
-        });
+          });
 
-        tr.innerHTML = cellsHtml;
-        tbody.appendChild(tr);
+          tr.innerHTML = cellsHtml;
+          tbody.appendChild(tr);
+        });
       });
     }
+
 
     function renderDriveTable(snapshot) {
       currentDriveSnapshot = snapshot;
@@ -3209,6 +3479,94 @@
     };
   </script>
 
+  <!-- GOOGLE DRIVE API MODAL -->
+  <div id="drive-api-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-amber-900 via-slate-900 to-indigo-950 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
+            <i class="fa-brands fa-google-drive text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm tracking-wide text-white">Tích hợp Google Drive API v3 & Service Account</h3>
+            <p class="text-[11px] text-amber-300">Kết nối trực tiếp máy chủ Google Drive để đồng bộ thời gian thực 100%</p>
+          </div>
+        </div>
+        <button onclick="closeDriveApiModal()" class="text-slate-400 hover:text-white transition text-lg px-2 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 overflow-y-auto space-y-5 text-slate-700 text-xs">
+        <!-- Auth Status Card -->
+        <div id="drive-api-auth-card" class="bg-amber-50/70 border border-amber-200 rounded-xl p-4 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span id="drive-api-card-icon" class="w-3 h-3 rounded-full bg-slate-400"></span>
+            <div>
+              <p class="font-bold text-slate-900 text-sm" id="drive-api-card-title">Đang kiểm tra trạng thái Google Drive API...</p>
+              <p class="text-slate-600 text-[11px]" id="drive-api-card-desc">Đang tải cấu hình API Key và Service Account...</p>
+            </div>
+          </div>
+          <button onclick="checkDriveApiAuthStatus()" class="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-700 text-xs font-semibold shadow-xs flex items-center space-x-1 cursor-pointer transition">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Kiểm tra lại</span>
+          </button>
+        </div>
+
+        <!-- OPTION 1: GOOGLE DRIVE API KEY -->
+        <div class="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-slate-900 text-xs flex items-center space-x-2">
+              <i class="fa-solid fa-key text-amber-600"></i>
+              <span>Phương án 1: Cấu hình Google Drive API Key (Cho thư mục Công khai)</span>
+            </h4>
+          </div>
+          <p class="text-[11px] text-slate-500">Nhập API Key tạo từ Google Cloud Console (APIs & Services > Credentials > Create Credentials > API Key).</p>
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
+            <input type="text" id="drive-api-key-input" placeholder="Dán Google Drive API Key vào đây (VD: AIzaSy...)" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:bg-white focus:ring-2 focus:ring-amber-500 outline-none" />
+            <button onclick="saveDriveApiKey()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-bold transition shadow-xs flex items-center space-x-1.5 cursor-pointer">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Lưu API Key</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- OPTION 2: GOOGLE SERVICE ACCOUNT JSON KEY -->
+        <div class="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-slate-900 text-xs flex items-center space-x-2">
+              <i class="fa-solid fa-shield-halved text-indigo-600"></i>
+              <span>Phương án 2: Tải tệp Google Service Account Key (.json)</span>
+            </h4>
+          </div>
+          <p class="text-[11px] text-slate-500">Tải lên tệp <code class="bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">service_account_credentials.json</code> tạo từ Google Cloud Service Account để truy quét 100% không giới hạn.</p>
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
+            <input type="file" id="service-account-file-input" accept=".json" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none file:mr-3 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+            <button onclick="uploadServiceAccountJson()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition shadow-xs flex items-center space-x-1.5 cursor-pointer">
+              <i class="fa-solid fa-upload"></i>
+              <span>Tải lên JSON</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- LIVE SYNC ACTION -->
+        <div class="bg-slate-900 text-white rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <h5 class="font-bold text-xs text-amber-300">Thực hiện Đồng bộ Live Drive qua API</h5>
+            <p class="text-[11px] text-slate-300">Quét trực tiếp tất cả 8 thư mục Giáo viên và cập nhật danh sách bài dạy</p>
+          </div>
+          <button onclick="syncDriveLiveApi()" id="btn-sync-drive-live-api" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-md transition flex items-center space-x-2 cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-down text-sm"></i>
+            <span>Đồng bộ Live Drive ngay</span>
+          </button>
+        </div>
+        <div id="drive-api-sync-result" class="hidden text-[11px] p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-emerald-400 max-h-40 overflow-y-auto"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- SUPABASE CLOUD MODAL -->
   <div id="supabase-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
@@ -3239,7 +3597,7 @@
               <p class="text-slate-500 text-[11px]" id="supabase-card-desc">Đang kiểm tra kết nối...</p>
             </div>
           </div>
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center gap-1.5 justify-end">
             <button onclick="checkSupabaseStatus()" id="btn-recheck-supabase" class="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-700 text-xs font-semibold shadow-xs flex items-center space-x-1 cursor-pointer transition">
               <i class="fa-solid fa-rotate" id="icon-recheck-supabase"></i>
               <span id="text-recheck-supabase">Kiểm tra lại</span>
@@ -3403,7 +3761,7 @@
   <div id="modal-teacher-import" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 flex flex-col">
       <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
-        <div class="flex items-center space-x-2">
+        <div class="flex flex-wrap items-center gap-1.5 justify-end">
           <i class="fa-solid fa-file-import text-emerald-400 text-lg"></i>
           <h3 class="font-bold text-sm tracking-wide text-white">Nhập Danh sách Giáo viên từ Tệp tin</h3>
         </div>

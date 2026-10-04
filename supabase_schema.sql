@@ -59,6 +59,20 @@ ALTER TABLE public.teachers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.drive_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.inspection_records ENABLE ROW LEVEL SECURITY;
 
+-- DROP POLICY cũ nếu đã tồn tại để tránh lỗi 42710 (policy already exists)
+DROP POLICY IF EXISTS "Allow public select on notebook_records" ON public.notebook_records;
+DROP POLICY IF EXISTS "Allow public insert/update on notebook_records" ON public.notebook_records;
+
+DROP POLICY IF EXISTS "Allow public select on teachers" ON public.teachers;
+DROP POLICY IF EXISTS "Allow public insert/update on teachers" ON public.teachers;
+
+DROP POLICY IF EXISTS "Allow public select on drive_logs" ON public.drive_logs;
+DROP POLICY IF EXISTS "Allow public insert/update on drive_logs" ON public.drive_logs;
+
+DROP POLICY IF EXISTS "Allow public select on inspection_records" ON public.inspection_records;
+DROP POLICY IF EXISTS "Allow public insert/update on inspection_records" ON public.inspection_records;
+
+-- TẠO POLICY MỚI CHUẨN ĐỊNH DẠNG
 CREATE POLICY "Allow public select on notebook_records" ON public.notebook_records FOR SELECT USING (true);
 CREATE POLICY "Allow public insert/update on notebook_records" ON public.notebook_records FOR ALL USING (true);
 

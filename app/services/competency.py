@@ -1,8 +1,9 @@
 import os
 import json
-from app.config import DATA_DIR
+from app.config import DATA_DIR, resolve_data_file
 
-TEACHERS_FILE = os.path.join(DATA_DIR, "teachers.json")
+TEACHERS_FILE = resolve_data_file("teachers.json")
+
 
 DEFAULT_TEACHERS_DATA = [
     {
@@ -166,7 +167,7 @@ def get_heatmap_matrix():
     weeks = [f"T{i}" for i in range(1, 19)]
     matrix = []
     
-    nb_path = os.path.join(DATA_DIR, "so_tay_to_truong.json")
+    nb_path = resolve_data_file("so_tay_to_truong.json")
     notebook_data = {}
     if os.path.exists(nb_path):
         try:
