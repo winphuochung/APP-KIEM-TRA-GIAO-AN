@@ -242,6 +242,44 @@ def set_tnr(run, size_pt=11, bold=False, italic=False, color_rgb=(0, 0, 0)):
     rPr.append(rFonts)
 
 
+def get_t_name(t):
+    return t.get("name") or t.get("teacher_name") or ""
+
+def get_t_role(t):
+    return t.get("role") or "Giáo viên"
+
+def get_t_id(t):
+    return t.get("id") or t.get("teacher_id") or ""
+
+def get_t_subjects_str(t):
+    subjs = t.get("subjects")
+    if isinstance(subjs, list):
+        return ", ".join(subjs)
+    return str(t.get("subject_str") or subjs or "Chuyên môn")
+
+def get_t_subjects_list(t):
+    subjs = t.get("subjects")
+    if isinstance(subjs, list):
+        return subjs
+    s_str = str(t.get("subject_str") or subjs or "Chuyên môn")
+    return [s.strip() for s in s_str.split(",") if s.strip()]
+
+def get_t_classes_list(t):
+    cls = t.get("classes")
+    if isinstance(cls, list):
+        return cls
+    c_str = str(cls or "")
+    return [c.strip() for c in c_str.split(",") if c.strip()]
+
+def get_t_classes_str(t):
+    return ", ".join(get_t_classes_list(t))
+
+def get_t_homeroom(t):
+    return str(t.get("homeroom") or "").strip()
+
+def get_t_grades(t):
+    return str(t.get("grades") or "6, 7, 8, 9").strip()
+
 def get_teachers_list():
     try:
         from app.services.competency import TEACHERS_DATA
@@ -262,40 +300,46 @@ def init_default_notebook_data():
         stem = sec4.get("stem", None)
         
         for t in teachers_src:
+            t_name = get_t_name(t)
+            t_role = get_t_role(t)
+            t_id = get_t_id(t)
+            t_classes = get_t_classes_list(t)
+            t_homeroom = get_t_homeroom(t)
+
             # Kiểm tra dự giờ tuần này nếu có
             t_obs = []
             for obs in obs_list:
-                if t["name"] in obs.get("teacher", "") or t["role"] == "Tổ trưởng":
+                if t_name in obs.get("teacher", "") or t_role == "Tổ trưởng":
                     t_obs.append({
                         "date": f"Tuần {w}",
                         "subject": obs.get("subject", ""),
-                        "class_name": t["classes"][0] if t["classes"] else "Lớp",
+                        "class_name": t_classes[0] if t_classes else "Lớp",
                         "lesson": obs.get("lesson", ""),
-                        "role": "Dạy" if t["name"] in obs.get("teacher", "") else "Dự",
+                        "role": "Dạy" if t_name in obs.get("teacher", "") else "Dự",
                         "rating": "Giỏi"
                     })
             
             # Thao giảng / STEM
             t_stem = []
-            if stem and t["name"] in stem.get("teacher", ""):
+            if stem and t_name in stem.get("teacher", ""):
                 t_stem.append({
                     "date": f"Tuần {w}",
                     "topic": stem.get("topic", ""),
                     "subject": stem.get("subject", ""),
-                    "class_name": t["classes"][0] if t["classes"] else "",
+                    "class_name": t_classes[0] if t_classes else "",
                     "type": "Chuyên đề STEM",
                     "rating": "Giỏi"
                 })
 
             rec = {
-                "teacher_id": t["id"],
-                "teacher_name": t["name"],
-                "role": t["role"],
-                "subjects": t["subject_str"],
-                "grades": t["grades"],
-                "classes": ", ".join(t["classes"]),
-                "homeroom": t["homeroom"],
-                "attendance": "Vắng có phép" if (w == 3 and t["id"] == "linh") else "Đúng giờ",
+                "teacher_id": t_id,
+                "teacher_name": t_name,
+                "role": t_role,
+                "subjects": get_t_subjects_str(t),
+                "grades": get_t_grades(t),
+                "classes": get_t_classes_str(t),
+                "homeroom": t_homeroom,
+                "attendance": "Vắng có phép" if (w == 3 and t_id == "linh") else "Đúng giờ",
                 "ppct_status": "Đúng tiến độ",
                 "late_periods": 0,
                 "makeup_plan": "",
@@ -303,12 +347,12 @@ def init_default_notebook_data():
                 "sodaubai_errors": 0,
                 "sodaubai_note": "",
                 "diem_so": "Kịp thời",
-                "diem_danh": "Chưa kịp thời" if (w <= 4 and t["id"] == "hang" and t["homeroom"]) else ("Kịp thời" if t["homeroom"] else "-"),
+                "diem_danh": "Chưa kịp thời" if (w <= 4 and t_id == "hang" and t_homeroom) else ("Kịp thời" if t_homeroom else "-"),
                 "giao_an_status": "Soạn đủ",
                 "giao_an_drive": "Đã cập nhật đúng hạn",
                 "nls_integration": "Đạt chuẩn",
-                "dddh_count": t["default_dddh"],
-                "cntt_count": t["default_cntt"],
+                "dddh_count": t.get("default_dddh", 0),
+                "cntt_count": t.get("default_cntt", 5),
                 "observations": t_obs,
                 "stem_or_demo": t_stem,
                 "competitions": [],
