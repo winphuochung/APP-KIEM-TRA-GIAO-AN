@@ -1,3 +1,7 @@
+import os
+import json
+from app.config import DATA_DIR
+
 TEACHERS_DATA = [
     {
         "id": "cuc",
@@ -115,27 +119,65 @@ TEACHERS_DATA = [
 def get_heatmap_matrix():
     weeks = [f"T{i}" for i in range(1, 19)]
     matrix = []
+    
+    nb_path = os.path.join(DATA_DIR, "so_tay_to_truong.json")
+    notebook_data = {}
+    if os.path.exists(nb_path):
+        try:
+            with open(nb_path, "r", encoding="utf-8") as f:
+                notebook_data = json.load(f)
+        except Exception:
+            pass
+
     for t in TEACHERS_DATA:
-        row = {"id": t["id"], "name": t["title"], "role": t["role"], "cells": []}
+        t_id = t["id"]
+        row = {"id": t_id, "name": t["title"], "role": t["role"], "cells": []}
+        
         for w_idx in range(1, 19):
-            if w_idx <= 4:
-                status = "done"  # Đã nộp và kiểm tra
-            elif w_idx <= 6:
-                status = "early" if t["id"] in ["cuc", "thang"] else "upcoming"  # Nộp đón đầu
+            w_str = str(w_idx)
+            rec = None
+            if w_str in notebook_data:
+                for r in notebook_data[w_str]:
+                    if r.get("teacher_id") == t_id:
+                        rec = r
+                        break
+            
+            if rec:
+                g_drive = str(rec.get("giao_an_drive", "")).lower()
+                if "chưa" in g_drive or "trễ" in g_drive or "thiếu" in g_drive:
+                    status = "late"
+                elif w_idx <= 4:
+                    status = "done"
+                elif w_idx <= 6:
+                    status = "early"
+                else:
+                    status = "done"
             else:
-                status = "pending"
+                if w_idx <= 4:
+                    status = "done"
+                elif w_idx <= 6:
+                    status = "early" if t_id in ["cuc", "thang"] else "upcoming"
+                else:
+                    status = "pending"
+                    
             row["cells"].append({"week": f"Tuần {w_idx}", "code": f"T{w_idx}", "status": status})
         matrix.append(row)
     return {"weeks": weeks, "matrix": matrix}
 
 def get_bi_overview():
+    avg_tii = round(sum(t.get("tii_score", 85) for t in TEACHERS_DATA) / len(TEACHERS_DATA), 1)
+    avg_car = round(sum(t.get("car_score", 88) for t in TEACHERS_DATA) / len(TEACHERS_DATA), 1)
+    
+    sorted_teachers = sorted(TEACHERS_DATA, key=lambda x: x.get("tii_score", 0), reverse=True)
+    top_str = f"{sorted_teachers[0]['title']} ({sorted_teachers[0]['tii_score']}) & {sorted_teachers[1]['title']} ({sorted_teachers[1]['tii_score']})"
+    
     return {
         "kpi": {
             "total_teachers": len(TEACHERS_DATA),
             "inspected_rate": "100%",
-            "average_tii": 87.0,
-            "average_car": 89.5,
-            "top_performer": "Thầy Thắng (94) & Cô Cúc (88)"
+            "average_tii": avg_tii,
+            "average_car": avg_car,
+            "top_performer": top_str
         },
         "error_distribution": {
             "labels": ["Căn lề chưa chuẩn NĐ 30", "Lỗi font chữ / size", "Lỗi chính tả / dính chữ", "Thiếu bước 4 (5512)", "Phần Vận dụng sơ sài"],

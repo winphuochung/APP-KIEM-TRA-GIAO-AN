@@ -1347,6 +1347,9 @@
           }
         }
       });
+      if (tabId === 'dashboard' || tabId === 'heatmap') {
+        loadDashboardData();
+      }
       if (tabId === 'competency') {
         loadCompetencyProfile();
       }
@@ -1363,6 +1366,7 @@
         loadMonthlyReportData();
       }
     }
+
 
     async function loadDashboardData() {
       try {
@@ -2627,6 +2631,9 @@
         });
         const data = await res.json();
         showScheduleNotification(`Đã lưu Sổ tay Tổ trưởng Tuần ${weekVal} thành công!`, 'success');
+        loadDashboardData();
+        checkSupabaseStatus();
+        loadMonthlyReportData();
       } catch (err) {
         console.error('Lỗi lưu Sổ tay:', err);
         showScheduleNotification('Lỗi lưu Sổ tay: ' + err.message, 'error');
@@ -2642,7 +2649,11 @@
         currentNotebookData = data;
         renderNotebookTable(data);
         showScheduleNotification(`Đã tự động đồng bộ tình trạng nộp bài trên Drive vào Sổ tay Tuần ${weekVal}!`, 'success');
+        loadDashboardData();
+        checkSupabaseStatus();
+        loadMonthlyReportData();
       } catch (err) {
+
         console.error('Lỗi đồng bộ Drive:', err);
         showScheduleNotification('Lỗi đồng bộ Drive: ' + err.message, 'error');
       }
