@@ -3080,33 +3080,40 @@
 
     async function handleSaveTeacher(event) {
       event.preventDefault();
-      const mode = document.getElementById('teacher-edit-mode').value;
-      const hiddenId = document.getElementById('teacher-id-hidden').value.trim();
-      const inputId = document.getElementById('teacher-id-input').value.trim();
-      const id = hiddenId || inputId;
-      const name = document.getElementById('teacher-name-form-input').value.trim();
-      const role = document.getElementById('teacher-role-input').value.trim();
-      const subjectsStr = document.getElementById('teacher-subjects-input').value.trim();
-      const classesStr = document.getElementById('teacher-classes-input').value.trim();
-      const homeroom = document.getElementById('teacher-homeroom-input').value.trim();
-
-      if (!name) {
-        alert('Vui lòng nhập họ và tên giáo viên');
-        return;
+      const btn = document.getElementById('btn-submit-save-teacher');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang lưu...</span>`;
       }
 
-      const payload = {
-        id: id,
-        name: name,
-        role: role,
-        subjects: subjectsStr ? subjectsStr.split(',').map(s => s.trim()).filter(Boolean) : [],
-        classes: classesStr ? classesStr.split(',').map(c => c.trim()).filter(Boolean) : [],
-        homeroom: homeroom || ''
-      };
-
-      const endpoint = mode === 'add' ? '/api/teachers/add' : '/api/teachers/update';
-
       try {
+        const mode = document.getElementById('teacher-edit-mode').value;
+        const hiddenId = document.getElementById('teacher-id-hidden').value.trim();
+        const inputId = document.getElementById('teacher-id-input').value.trim();
+        const id = hiddenId || inputId;
+        const name = document.getElementById('teacher-name-form-input').value.trim();
+        const role = document.getElementById('teacher-role-input').value.trim();
+        const subjectsStr = document.getElementById('teacher-subjects-input').value.trim();
+        const classesStr = document.getElementById('teacher-classes-input').value.trim();
+        const homeroom = document.getElementById('teacher-homeroom-input').value.trim();
+
+        if (!name) {
+          alert('Vui lòng nhập họ và tên giáo viên');
+          return;
+        }
+
+        const payload = {
+          id: id,
+          name: name,
+          role: role,
+          subjects: subjectsStr ? subjectsStr.split(',').map(s => s.trim()).filter(Boolean) : [],
+          classes: classesStr ? classesStr.split(',').map(c => c.trim()).filter(Boolean) : [],
+          homeroom: homeroom || ''
+        };
+
+        const endpoint = mode === 'add' ? '/api/teachers/add' : '/api/teachers/update';
+
         const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -3120,6 +3127,11 @@
         showScheduleNotification(data.message || 'Lưu thông tin giáo viên thành công!', 'success');
       } catch (err) {
         alert('Lỗi lưu thông tin giáo viên: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origText;
+        }
       }
     }
 
@@ -3378,7 +3390,7 @@
           <button type="button" onclick="closeTeacherModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition cursor-pointer">
             Hủy
           </button>
-          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition shadow-sm cursor-pointer flex items-center space-x-1">
+          <button type="submit" id="btn-submit-save-teacher" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition shadow-sm cursor-pointer flex items-center space-x-1">
             <i class="fa-solid fa-floppy-disk"></i>
             <span>Lưu Thông Tin</span>
           </button>

@@ -269,11 +269,6 @@ def add_teacher_data(teacher_obj: dict):
 
     TEACHERS_DATA.append(teacher_obj)
     save_teachers_data()
-    try:
-        from app.services.supabase_client import sync_teachers_to_supabase
-        sync_teachers_to_supabase()
-    except Exception:
-        pass
     return teacher_obj
 
 def update_teacher_data(teacher_id: str, teacher_obj: dict):
@@ -297,11 +292,6 @@ def update_teacher_data(teacher_id: str, teacher_obj: dict):
             
             TEACHERS_DATA[idx] = t
             save_teachers_data()
-            try:
-                from app.services.supabase_client import sync_teachers_to_supabase
-                sync_teachers_to_supabase()
-            except Exception:
-                pass
             return t
     return None
 

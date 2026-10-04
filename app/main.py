@@ -2,7 +2,7 @@ import os
 import re
 import shutil
 import json
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,17 +44,14 @@ def list_teachers():
     return {"teachers": TEACHERS_DATA}
 
 @app.post("/api/teachers/add")
-async def api_add_teacher(request: Request):
+async def api_add_teacher(request: Request, background_tasks: BackgroundTasks):
     payload = await request.json()
     new_teacher = add_teacher_data(payload)
-    try:
-        sync_teachers_to_supabase()
-    except Exception:
-        pass
+    background_tasks.add_task(sync_teachers_to_supabase)
     return {"status": "success", "message": f"Đã thêm giáo viên {new_teacher.get('name')} thành công!", "teacher": new_teacher}
 
 @app.post("/api/teachers/update")
-async def api_update_teacher(request: Request):
+async def api_update_teacher(request: Request, background_tasks: BackgroundTasks):
     payload = await request.json()
     t_id = payload.get("id")
     if not t_id:
@@ -62,25 +59,19 @@ async def api_update_teacher(request: Request):
     updated = update_teacher_data(t_id, payload)
     if not updated:
         raise HTTPException(status_code=404, detail="Không tìm thấy giáo viên")
-    try:
-        sync_teachers_to_supabase()
-    except Exception:
-        pass
+    background_tasks.add_task(sync_teachers_to_supabase)
     return {"status": "success", "message": f"Đã cập nhật thông tin giáo viên {updated.get('name')}!", "teacher": updated}
 
 @app.delete("/api/teachers/{teacher_id}")
-def api_delete_teacher(teacher_id: str):
+def api_delete_teacher(teacher_id: str, background_tasks: BackgroundTasks):
     success = delete_teacher_data(teacher_id)
     if not success:
         raise HTTPException(status_code=404, detail="Không tìm thấy giáo viên để xóa")
-    try:
-        sync_teachers_to_supabase()
-    except Exception:
-        pass
+    background_tasks.add_task(sync_teachers_to_supabase)
     return {"status": "success", "message": "Đã xóa giáo viên khỏi danh sách!"}
 
 @app.post("/api/teachers/import-file")
-async def api_import_teachers_file(file: UploadFile = File(...), mode: str = Form("append")):
+async def api_import_teachers_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), mode: str = Form("append")):
     target_path = os.path.join(UPLOAD_DIR, file.filename)
     with open(target_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -97,10 +88,7 @@ async def api_import_teachers_file(file: UploadFile = File(...), mode: str = For
         add_teacher_data(t_obj)
         added_count += 1
 
-    try:
-        sync_teachers_to_supabase()
-    except Exception:
-        pass
+    background_tasks.add_task(sync_teachers_to_supabase)
 
     return {
         "status": "success",
