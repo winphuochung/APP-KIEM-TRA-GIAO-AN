@@ -62,14 +62,16 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <div class="hidden xl:flex items-center space-x-2 text-xs text-slate-300 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Hệ thống Kiểm định Đa tầng: <strong>Kích hoạt</strong></span>
-        </div>
+        <button onclick="openSupabaseModal()" id="supabase-status-btn" class="inline-flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm cursor-pointer">
+          <i class="fa-solid fa-cloud text-emerald-400"></i>
+          <span id="supabase-status-label">Supabase Cloud</span>
+          <span id="supabase-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        </button>
         <button onclick="switchTab('notebook')" class="inline-flex items-center space-x-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
           <i class="fa-solid fa-book-bookmark"></i>
           <span>Sổ tay Tổ trưởng</span>
         </button>
+
         <button onclick="switchTab('monthly-report')" class="inline-flex items-center space-x-1.5 bg-purple-700 hover:bg-purple-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
           <i class="fa-solid fa-file-invoice"></i>
           <span>Báo cáo sơ kết tháng</span>
@@ -2740,7 +2742,221 @@
       window.location.href = `/api/monthly-report/export-docx?month=${monthVal}`;
     }
 
-    window.onload = loadDashboardData;
+    async function checkSupabaseStatus() {
+      try {
+        const res = await fetch('/api/supabase/status');
+        if (!res.ok) throw new Error('Không thể kết nối máy chủ API');
+        const data = await res.json();
+        
+        const dot = document.getElementById('supabase-status-dot');
+        const label = document.getElementById('supabase-status-label');
+        const cardTitle = document.getElementById('supabase-card-title');
+        const cardDesc = document.getElementById('supabase-card-desc');
+        const cardIcon = document.getElementById('supabase-card-icon');
+        const grid = document.getElementById('supabase-tables-grid');
+
+        if (data.connected) {
+          if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
+          if (label) label.innerText = 'Supabase Cloud';
+          if (cardTitle) cardTitle.innerText = 'Đã kết nối Supabase Cloud';
+          if (cardDesc) cardDesc.innerText = data.message || 'Kết nối thành công (HTTP 200 OK)';
+          if (cardIcon) cardIcon.className = 'w-3 h-3 rounded-full bg-emerald-500';
+        } else {
+          if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
+          if (label) label.innerText = 'Supabase Local';
+          if (cardTitle) cardTitle.innerText = 'Chưa thể kết nối Supabase Cloud';
+          if (cardDesc) cardDesc.innerText = data.message || 'Ứng dụng đang chạy chế độ Local Fallback';
+          if (cardIcon) cardIcon.className = 'w-3 h-3 rounded-full bg-amber-500';
+        }
+
+        if (grid && data.tables) {
+          const names = {
+            'notebook_records': 'Sổ tay tổ trưởng',
+            'teachers': 'Danh sách Giáo viên',
+            'drive_logs': 'Nhật ký Google Drive',
+            'inspection_records': 'Biên bản Kiểm tra'
+          };
+          grid.innerHTML = Object.entries(data.tables).map(([k, v]) => `
+            <div class="p-3 bg-white border ${v.exists ? 'border-emerald-200' : 'border-amber-200'} rounded-lg flex items-center justify-between shadow-xs">
+              <span class="font-medium text-slate-800">${names[k] || k}</span>
+              ${v.exists 
+                ? `<span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded flex items-center space-x-1"><i class="fa-solid fa-check"></i> <span>${v.count} bản ghi</span></span>`
+                : `<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded flex items-center space-x-1"><i class="fa-solid fa-triangle-exclamation"></i> <span>Chưa tạo bảng</span></span>`
+              }
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('Lỗi kiểm tra Supabase:', err);
+      }
+    }
+
+    function openSupabaseModal() {
+      const modal = document.getElementById('supabase-modal');
+      if (modal) modal.classList.remove('hidden');
+      checkSupabaseStatus();
+      loadSupabaseSQLSchema();
+    }
+
+    function closeSupabaseModal() {
+      const modal = document.getElementById('supabase-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function triggerSupabaseSync() {
+      const btn = document.getElementById('btn-sync-supabase');
+      const box = document.getElementById('sync-result-box');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang đồng bộ...</span>';
+      }
+      try {
+        const res = await fetch('/api/supabase/sync-all', { method: 'POST' });
+        const data = await res.json();
+        if (box) {
+          box.classList.remove('hidden');
+          box.innerText = JSON.stringify(data, null, 2);
+        }
+        checkSupabaseStatus();
+      } catch (err) {
+        if (box) {
+          box.classList.remove('hidden');
+          box.innerText = 'Lỗi đồng bộ: ' + err.message;
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> <span>Đồng bộ ngay</span>';
+        }
+      }
+    }
+
+    async function loadSupabaseSQLSchema() {
+      const txt = document.getElementById('supabase-sql-textarea');
+      if (!txt) return;
+      try {
+        const res = await fetch('/api/supabase/schema-sql');
+        const data = await res.json();
+        txt.value = data.sql || '';
+      } catch (err) {
+        txt.value = '-- Lỗi tải SQL schema script';
+      }
+    }
+
+    function toggleSupabaseSQLView() {
+      const container = document.getElementById('supabase-sql-container');
+      const chevron = document.getElementById('sql-chevron');
+      if (container) {
+        container.classList.toggle('hidden');
+        if (chevron) {
+          chevron.className = container.classList.contains('hidden') ? 'fa-solid fa-chevron-down text-slate-500 text-xs' : 'fa-solid fa-chevron-up text-slate-500 text-xs';
+        }
+      }
+    }
+
+    function copySupabaseSQL() {
+      const txt = document.getElementById('supabase-sql-textarea');
+      const btnText = document.getElementById('copy-sql-btn-text');
+      if (txt) {
+        navigator.clipboard.writeText(txt.value);
+        if (btnText) {
+          btnText.innerText = 'Đã sao chép!';
+          setTimeout(() => { btnText.innerText = 'Sao chép SQL'; }, 2000);
+        }
+      }
+    }
+
+    window.onload = function() {
+      loadDashboardData();
+      checkSupabaseStatus();
+    };
   </script>
+
+  <!-- SUPABASE CLOUD MODAL -->
+  <div id="supabase-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
+      <!-- Header -->
+      <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-cloud text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm tracking-wide text-white">Kết nối Cơ sở Dữ liệu Supabase Cloud</h3>
+            <p class="text-[11px] text-slate-400" id="supabase-modal-url">https://creselczgrzorustszzc.supabase.co</p>
+          </div>
+        </div>
+        <button onclick="closeSupabaseModal()" class="text-slate-400 hover:text-white transition text-lg px-2 cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 overflow-y-auto space-y-5 text-slate-700 text-xs">
+        <!-- Status Box -->
+        <div id="supabase-status-card" class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span id="supabase-card-icon" class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            <div>
+              <p class="font-bold text-slate-900 text-sm" id="supabase-card-title">Đã kết nối Supabase Cloud</p>
+              <p class="text-slate-500 text-[11px]" id="supabase-card-desc">Đang kiểm tra kết nối...</p>
+            </div>
+          </div>
+          <button onclick="checkSupabaseStatus()" class="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-700 text-xs font-semibold shadow-xs flex items-center space-x-1 cursor-pointer">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Kiểm tra lại</span>
+          </button>
+        </div>
+
+        <!-- Tables Status Grid -->
+        <div>
+          <h4 class="font-bold text-slate-900 uppercase text-[11px] tracking-wider mb-2">Tình trạng Các Bảng Dữ liệu (Cloud Tables)</h4>
+          <div class="grid grid-cols-2 gap-2.5" id="supabase-tables-grid">
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+              <span class="font-medium text-slate-700">Sổ tay tổ trưởng</span>
+              <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded text-slate-600">Đang tải...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h5 class="font-bold text-blue-900 text-xs">Đồng bộ Dữ liệu 2 chiều</h5>
+              <p class="text-[11px] text-blue-700">Đẩy toàn bộ Sổ tay, Giáo viên và Log Drive local lên Cloud</p>
+            </div>
+            <button onclick="triggerSupabaseSync()" id="btn-sync-supabase" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2 rounded-lg transition shadow-sm flex items-center space-x-1.5 cursor-pointer">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Đồng bộ ngay</span>
+            </button>
+          </div>
+          <div id="sync-result-box" class="hidden text-[11px] p-2.5 rounded-lg bg-white border border-blue-200 font-mono text-slate-800"></div>
+        </div>
+
+        <!-- SQL Schema Accordion -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <button onclick="toggleSupabaseSQLView()" class="w-full bg-slate-100 px-4 py-3 flex justify-between items-center text-left font-bold text-slate-800 hover:bg-slate-200 transition cursor-pointer">
+            <span class="flex items-center space-x-2">
+              <i class="fa-solid fa-code text-slate-500"></i>
+              <span>Mã khởi tạo Khung Bảng (SQL Schema Script)</span>
+            </span>
+            <i class="fa-solid fa-chevron-down text-slate-500 text-xs" id="sql-chevron"></i>
+          </button>
+          <div id="supabase-sql-container" class="hidden p-4 bg-slate-900 text-slate-200 font-mono text-[11px] space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">Dán vào Supabase Dashboard SQL Editor để tạo bảng:</span>
+              <button onclick="copySupabaseSQL()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[10px] font-semibold transition flex items-center space-x-1 cursor-pointer">
+                <i class="fa-solid fa-copy"></i>
+                <span id="copy-sql-btn-text">Sao chép SQL</span>
+              </button>
+            </div>
+            <textarea id="supabase-sql-textarea" readonly class="w-full h-40 bg-slate-950 text-emerald-400 p-3 rounded border border-slate-800 font-mono text-[10px] resize-y focus:outline-none"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+

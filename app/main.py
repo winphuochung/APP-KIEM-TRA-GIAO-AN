@@ -347,9 +347,34 @@ def api_export_monthly_report_docx(month: int = 9):
         media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
 
+# =========================================================================
+# TÍNH NĂNG: KẾT NỐI VÀ ĐỒNG BỘ CƠ SỞ DỮ LIỆU SUPABASE CLOUD
+# =========================================================================
+from app.services.supabase_client import get_supabase_status, sync_all_to_supabase
+
+@app.get("/api/supabase/status")
+def api_supabase_status():
+    """Lấy trạng thái kết nối và các bảng dữ liệu Supabase Cloud"""
+    return get_supabase_status()
+
+@app.post("/api/supabase/sync-all")
+def api_supabase_sync_all():
+    """Thực hiện đồng bộ 2 chiều giữa dữ liệu Local và Supabase Cloud"""
+    return sync_all_to_supabase()
+
+@app.get("/api/supabase/schema-sql")
+def api_supabase_schema_sql():
+    """Lấy câu lệnh SQL để khởi tạo bảng dữ liệu trên Supabase SQL Editor"""
+    sql_file = r"D:\APP-KIEM-TRA-GIAO-AN\supabase_schema.sql"
+    if os.path.exists(sql_file):
+        with open(sql_file, "r", encoding="utf-8") as f:
+            return {"sql": f.read()}
+    return {"sql": "-- File schema.sql không tồn tại"}
+
 # Phục vụ giao diện tĩnh
 static_path = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
+
 
 if __name__ == "__main__":
     import uvicorn
