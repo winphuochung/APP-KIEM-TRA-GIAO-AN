@@ -199,18 +199,23 @@ def sync_teachers_to_supabase(teachers_list: list = None):
         return {"status": "error", "message": _client_init_error or "Supabase client chưa sẵn sàng"}
 
     if teachers_list is None:
-        from app.services.notebook_monthly_report import TEACHER_LIST
-        teachers_list = TEACHER_LIST
+        from app.services.competency import TEACHERS_DATA
+        teachers_list = TEACHERS_DATA
 
     rows = []
     for t in teachers_list:
+        subjs = t.get("subjects", [])
+        subjs_str = ", ".join(subjs) if isinstance(subjs, list) else str(t.get("subject_str") or subjs or "")
+        cls = t.get("classes", [])
+        if isinstance(cls, str):
+            cls = [c.strip() for c in cls.split(",") if c.strip()]
         rows.append({
             "id": t.get("id"),
             "name": t.get("name"),
             "role": t.get("role", "Giáo viên"),
-            "subject_str": t.get("subject_str", ""),
-            "grades": t.get("grades", ""),
-            "classes": t.get("classes", []),
+            "subject_str": subjs_str,
+            "grades": t.get("grades", "6, 7, 8, 9"),
+            "classes": cls,
             "homeroom": t.get("homeroom", ""),
             "default_cntt": t.get("default_cntt", 0),
             "updated_at": datetime.now().isoformat()

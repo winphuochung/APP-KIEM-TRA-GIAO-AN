@@ -242,16 +242,26 @@ def set_tnr(run, size_pt=11, bold=False, italic=False, color_rgb=(0, 0, 0)):
     rPr.append(rFonts)
 
 
+def get_teachers_list():
+    try:
+        from app.services.competency import TEACHERS_DATA
+        if TEACHERS_DATA and len(TEACHERS_DATA) > 0:
+            return TEACHERS_DATA
+    except Exception:
+        pass
+    return TEACHER_LIST
+
 def init_default_notebook_data():
     """Tạo dữ liệu sổ tay mặc định cho toàn bộ các tuần (Tuần 1 đến 35)"""
     data = {}
+    teachers_src = get_teachers_list()
     for w in range(1, 36):
         records = []
         sec4 = SECTION_4_ACTIVITIES.get(w, {})
         obs_list = sec4.get("observations", [])
         stem = sec4.get("stem", None)
         
-        for t in TEACHER_LIST:
+        for t in teachers_src:
             # Kiểm tra dự giờ tuần này nếu có
             t_obs = []
             for obs in obs_list:

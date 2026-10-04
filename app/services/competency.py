@@ -2,13 +2,17 @@ import os
 import json
 from app.config import DATA_DIR
 
-TEACHERS_DATA = [
+TEACHERS_FILE = os.path.join(DATA_DIR, "teachers.json")
+
+DEFAULT_TEACHERS_DATA = [
     {
         "id": "cuc",
         "name": "Phạm Thị Cúc",
         "title": "Cô Cúc",
         "role": "Tổ phó chuyên môn - GV KHTN",
         "subjects": ["KHTN 7", "Sinh 9"],
+        "classes": ["7A2", "9A2"],
+        "homeroom": "9A2",
         "completion_rate": 100,
         "progress_status": "Đúng tiến độ",
         "tii_score": 88,
@@ -29,6 +33,8 @@ TEACHERS_DATA = [
         "title": "Thầy Thắng",
         "role": "Tổ trưởng chuyên môn - GV KHTN",
         "subjects": ["Hóa 9", "KHTN 7"],
+        "classes": ["7A1", "9A1"],
+        "homeroom": "9A1",
         "completion_rate": 100,
         "progress_status": "Đúng tiến độ",
         "tii_score": 94,
@@ -42,6 +48,8 @@ TEACHERS_DATA = [
         "title": "Cô Linh",
         "role": "Giáo viên Toán",
         "subjects": ["Toán 8", "Toán 9"],
+        "classes": ["8A1", "9A1"],
+        "homeroom": "",
         "completion_rate": 100,
         "progress_status": "Đúng tiến độ",
         "tii_score": 89,
@@ -55,6 +63,8 @@ TEACHERS_DATA = [
         "title": "Cô Thủy",
         "role": "Giáo viên Toán",
         "subjects": ["Toán 6", "Toán 7", "Toán 8"],
+        "classes": ["6A1", "7A1", "8A2"],
+        "homeroom": "7A1",
         "completion_rate": 95,
         "progress_status": "Đúng tiến độ",
         "tii_score": 85,
@@ -68,6 +78,8 @@ TEACHERS_DATA = [
         "title": "Thầy Thành",
         "role": "Giáo viên KHTN",
         "subjects": ["HĐTN 8", "KHTN 6", "KHTN 8", "KHTN 9"],
+        "classes": ["6A2", "8A1", "9A2"],
+        "homeroom": "8A2",
         "completion_rate": 92,
         "progress_status": "Đúng tiến độ",
         "tii_score": 84,
@@ -81,6 +93,8 @@ TEACHERS_DATA = [
         "title": "Cô Trang",
         "role": "Giáo viên Công nghệ",
         "subjects": ["CN 8", "CN 9"],
+        "classes": ["8A1", "8A2", "9A1", "9A2"],
+        "homeroom": "",
         "completion_rate": 94,
         "progress_status": "Đúng tiến độ",
         "tii_score": 86,
@@ -94,6 +108,8 @@ TEACHERS_DATA = [
         "title": "Cô Hằng",
         "role": "Giáo viên Công nghệ & HĐTN",
         "subjects": ["CN 6", "CN 7", "HĐTN 6", "HĐTN 7", "HĐTN 9"],
+        "classes": ["6A1", "6A2", "7A1", "7A2"],
+        "homeroom": "6A1",
         "completion_rate": 90,
         "progress_status": "Đúng tiến độ",
         "tii_score": 82,
@@ -107,6 +123,8 @@ TEACHERS_DATA = [
         "title": "Cô Kế",
         "role": "Giáo viên KHTN & HĐTN",
         "subjects": ["HĐTN 8", "KHTN 6", "KHTN 8"],
+        "classes": ["6A1", "8A1"],
+        "homeroom": "6A1",
         "completion_rate": 90,
         "progress_status": "Đúng tiến độ",
         "tii_score": 83,
@@ -115,6 +133,34 @@ TEACHERS_DATA = [
         "sample_files": []
     }
 ]
+
+def load_teachers_data():
+    if os.path.exists(TEACHERS_FILE):
+        try:
+            with open(TEACHERS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, list) and len(data) > 0:
+                    return data
+        except Exception:
+            pass
+    
+    # Save default if not existing
+    save_teachers_list_to_file(DEFAULT_TEACHERS_DATA)
+    return [dict(t) for t in DEFAULT_TEACHERS_DATA]
+
+def save_teachers_list_to_file(data_list):
+    try:
+        os.makedirs(os.path.dirname(TEACHERS_FILE), exist_ok=True)
+        with open(TEACHERS_FILE, "w", encoding="utf-8") as f:
+            json.dump(data_list, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+TEACHERS_DATA = load_teachers_data()
+
+def save_teachers_data():
+    global TEACHERS_DATA
+    save_teachers_list_to_file(TEACHERS_DATA)
 
 def get_heatmap_matrix():
     weeks = [f"T{i}" for i in range(1, 19)]
@@ -131,7 +177,7 @@ def get_heatmap_matrix():
 
     for t in TEACHERS_DATA:
         t_id = t["id"]
-        row = {"id": t_id, "name": t["title"], "role": t["role"], "cells": []}
+        row = {"id": t_id, "name": t.get("title") or t.get("name"), "role": t.get("role", "Giáo viên"), "cells": []}
         
         for w_idx in range(1, 19):
             w_str = str(w_idx)
@@ -165,11 +211,13 @@ def get_heatmap_matrix():
     return {"weeks": weeks, "matrix": matrix}
 
 def get_bi_overview():
-    avg_tii = round(sum(t.get("tii_score", 85) for t in TEACHERS_DATA) / len(TEACHERS_DATA), 1)
-    avg_car = round(sum(t.get("car_score", 88) for t in TEACHERS_DATA) / len(TEACHERS_DATA), 1)
+    avg_tii = round(sum(t.get("tii_score", 85) for t in TEACHERS_DATA) / max(len(TEACHERS_DATA), 1), 1)
+    avg_car = round(sum(t.get("car_score", 88) for t in TEACHERS_DATA) / max(len(TEACHERS_DATA), 1), 1)
     
     sorted_teachers = sorted(TEACHERS_DATA, key=lambda x: x.get("tii_score", 0), reverse=True)
-    top_str = f"{sorted_teachers[0]['title']} ({sorted_teachers[0]['tii_score']}) & {sorted_teachers[1]['title']} ({sorted_teachers[1]['tii_score']})"
+    top_str = f"{sorted_teachers[0].get('title', sorted_teachers[0].get('name'))} ({sorted_teachers[0].get('tii_score')})" if len(sorted_teachers) > 0 else "Chưa có"
+    if len(sorted_teachers) > 1:
+        top_str += f" & {sorted_teachers[1].get('title', sorted_teachers[1].get('name'))} ({sorted_teachers[1].get('tii_score')})"
     
     return {
         "kpi": {
@@ -190,6 +238,7 @@ def get_bi_overview():
     }
 
 def add_teacher_data(teacher_obj: dict):
+    global TEACHERS_DATA
     from app.services.teacher_parser import generate_teacher_id
     t_id = teacher_obj.get("id") or generate_teacher_id(teacher_obj.get("name", ""))
     existing_ids = [t["id"] for t in TEACHERS_DATA]
@@ -212,20 +261,41 @@ def add_teacher_data(teacher_obj: dict):
 
     if "subjects" not in teacher_obj or not teacher_obj["subjects"]:
         teacher_obj["subjects"] = [teacher_obj.get("subject_str", "Chuyên môn")]
+    if "classes" not in teacher_obj:
+        teacher_obj["classes"] = []
+    if "homeroom" not in teacher_obj:
+        teacher_obj["homeroom"] = ""
 
     TEACHERS_DATA.append(teacher_obj)
+    save_teachers_data()
     return teacher_obj
 
 def update_teacher_data(teacher_id: str, teacher_obj: dict):
+    global TEACHERS_DATA
     for idx, t in enumerate(TEACHERS_DATA):
         if t["id"] == teacher_id:
-            TEACHERS_DATA[idx].update(teacher_obj)
-            return TEACHERS_DATA[idx]
+            if "name" in teacher_obj and teacher_obj["name"]:
+                t["name"] = teacher_obj["name"]
+                t["title"] = teacher_obj["name"]
+            if "role" in teacher_obj:
+                t["role"] = teacher_obj["role"]
+            if "subjects" in teacher_obj:
+                t["subjects"] = teacher_obj["subjects"] if isinstance(teacher_obj["subjects"], list) else [teacher_obj["subjects"]]
+            if "classes" in teacher_obj:
+                t["classes"] = teacher_obj["classes"] if isinstance(teacher_obj["classes"], list) else [teacher_obj["classes"]]
+            if "homeroom" in teacher_obj:
+                t["homeroom"] = teacher_obj["homeroom"] or ""
+            
+            TEACHERS_DATA[idx] = t
+            save_teachers_data()
+            return t
     return None
 
 def delete_teacher_data(teacher_id: str):
     global TEACHERS_DATA
     initial_count = len(TEACHERS_DATA)
     TEACHERS_DATA[:] = [t for t in TEACHERS_DATA if t["id"] != teacher_id]
-    return len(TEACHERS_DATA) < initial_count
-
+    if len(TEACHERS_DATA) < initial_count:
+        save_teachers_data()
+        return True
+    return False

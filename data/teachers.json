@@ -1,0 +1,238 @@
+[
+  {
+    "id": "cuc",
+    "name": "Phạm Thị Cúc",
+    "title": "Phạm Thị Cúc",
+    "role": "Tổ phó chuyên môn - GV KHTN",
+    "subjects": [
+      "KHTN 7",
+      "Sinh 9"
+    ],
+    "classes": [
+      "7A2",
+      "9A2"
+    ],
+    "homeroom": "9A2",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 88,
+    "car_score": 92,
+    "radar": {
+      "pedagogy": 9.2,
+      "bloom": 9.4,
+      "digital": 8.8,
+      "format": 7.5,
+      "stem": 8.0
+    },
+    "sample_files": [
+      "Tuần 1-2 Tiết 1-5  BÀI 1 MỞ ĐẦU KHTN.docx",
+      "Tuần 2-3  Tiết 6-9  Bài 2  Nguyên tử - KHTN7 - CTST.docx",
+      "Tuần 3-4, Tiết 10-13  -CHỦ ĐỀ 1 - BÀI 3- NTHH.docx",
+      "Tuần 4-5  -Tiết 14-18  Bài 4- SƠ LƯỢC BẢNG TUẦN TOÀN CÁC NTHH-KHTN 7-CTST-ST.docx",
+      "Tuần 2 - Tiết 1-2   Bài 36-Khái quát về di truyền học-Sinh9- KNTT.docx",
+      "Tuần 3,4,5,6 - Tiết 3,4,5,6  BÀI 37- khtn 9- kntt.docx"
+    ]
+  },
+  {
+    "id": "thang",
+    "name": "Lê Văn Thắng",
+    "title": "Thầy Thắng",
+    "role": "Tổ trưởng chuyên môn - GV KHTN",
+    "subjects": [
+      "Hóa 9",
+      "KHTN 7"
+    ],
+    "classes": [
+      "7A1",
+      "9A1"
+    ],
+    "homeroom": "9A1",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 94,
+    "car_score": 96,
+    "radar": {
+      "pedagogy": 9.5,
+      "bloom": 9.2,
+      "digital": 9.6,
+      "format": 9.5,
+      "stem": 9.0
+    },
+    "sample_files": []
+  },
+  {
+    "id": "linh",
+    "name": "Phạm Thị Mỹ Linh",
+    "title": "Cô Linh",
+    "role": "Giáo viên Toán",
+    "subjects": [
+      "Toán 8",
+      "Toán 9"
+    ],
+    "classes": [
+      "8A1",
+      "9A1"
+    ],
+    "homeroom": "",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 89,
+    "car_score": 90,
+    "radar": {
+      "pedagogy": 9.0,
+      "bloom": 9.0,
+      "digital": 8.5,
+      "format": 9.2,
+      "stem": 8.4
+    },
+    "sample_files": []
+  },
+  {
+    "id": "thuy",
+    "name": "Lê Thị Thu Thủy",
+    "title": "Cô Thủy",
+    "role": "Giáo viên Toán",
+    "subjects": [
+      "Toán 6",
+      "Toán 7",
+      "Toán 8"
+    ],
+    "classes": [
+      "6A1",
+      "7A1",
+      "8A2"
+    ],
+    "homeroom": "7A1",
+    "completion_rate": 95,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 85,
+    "car_score": 88,
+    "radar": {
+      "pedagogy": 8.8,
+      "bloom": 8.6,
+      "digital": 8.0,
+      "format": 8.8,
+      "stem": 7.9
+    },
+    "sample_files": []
+  },
+  {
+    "id": "thanh",
+    "name": "Nguyễn Chí Thành",
+    "title": "Thầy Thành",
+    "role": "Giáo viên KHTN",
+    "subjects": [
+      "HĐTN 8",
+      "KHTN 6",
+      "KHTN 8",
+      "KHTN 9"
+    ],
+    "classes": [
+      "6A2",
+      "8A1",
+      "9A2"
+    ],
+    "homeroom": "8A2",
+    "completion_rate": 92,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 84,
+    "car_score": 87,
+    "radar": {
+      "pedagogy": 8.7,
+      "bloom": 8.5,
+      "digital": 8.2,
+      "format": 8.4,
+      "stem": 8.2
+    },
+    "sample_files": []
+  },
+  {
+    "id": "trang",
+    "name": "Nguyễn Thị Thùy Trang",
+    "title": "Cô Trang",
+    "role": "Giáo viên Công nghệ",
+    "subjects": [
+      "CN 8",
+      "CN 9"
+    ],
+    "classes": [
+      "8A1",
+      "8A2",
+      "9A1",
+      "9A2"
+    ],
+    "homeroom": "",
+    "completion_rate": 94,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 86,
+    "car_score": 89,
+    "radar": {
+      "pedagogy": 8.9,
+      "bloom": 8.4,
+      "digital": 8.5,
+      "format": 8.7,
+      "stem": 8.8
+    },
+    "sample_files": []
+  },
+  {
+    "id": "hang",
+    "name": "Lê Thị Thúy Hằng",
+    "title": "Cô Hằng",
+    "role": "Giáo viên Công nghệ & HĐTN",
+    "subjects": [
+      "CN 6",
+      "CN 7",
+      "HĐTN 6",
+      "HĐTN 7",
+      "HĐTN 9"
+    ],
+    "classes": [
+      "6A1",
+      "6A2",
+      "7A1",
+      "7A2"
+    ],
+    "homeroom": "6A1",
+    "completion_rate": 90,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 82,
+    "car_score": 85,
+    "radar": {
+      "pedagogy": 8.4,
+      "bloom": 8.2,
+      "digital": 8.0,
+      "format": 8.3,
+      "stem": 8.0
+    },
+    "sample_files": []
+  },
+  {
+    "id": "ke",
+    "name": "Hà Thị Kế",
+    "title": "Cô Kế",
+    "role": "Giáo viên KHTN & HĐTN",
+    "subjects": [
+      "HĐTN 8",
+      "KHTN 6",
+      "KHTN 8"
+    ],
+    "classes": [
+      "6A1",
+      "8A1"
+    ],
+    "homeroom": "6A1",
+    "completion_rate": 90,
+    "progress_status": "Đúng tiến độ",
+    "tii_score": 83,
+    "car_score": 86,
+    "radar": {
+      "pedagogy": 8.5,
+      "bloom": 8.3,
+      "digital": 7.8,
+      "format": 8.5,
+      "stem": 7.8
+    },
+    "sample_files": []
+  }
+]
