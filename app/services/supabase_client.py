@@ -4,16 +4,21 @@ import json
 import logging
 from datetime import datetime
 
-# Ensure user site-packages are accessible
-site_pkg = r"C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages"
-if os.path.exists(site_pkg) and site_pkg not in sys.path:
-    sys.path.append(site_pkg)
+# Ensure user site-packages are loaded
+site_packages_list = [
+    r"C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages",
+    r"C:\Users\ADMIN\AppData\Roaming\Python\Python312\site-packages",
+    r"C:\Program Files\Python313\Lib\site-packages"
+]
+for pkg in site_packages_list:
+    if os.path.exists(pkg) and pkg not in sys.path:
+        sys.path.insert(0, pkg)
 
 try:
     from supabase import create_client, Client
 except ImportError:
-    Client = None
     create_client = None
+    Client = None
 
 logger = logging.getLogger("supabase_client")
 
@@ -33,29 +38,50 @@ def load_env_file():
         except Exception as e:
             logger.warning(f"Error loading .env file: {e}")
 
-
 load_env_file()
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://creselczgrzorustszzc.supabase.co")
-SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
-SUPABASE_SERVICE_ROLE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
+# Credentials with direct fallback constants
+DEFAULT_URL = "https://creselczgrzorustszzc.supabase.co"
+DEFAULT_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyZXNlbGN6Z3J6b3J1c3RzenpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMTk3OTQsImV4cCI6MjEwNjU5NTc5NH0.sPg3STq-6t36xUpXzKjV_pHa180BtJGB9aXSKadeac4"
+DEFAULT_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyZXNlbGN6Z3J6b3J1c3RzenpjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MTAxOTc5NCwiZXhwIjoyMTA2NTk1Nzk0fQ.wYFxV6mSNp8QIIbAhyvtIn16GgZ9705SsDZjMvI_4kU"
+
+SUPABASE_URL = os.environ.get("SUPABASE_URL") or DEFAULT_URL
+SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY") or DEFAULT_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or DEFAULT_SERVICE_ROLE_KEY
 
 _supabase_client = None
+_client_init_error = None
 
-def get_supabase_client() -> Client:
-    global _supabase_client
+def get_supabase_client():
+    global _supabase_client, create_client, _client_init_error
     if _supabase_client is not None:
         return _supabase_client
     
-    if not create_client or not SUPABASE_URL or not (SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY):
-        return None
+    # Try dynamic import if top-level import failed
+    if create_client is None:
+        try:
+            for pkg in site_packages_list:
+                if os.path.exists(pkg) and pkg not in sys.path:
+                    sys.path.insert(0, pkg)
+            from supabase import create_client as dynamic_create_client
+            create_client = dynamic_create_client
+        except Exception as imp_err:
+            _client_init_error = f"Lỗi nạp thư viện supabase: {imp_err}"
+            logger.error(_client_init_error)
+            return None
 
     key = SUPABASE_SERVICE_ROLE_KEY if SUPABASE_SERVICE_ROLE_KEY else SUPABASE_ANON_KEY
+    if not SUPABASE_URL or not key:
+        _client_init_error = "Thiếu thông tin SUPABASE_URL hoặc API Key"
+        return None
+
     try:
         _supabase_client = create_client(SUPABASE_URL, key)
+        _client_init_error = None
         return _supabase_client
     except Exception as e:
-        logger.error(f"Failed to initialize Supabase client: {e}")
+        _client_init_error = f"Lỗi khởi tạo Supabase Client: {e}"
+        logger.error(_client_init_error)
         return None
 
 def get_supabase_status():
@@ -66,7 +92,7 @@ def get_supabase_status():
             "status": "error",
             "connected": False,
             "url": SUPABASE_URL,
-            "message": "Không thể khởi tạo thư viện Supabase client",
+            "message": _client_init_error or "Không thể khởi tạo thư viện Supabase client",
             "tables": {}
         }
     
@@ -93,7 +119,7 @@ def get_supabase_status():
         "connected": connected,
         "url": SUPABASE_URL,
         "tables_ready": all_exist,
-        "message": "Đã kết nối thành công tới Supabase Cloud!" if all_exist else "Kết nối thành công nhưng cần khởi tạo bảng SQL trong Supabase",
+        "message": "Đã kết nối thành công tới Supabase Cloud!" if all_exist else "Kết nối thành công tới Supabase Cloud! (Nhấn 'Mã khởi tạo Khung Bảng' bên dưới để tạo các bảng nếu chưa có)",
         "tables": table_status,
         "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
@@ -102,7 +128,7 @@ def sync_notebook_to_supabase(notebook_data: dict = None):
     """Đồng bộ Sổ tay tổ trưởng (so_tay_to_truong.json) lên Supabase table `notebook_records`"""
     client = get_supabase_client()
     if not client:
-        return {"status": "error", "message": "Supabase client chưa sẵn sàng"}
+        return {"status": "error", "message": _client_init_error or "Supabase client chưa sẵn sàng"}
     
     data_file = os.path.join(DATA_DIR, "so_tay_to_truong.json")
     if notebook_data is None:
@@ -170,7 +196,7 @@ def sync_teachers_to_supabase(teachers_list: list = None):
     """Đồng bộ Danh sách giáo viên lên Supabase table `teachers`"""
     client = get_supabase_client()
     if not client:
-        return {"status": "error", "message": "Supabase client chưa sẵn sàng"}
+        return {"status": "error", "message": _client_init_error or "Supabase client chưa sẵn sàng"}
 
     if teachers_list is None:
         from app.services.notebook_monthly_report import TEACHER_LIST
@@ -205,7 +231,7 @@ def sync_drive_logs_to_supabase(log_data: dict = None):
     """Đồng bộ log giám sát Google Drive lên Supabase table `drive_logs`"""
     client = get_supabase_client()
     if not client:
-        return {"status": "error", "message": "Supabase client chưa sẵn sàng"}
+        return {"status": "error", "message": _client_init_error or "Supabase client chưa sẵn sàng"}
 
     data_file = os.path.join(DATA_DIR, "drive_monitoring_log.json")
     if log_data is None and os.path.exists(data_file):
@@ -238,7 +264,13 @@ def sync_all_to_supabase():
     """Đồng bộ toàn bộ dữ liệu hệ thống (Sổ tay, Giáo viên, Nhật ký Drive) lên Supabase Cloud"""
     status = get_supabase_status()
     if not status.get("connected"):
-        return {"status": "error", "message": "Không thể kết nối Supabase Cloud"}
+        return {"status": "error", "message": status.get("message") or "Không thể kết nối Supabase Cloud"}
+
+    if not status.get("tables_ready"):
+        return {
+            "status": "warning",
+            "message": "Đã kết nối máy chủ Supabase thành công! Tuy nhiên các bảng SQL trên Cloud chưa được khởi tạo. Vui lòng nhấp vào mục 'Mã khởi tạo Khung Bảng (SQL Schema Script)' bên dưới, dán vào Supabase SQL Editor để tạo bảng."
+        }
 
     results = {
         "teachers": sync_teachers_to_supabase(),
@@ -251,3 +283,4 @@ def sync_all_to_supabase():
     results["overall_status"] = "success" if success_count > 0 else "warning"
     results["summary_message"] = f"Hoàn tất đồng bộ dữ liệu tới Supabase Cloud. ({success_count}/3 tác vụ thành công)"
     return results
+
