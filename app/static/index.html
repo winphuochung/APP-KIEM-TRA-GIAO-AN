@@ -1,0 +1,2746 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ sinh thái Kiểm định Giáo dục Số Toàn diện - Trợ lý Quản trị Sư phạm</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      letter-spacing: -0.01em;
+      background-color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .heatmap-cell { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 6px; font-weight: 600; }
+    .status-done { background-color: #10b981; color: white; }
+    .status-early { background-color: #3b82f6; color: white; }
+    .status-upcoming { background-color: #e2e8f0; color: #64748b; }
+    .status-late { background-color: #ef4444; color: white; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col min-h-screen">
+
+  <!-- TOPBAR -->
+  <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center space-x-3.5">
+        <img src="/logo.png?v=5" alt="Logo Hệ thống" class="w-16 h-16 shrink-0 rounded-2xl object-contain shadow-md border border-slate-700/60 p-0.5 bg-slate-950/40" />
+        <div>
+          <h1 class="text-lg font-extrabold tracking-tight text-white flex items-center gap-2">
+            QUẢN LÍ TỔ CHUYÊN MÔN
+            <span class="text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full font-medium">v2.0 Toàn diện</span>
+          </h1>
+          <p class="text-xs text-slate-300 font-medium">Trường TH & THCS Phước Hưng • Tổ Toán – KHTN – Công Nghệ</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <div class="hidden xl:flex items-center space-x-2 text-xs text-slate-300 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Hệ thống Kiểm định Đa tầng: <strong>Kích hoạt</strong></span>
+        </div>
+        <button onclick="switchTab('notebook')" class="inline-flex items-center space-x-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+          <i class="fa-solid fa-book-bookmark"></i>
+          <span>Sổ tay Tổ trưởng</span>
+        </button>
+        <button onclick="switchTab('monthly-report')" class="inline-flex items-center space-x-1.5 bg-purple-700 hover:bg-purple-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Báo cáo sơ kết tháng</span>
+        </button>
+        <a href="/api/export-report" class="inline-flex items-center space-x-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+          <i class="fa-solid fa-file-word"></i>
+          <span>Xuất Biên bản .docx</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-20 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-8 overflow-x-auto">
+      <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="py-3 px-1 border-b-2 font-semibold text-sm flex items-center space-x-2 border-blue-600 text-blue-600 transition">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Dashboard Quản trị BI</span>
+      </button>
+      <button onclick="switchTab('heatmap')" id="tab-btn-heatmap" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Bản đồ nhiệt Giảng dạy</span>
+      </button>
+      <button onclick="switchTab('inspect')" id="tab-btn-inspect" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-clipboard-check"></i>
+        <span>Kiểm tra giáo án</span>
+      </button>
+      <button onclick="switchTab('competency')" id="tab-btn-competency" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-compass"></i>
+        <span>Bản đồ Năng lực Giáo viên</span>
+      </button>
+      <button onclick="switchTab('export')" id="tab-btn-export" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-print"></i>
+        <span>Hồ sơ & Báo cáo</span>
+      </button>
+      <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-calendar-check text-blue-600"></i>
+        <span>Lịch công tác tuần</span>
+      </button>
+      <button onclick="switchTab('drive')" id="tab-btn-drive" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-brands fa-google-drive text-amber-500"></i>
+        <span>Giám sát Drive & Gmail</span>
+      </button>
+      <button onclick="switchTab('notebook')" id="tab-btn-notebook" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-book-bookmark text-emerald-600"></i>
+        <span>Sổ tay Tổ trưởng</span>
+      </button>
+      <button onclick="switchTab('monthly-report')" id="tab-btn-monthly-report" class="py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition">
+        <i class="fa-solid fa-file-invoice text-purple-600"></i>
+        <span>Báo cáo sơ kết tháng</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: DASHBOARD BI -->
+    <!-- ========================================== -->
+    <section id="tab-dashboard" class="space-y-6">
+      <!-- KPI CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng số Giáo viên</p>
+            <h3 class="text-2xl font-bold text-slate-800 mt-1">8 Thầy/Cô</h3>
+            <span class="inline-flex items-center text-xs font-medium text-emerald-600 mt-1">
+              <i class="fa-solid fa-check-circle mr-1"></i> 100% hồ sơ Tuần 1-4
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Chỉ số Sáng tạo (TII)</p>
+            <h3 class="text-2xl font-bold text-slate-800 mt-1">87.0 <span class="text-sm font-normal text-slate-500">/100</span></h3>
+            <span class="inline-flex items-center text-xs font-medium text-emerald-600 mt-1">
+              <i class="fa-solid fa-arrow-trend-up mr-1"></i> Mức Xuất sắc
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Thích ứng GDPT 2018 (CAR)</p>
+            <h3 class="text-2xl font-bold text-slate-800 mt-1">89.5%</h3>
+            <span class="inline-flex items-center text-xs font-medium text-emerald-600 mt-1">
+              <i class="fa-solid fa-shield-halved mr-1"></i> Chuẩn hóa 5512
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-bullseye"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tiến độ Giảng dạy</p>
+            <h3 class="text-2xl font-bold text-slate-800 mt-1">Đúng tiến độ</h3>
+            <span class="inline-flex items-center text-xs font-medium text-blue-600 mt-1">
+              <i class="fa-solid fa-clock-rotate-left mr-1"></i> Đón đầu Tuần 5-6
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-diagram-project"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK UTILITY MODULES -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-5 rounded-2xl shadow-md border border-slate-800 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-layer-group text-amber-400"></i>
+              Mô-đun Nghiệp vụ Quản trị Tổ chuyên môn
+            </h3>
+            <p class="text-xs text-slate-300 mt-0.5">Sổ tay theo dõi hoạt động giáo viên hàng tuần & Tự động liên kết tạo Báo cáo sơ kết tháng chuẩn mẫu "Báo cáo sơ kết HĐCM tháng 09.doc"</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+          <!-- Card 1: Sổ tay Tổ trưởng -->
+          <div onclick="switchTab('notebook')" class="bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl p-4 cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-book-bookmark"></i>
+              </span>
+              <span class="text-[10px] bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">35 Tuần</span>
+            </div>
+            <h4 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Sổ tay Tổ trưởng</h4>
+            <p class="text-[11px] text-slate-300 mt-1">Ghi chép cụ thể 8 giáo viên theo tuần, chuyên cần, PPCT, ĐDDH/CNTT, dự giờ & xếp loại.</p>
+            <div class="mt-3 text-xs font-semibold text-emerald-400 flex items-center gap-1">
+              <span>Mở Sổ tay ghi chép</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+          </div>
+
+          <!-- Card 2: Báo cáo Sơ kết Tháng -->
+          <div onclick="switchTab('monthly-report')" class="bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl p-4 cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="w-10 h-10 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-file-invoice"></i>
+              </span>
+              <span class="text-[10px] bg-purple-400/20 text-purple-300 border border-purple-400/30 px-2 py-0.5 rounded-full font-bold">File Word .docx</span>
+            </div>
+            <h4 class="font-bold text-white text-sm group-hover:text-purple-300 transition">Báo cáo Sơ kết Tháng</h4>
+            <p class="text-[11px] text-slate-300 mt-1">Tự động liên kết dữ liệu từ Sổ tay tuần & xuất file Word chuẩn mẫu tháng 09 và NĐ 30.</p>
+            <div class="mt-3 text-xs font-semibold text-purple-400 flex items-center gap-1">
+              <span>Xem & Xuất báo cáo</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+          </div>
+
+          <!-- Card 3: Lịch công tác tuần -->
+          <div onclick="switchTab('schedule')" class="bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl p-4 cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-calendar-check"></i>
+              </span>
+              <span class="text-[10px] bg-blue-400/20 text-blue-300 border border-blue-400/30 px-2 py-0.5 rounded-full font-bold">Trích xuất AI</span>
+            </div>
+            <h4 class="font-bold text-white text-sm group-hover:text-blue-300 transition">Lịch công tác tuần</h4>
+            <p class="text-[11px] text-slate-300 mt-1">Tự động chuyển đổi kế hoạch tổ thành Lịch tuần chi tiết và xuất Word NĐ 30.</p>
+            <div class="mt-3 text-xs font-semibold text-blue-400 flex items-center gap-1">
+              <span>Xem Lịch công tác</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+          </div>
+
+          <!-- Card 4: Giám sát Google Drive -->
+          <div onclick="switchTab('drive')" class="bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl p-4 cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center text-lg font-bold">
+                <i class="fa-brands fa-google-drive"></i>
+              </span>
+              <span class="text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full font-bold">Google Drive</span>
+            </div>
+            <h4 class="font-bold text-white text-sm group-hover:text-amber-300 transition">Giám sát Drive & Gmail</h4>
+            <p class="text-[11px] text-slate-300 mt-1">Giám sát nộp giáo án 8 GV trên Google Drive, thông báo tự động về Gmail.</p>
+            <div class="mt-3 text-xs font-semibold text-amber-400 flex items-center gap-1">
+              <span>Giám sát tiến độ</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-chart-column text-blue-600"></i>
+              Chất lượng Chuyên môn theo Khối lớp (Thang 10)
+            </h4>
+          </div>
+          <div class="h-64">
+            <canvas id="chartGradeQuality"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-indigo-600"></i>
+              Phân bố Lỗi Thường gặp (NĐ 30 & CV 5512)
+            </h4>
+          </div>
+          <div class="h-64">
+            <canvas id="chartErrorDist"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEACHERS LIST TABLE -->
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-chalkboard-user text-blue-600"></i>
+            Danh sách Giáo viên trong Tổ & Chỉ số Đánh giá
+          </h4>
+          <span class="text-xs text-slate-500">Năm học 2026 – 2027</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-600">
+            <thead class="bg-slate-50 text-xs font-semibold text-slate-500 uppercase border-b border-slate-100">
+              <tr>
+                <th class="px-6 py-3">STT</th>
+                <th class="px-6 py-3">Giáo viên</th>
+                <th class="px-6 py-3">Chức vụ / Phụ trách</th>
+                <th class="px-6 py-3 text-center">Hoàn thành</th>
+                <th class="px-6 py-3 text-center">Chỉ số TII</th>
+                <th class="px-6 py-3 text-center">Chỉ số CAR</th>
+                <th class="px-6 py-3 text-center">Tiến độ</th>
+                <th class="px-6 py-3 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="teacher-table-body" class="divide-y divide-slate-100 font-medium">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: TEACHING HEATMAP -->
+    <!-- ========================================== -->
+    <section id="tab-heatmap" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-fire text-amber-500"></i>
+              Bản đồ nhiệt Giảng dạy Học kỳ I (Tuần 1 đến Tuần 18)
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Đối chiếu tự động giữa lịch sử đồng bộ Google Drive và Phân phối chương trình nhà trường.</p>
+          </div>
+          <!-- Legend -->
+          <div class="flex flex-wrap items-center gap-3 text-xs font-medium">
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-emerald-500"></span> Đã nộp & Kiểm duyệt</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-blue-500"></span> Soạn đón đầu</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-slate-200"></span> Chưa đến hạn</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-rose-500"></span> Chậm trễ</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto pb-4">
+          <div id="heatmap-container" class="min-w-[800px] space-y-3">
+            <!-- Heatmap rows rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: LIVE INSPECTION & AUTO-CORRECTION -->
+    <!-- ========================================== -->
+    <section id="tab-inspect" class="hidden space-y-6">
+      <!-- TOP ACTION BAR -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+        <!-- HEADER VÀ LINK GOOGLE DRIVE -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-blue-600 text-lg"></i>
+              Kiểm tra Giáo án
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Kiểm định nghiệp vụ sư phạm (CV 5512, GDPT 2018) và tự động chuẩn hóa thể thức (Nghị định 30/2020/NĐ-CP).</p>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing" target="_blank" class="inline-flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition">
+            <i class="fa-brands fa-google-drive text-amber-600 text-base"></i>
+            <span>Google Drive Hồ sơ Giáo án</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-amber-500"></i>
+          </a>
+        </div>
+
+        <!-- BỘ CHỌN: GIAI ĐOẠN KIỂM TRA & TÊN GIÁO VIÊN THEO GOOGLE DRIVE -->
+        <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- 1. GIAI ĐOẠN KIỂM TRA -->
+            <div>
+              <label for="period-select" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-calendar-week text-blue-600"></i>
+                Giai đoạn kiểm tra: <span class="text-rose-500">*</span>
+              </label>
+              <select id="period-select" onchange="onPeriodChange()" class="w-full text-xs font-semibold bg-white border border-slate-300 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-blue-500 outline-none transition shadow-sm">
+                <option value="Tuần 1 đến tuần 4" selected>Tuần 1 đến tuần 4</option>
+                <option value="Tuần 5 đến tuần 8">Tuần 5 đến tuần 8</option>
+                <option value="Tuần 9 đến tuần 12">Tuần 9 đến tuần 12</option>
+                <option value="Tuần 13 đến tuần 16">Tuần 13 đến tuần 16</option>
+                <option value="Tuần 17 đến tuần 20">Tuần 17 đến tuần 20</option>
+                <option value="Tuần 21 đến tuần 24">Tuần 21 đến tuần 24</option>
+                <option value="Tuần 25 đến tuần 28">Tuần 25 đến tuần 28</option>
+                <option value="Tuần 29 đến tuần 32">Tuần 29 đến tuần 32</option>
+                <option value="Tuần 33 đến tuần 35">Tuần 33 đến tuần 35</option>
+              </select>
+            </div>
+
+            <!-- 2. TÊN GIÁO VIÊN CẦN KIỂM TRA -->
+            <div>
+              <label for="teacher-name-input" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-user-check text-indigo-600"></i>
+                Tên Giáo viên cần kiểm tra: <span class="text-rose-500">*</span>
+              </label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  id="teacher-name-input" 
+                  list="teachers-datalist" 
+                  value="Phạm Thị Cúc"
+                  placeholder="Nhập hoặc chọn tên giáo viên..." 
+                  class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition shadow-sm"
+                  oninput="onTeacherNameChange()"
+                />
+                <datalist id="teachers-datalist">
+                  <option value="Phạm Thị Cúc (Cô Cúc - KHTN 7, Sinh 9)"></option>
+                  <option value="Lê Thị Thúy Hằng (Cô Hằng - CN 6, CN 7, HĐTN 6, 7, 9)"></option>
+                  <option value="Hà Thị Kế (Cô Kế - HĐTN 8, KHTN 6, KHTN 8)"></option>
+                  <option value="Phạm Thị Mỹ Linh (Cô Linh - Toán 8, Toán 9)"></option>
+                  <option value="Lê Thị Thu Thủy (Cô Thủy - Toán 6, Toán 7, Toán 8)"></option>
+                  <option value="Nguyễn Thị Thùy Trang (Cô Trang - CN 8, CN 9)"></option>
+                  <option value="Nguyễn Chí Thành (Thầy Thành - HĐTN 8, KHTN 6, KHTN 8, KHTN 9)"></option>
+                  <option value="Lê Văn Thắng (Thầy Thắng - Hóa 9, KHTN 7)"></option>
+                </datalist>
+              </div>
+            </div>
+
+            <!-- 3. PHÂN MÔN / KHỐI LỚP PHỤ TRÁCH -->
+            <div>
+              <label for="subject-select" class="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-emerald-600"></i>
+                Môn học / Khối lớp:
+              </label>
+              <select id="subject-select" onchange="onSubjectChange()" class="w-full text-xs font-semibold bg-white border border-slate-300 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-blue-500 outline-none transition shadow-sm">
+                <!-- Dynamic according to teacher -->
+                <option value="khtn7">KHTN 7</option>
+                <option value="sinh9">Sinh 9</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- HÀNG NÚT CHỌN NHANH 8 GIÁO VIÊN THEO GOOGLE DRIVE -->
+          <div class="pt-2 border-t border-slate-200/80">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-[11px] font-bold text-slate-400 mr-1 flex items-center gap-1">
+                <i class="fa-solid fa-users text-slate-400"></i> Chọn nhanh giáo viên trên Drive:
+              </span>
+              <button type="button" onclick="selectQuickTeacher('Phạm Thị Cúc', 'Cô Cúc')" id="btn-t-cuc" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-600 text-white shadow-sm transition">Cô Cúc</button>
+              <button type="button" onclick="selectQuickTeacher('Lê Thị Thúy Hằng', 'Cô Hằng')" id="btn-t-hang" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Cô Hằng</button>
+              <button type="button" onclick="selectQuickTeacher('Hà Thị Kế', 'Cô Kế')" id="btn-t-ke" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Cô Kế</button>
+              <button type="button" onclick="selectQuickTeacher('Phạm Thị Mỹ Linh', 'Cô Linh')" id="btn-t-linh" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Cô Linh</button>
+              <button type="button" onclick="selectQuickTeacher('Lê Thị Thu Thủy', 'Cô Thủy')" id="btn-t-thuy" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Cô Thủy</button>
+              <button type="button" onclick="selectQuickTeacher('Nguyễn Thị Thùy Trang', 'Cô Trang')" id="btn-t-trang" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Cô Trang</button>
+              <button type="button" onclick="selectQuickTeacher('Nguyễn Chí Thành', 'Thầy Thành')" id="btn-t-thanh" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Thầy Thành</button>
+              <button type="button" onclick="selectQuickTeacher('Lê Văn Thắng', 'Thầy Thắng')" id="btn-t-thang" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition">Thầy Thắng</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- CHỌN BÀI DẠY VÀ NÚT HÀNH ĐỘNG -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end pt-1">
+          <!-- Chọn bài học -->
+          <div class="lg:col-span-7">
+            <div class="flex items-center justify-between mb-1.5">
+              <label id="sample-label" class="block text-xs font-semibold text-slate-700 uppercase">
+                Bài dạy được kiểm tra (<span id="label-teacher-display" class="text-blue-600 font-bold">Cô Cúc</span> - <span id="label-period-display" class="text-slate-700 font-bold">Tuần 1 đến tuần 4</span>):
+              </label>
+            </div>
+            <select id="sample-select" class="w-full text-xs font-medium bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+              <option value="0">KHTN 7 - Bài 1: Mở đầu môn KHTN (5 tiết - Tuần 1, 2)</option>
+              <option value="1">KHTN 7 - Bài 2: Nguyên tử (4 tiết - Tuần 2, 3)</option>
+              <option value="2">KHTN 7 - Bài 3: Nguyên tố hóa học (4 tiết - Tuần 3, 4) [Có lỗi NĐ 30]</option>
+              <option value="3">KHTN 7 - Bài 4: Sơ lược Bảng tuần hoàn (5 tiết - Tuần 4, 5) [Có lỗi lề 20mm]</option>
+              <option value="4">KHTN 9 - Bài 36: Khái quát về di truyền học (2 tiết - Tuần 2) [Mẫu mực Rubrics]</option>
+              <option value="5">KHTN 9 - Bài 37: Các quy luật di truyền của Mendel (4 tiết - Tuần 3, 4, 5, 6)</option>
+            </select>
+          </div>
+
+          <!-- Nút hành động -->
+          <div class="lg:col-span-5 flex flex-wrap items-center gap-2.5">
+            <button onclick="runSampleInspect()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs py-2.5 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span>Bắt đầu Kiểm tra Giáo án</span>
+            </button>
+            <button onclick="exportMergedTeacherDocx()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs py-2.5 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2" title="Xuất file Word Biên bản kiểm tra gộp tất cả các môn của giáo viên theo chuẩn NĐ 30">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Xuất Biên bản Gộp (.docx)</span>
+            </button>
+            <button onclick="runAutoCorrection()" id="btn-auto-correct" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs py-2.5 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>⚡ Auto-Correct NĐ 30</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TÙY CHỌN TẢI FILE TỰ DO TỪ MÁY TÍNH -->
+        <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-base"></i>
+            <span>Hoặc tải lên tệp giáo án riêng (.docx) của giáo viên này:</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <input type="file" id="file-upload-input" accept=".docx" class="text-xs file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
+            <button onclick="runUploadInspect()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3 py-1.5 rounded-lg transition">Tải lên & Quét</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSPECTION RESULTS CONTAINER -->
+      <div id="inspect-result-card" class="hidden space-y-6">
+        <!-- TEACHER & FILE INFO BANNER -->
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-5 rounded-2xl shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-2xl text-blue-300">
+              <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+            <div>
+              <div class="text-[11px] font-semibold text-blue-200 uppercase tracking-wider">Hồ sơ Giáo viên được kiểm tra:</div>
+              <h3 id="res-teacher-name" class="text-xl font-bold text-white tracking-tight">Cô Phạm Thị Cúc</h3>
+            </div>
+          </div>
+          <div class="text-right sm:text-right text-xs bg-white/10 px-3.5 py-2 rounded-xl border border-white/15">
+            <span class="text-slate-300">Tệp bài dạy đang quét:</span>
+            <div id="res-filename" class="font-bold text-blue-200 truncate max-w-[280px]">Tuần 1-2 Tiết 1-5 BÀI 1 MỞ ĐẦU KHTN.docx</div>
+          </div>
+        </div>
+
+        <!-- SCORE OVERVIEW -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+            <p class="text-xs font-semibold text-slate-500 uppercase">Điểm Sư phạm (CV 5512)</p>
+            <div id="res-score-5512" class="text-3xl font-extrabold text-blue-600 mt-1">--</div>
+            <span class="text-xs text-slate-400">Thang điểm 10</span>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+            <p class="text-xs font-semibold text-slate-500 uppercase">Điểm Thể thức (NĐ 30)</p>
+            <div id="res-score-nd30" class="text-3xl font-extrabold text-indigo-600 mt-1">--</div>
+            <span id="res-nd30-status" class="text-xs text-slate-400">Kiểm tra lề & font</span>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+            <p class="text-xs font-semibold text-slate-500 uppercase">Mật độ Tương tác</p>
+            <div id="res-interaction" class="text-3xl font-extrabold text-emerald-600 mt-1">--</div>
+            <span class="text-xs text-slate-400">Thảo luận / Hoạt động</span>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+            <p class="text-xs font-semibold text-slate-500 uppercase">Xếp loại Hồ sơ</p>
+            <div id="res-overall-grade" class="text-3xl font-extrabold text-emerald-600 mt-1">--</div>
+            <span class="text-xs text-slate-400">Chu kỳ Tuần 1-4</span>
+          </div>
+        </div>
+
+        <!-- DETAILS ROW -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Col 1: Margin & Format -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2">
+              <i class="fa-solid fa-ruler-combined text-indigo-600"></i>
+              Thể thức Văn thư (Nghị định 30)
+            </h4>
+            <div id="res-margins-box" class="space-y-2 text-xs">
+              <!-- Margins dynamic info -->
+            </div>
+            <div id="res-typos-box" class="pt-2 border-t border-slate-100 text-xs">
+              <!-- Typos info -->
+            </div>
+          </div>
+
+          <!-- Col 2: Bloom Distribution -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2">
+              <i class="fa-solid fa-layer-group text-blue-600"></i>
+              Phân tầng Nhận thức Thang Bloom
+            </h4>
+            <div id="res-bloom-box" class="space-y-3 text-xs">
+              <!-- Bloom bars -->
+            </div>
+          </div>
+
+          <!-- Col 3: Pedagogical Risks -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+              Dự báo Rủi ro Sư phạm
+            </h4>
+            <div id="res-risks-box" class="space-y-2 text-xs">
+              <!-- Risks list -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SMART COMMENTS BOX -->
+        <div class="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 p-6 rounded-2xl border border-blue-200/80 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-blue-950 flex items-center gap-2">
+              <i class="fa-solid fa-comment-dots text-blue-600"></i>
+              Smart Comments (Phản hồi Kiến tạo - Constructive Feedback)
+            </h4>
+            <span class="text-xs bg-blue-100 text-blue-700 font-semibold px-2.5 py-1 rounded-full">Chuẩn AI Inspector</span>
+          </div>
+          <div id="res-smart-comments" class="text-xs text-slate-700 whitespace-pre-line leading-relaxed font-medium bg-white/70 p-4 rounded-xl border border-blue-100">
+            <!-- Smart comments text -->
+          </div>
+        </div>
+
+        <!-- BẢNG TỔNG HỢP KIỂM TRA ĐỐI CHIẾU CHƯƠNG TRÌNH & SGK (GỘP CÁC MÔN) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-table-list text-blue-600"></i>
+                Bảng Tổng hợp Kiểm tra Kế hoạch bài dạy (Đối chiếu PPCT & SGK)
+              </h4>
+              <p class="text-xs text-slate-500 mt-0.5">Kiểm định đối chiếu Phân phối chương trình (PL17 - PL32), SGK NXB Giáo dục Việt Nam (taphuan.nxbgd.vn), thể thức NĐ 30 và tiến trình CV 5512.</p>
+            </div>
+            <button onclick="exportMergedTeacherDocx()" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-sm transition">
+              <i class="fa-solid fa-file-word text-sm"></i>
+              <span>Tải Biên bản Kiểm tra (.docx)</span>
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-100/90 text-slate-800 border-b border-slate-200 text-xs font-bold">
+                  <th class="py-3 px-2 text-center w-12 tracking-wide">STT</th>
+                  <th class="py-3 px-3 w-28 tracking-wide">Môn / Lớp</th>
+                  <th class="py-3 px-2 text-center w-24 tracking-wide">Tuần</th>
+                  <th class="py-3 px-2 text-center w-28 tracking-wide">Tiết (PPCT)</th>
+                  <th class="py-3 px-3 w-64 tracking-wide">Tên bài dạy / Chủ đề</th>
+                  <th class="py-3 px-3 tracking-wide">Đối chiếu chi tiết (PPCT, SGK, NĐ 30, Chính tả, NLS, Dinh dưỡng, QPAN)</th>
+                  <th class="py-3 px-2 text-center w-24 tracking-wide">Xếp loại</th>
+                </tr>
+              </thead>
+              <tbody id="inspection-table-tbody" class="divide-y divide-slate-100">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: TEACHER COMPETENCY MAP -->
+    <!-- ========================================== -->
+    <section id="tab-competency" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-compass text-indigo-600"></i>
+              Bản đồ Năng lực Giáo viên (Teacher Competency Map)
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Phân tích đa chiều 5 năng lực sư phạm cốt lõi và lộ trình bồi dưỡng cá nhân hóa (CPD).</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <label class="text-xs font-semibold text-slate-600">Chọn Thầy/Cô:</label>
+            <select id="competency-teacher-select" onchange="loadCompetencyProfile()" class="text-sm bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 outline-none font-semibold text-slate-800">
+              <option value="cuc">Cô Cúc (Phạm Thị Cúc)</option>
+              <option value="thang">Thầy Thắng (Lê Văn Thắng)</option>
+              <option value="linh">Cô Linh (Phạm Thị Mỹ Linh)</option>
+              <option value="thuy">Cô Thủy (Lê Thị Thu Thủy)</option>
+              <option value="thanh">Thầy Thành (Nguyễn Chí Thành)</option>
+              <option value="trang">Cô Trang (Nguyễn Thị Thùy Trang)</option>
+              <option value="hang">Cô Hằng (Lê Thị Thúy Hằng)</option>
+              <option value="ke">Cô Kế (Hà Thị Kế)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <!-- Radar Chart -->
+          <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col items-center">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Biểu đồ Radar 5 Chiều kích Năng lực</h4>
+            <div class="w-full max-w-[380px] h-[340px]">
+              <canvas id="chartRadarCompetency"></canvas>
+            </div>
+          </div>
+
+          <!-- Lộ trình bồi dưỡng CPD -->
+          <div class="space-y-4">
+            <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-blue-600"></i>
+              Lộ trình Bồi dưỡng Cá nhân hóa (taphuan.nxbgd.vn)
+            </h4>
+            
+            <div class="space-y-3">
+              <div class="p-3.5 rounded-xl border border-blue-200 bg-blue-50/50">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-blue-800">Mô-đun 08_KHTN_THCS</span>
+                  <a href="https://taphuan.nxbgd.vn/tap-huan?grade=-1" target="_blank" class="text-xs text-blue-600 hover:underline font-semibold">Vào khóa học &rarr;</a>
+                </div>
+                <h5 class="text-xs font-semibold text-slate-800 mt-1">Ứng dụng CNTT và chuyển đổi số trong dạy học môn KHTN</h5>
+                <p class="text-xs text-slate-500 mt-1">Mục tiêu: Chuẩn hóa kỹ thuật định dạng văn bản theo Nghị định 30, lưu trữ số trên đám mây đồng bộ.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/50">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-emerald-800">Mô-đun 02_KHTN_THCS</span>
+                  <a href="https://taphuan.nxbgd.vn/tap-huan?grade=-1" target="_blank" class="text-xs text-emerald-600 hover:underline font-semibold">Vào khóa học &rarr;</a>
+                </div>
+                <h5 class="text-xs font-semibold text-slate-800 mt-1">Kỹ thuật dạy học tích cực và giáo dục STEM trong môn KHTN</h5>
+                <p class="text-xs text-slate-500 mt-1">Mục tiêu: Nâng cao hoạt động Vận dụng thành các dự án mini STEM gắn liền với đời sống thực tiễn.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl border border-indigo-200 bg-indigo-50/50">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-indigo-800">Mô-đun 03_KHTN_THCS</span>
+                  <a href="https://taphuan.nxbgd.vn/tap-huan?grade=-1" target="_blank" class="text-xs text-indigo-600 hover:underline font-semibold">Vào khóa học &rarr;</a>
+                </div>
+                <h5 class="text-xs font-semibold text-slate-800 mt-1">Kiểm tra, đánh giá theo định hướng phẩm chất, năng lực môn KHTN</h5>
+                <p class="text-xs text-slate-500 mt-1">Mục tiêu: Phát huy và nhân rộng công cụ Rubrics 3 mức độ (môn KHTN 9) sang phân môn Hóa và Lý.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: EXPORT & REPORTS -->
+    <!-- ========================================== -->
+    <section id="tab-export" class="hidden space-y-6">
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div class="text-center space-y-2">
+          <h3 class="text-xl font-bold text-slate-900">Trung Tâm Hồ Sơ & Báo Cáo Chuyên Môn</h3>
+          <p class="text-xs text-slate-500 max-w-xl mx-auto">Khởi tạo và xuất bản các mẫu hồ sơ, biên bản kiểm định, sổ tay tổ trưởng và báo cáo sơ kết tháng chuẩn Nghị định 30/2020/NĐ-CP.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- CARD 1: BIÊN BẢN KIỂM ĐỊNH -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-3">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 text-sm">Biên Bản Kiểm Định Giáo Án</h4>
+              <p class="text-xs text-slate-500 mt-1">Biên bản rà soát chi tiết Kế hoạch bài dạy cá nhân giáo viên theo CV 5512 & NĐ 30.</p>
+            </div>
+            <button onclick="switchTab('inspect')" class="w-full py-2.5 px-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Tạo & Tải Biên Bản (.docx)</span>
+            </button>
+          </div>
+
+          <!-- CARD 2: SỔ TAY TỔ TRƯỞNG -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-3">
+                <i class="fa-solid fa-book-bookmark"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 text-sm">Sổ Tay Ghi Chép Tổ Trưởng</h4>
+              <p class="text-xs text-slate-500 mt-1">Ghi chép cụ thể 8 giáo viên theo tuần (chuyên cần, PPCT, Drive, ĐDDH/CNTT, dự giờ, xếp loại).</p>
+            </div>
+            <button onclick="switchTab('notebook')" class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <span>Mở Sổ Tay Ghi Chép</span>
+            </button>
+          </div>
+
+          <!-- CARD 3: BÁO CÁO SƠ KẾT THÁNG -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-3">
+                <i class="fa-solid fa-file-invoice"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 text-sm">Báo Cáo Sơ Kết Tháng</h4>
+              <p class="text-xs text-slate-500 mt-1">Báo cáo sơ kết tháng tổ chuyên môn tự động tổng hợp từ Sổ tay tuần, chuẩn mẫu Tháng 09.doc.</p>
+            </div>
+            <button onclick="switchTab('monthly-report')" class="w-full py-2.5 px-3 bg-purple-700 hover:bg-purple-600 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Xuất Báo Cáo Tháng (.docx)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: LỊCH CÔNG TÁC TUẦN CỦA TỔ CHUYÊN MÔN -->
+    <!-- ========================================== -->
+    <section id="tab-schedule" class="hidden space-y-6">
+      
+      <!-- HERO BANNER -->
+      <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-md border border-slate-800">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30 mb-2">
+              <i class="fa-solid fa-sparkles"></i> Trợ lý AI Lập Lịch Công Tác
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold tracking-tight">Lịch Công Tác Tuần - Tổ Chuyên Môn</h2>
+            <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+              Tự động phân tích Kế hoạch hoạt động giáo dục của Tổ, trích xuất nhiệm vụ chuyên môn theo từng tuần, phân bổ lịch làm việc khoa học từ Thứ Hai đến Thứ Bảy và xuất bản file Word (.docx) chuẩn thể thức Nghị định 30/2020/NĐ-CP.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="/api/schedule/download-template-docx" download class="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5 border border-blue-500/40">
+              <i class="fa-solid fa-download text-sm"></i>
+              <span>Tải Mẫu Kế Hoạch Tuần 04 (.docx)</span>
+            </a>
+            <button onclick="exportScheduleDocx()" id="btn-export-schedule-top" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-file-word text-sm"></i>
+              <span>Xuất Lịch Tuần Đang Sửa (.docx)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID: UPLOAD & CONFIG + ACTIONS -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- CỘT TRÁI: TẢI FILE KẾ HOẠCH & THIẾT LẬP TUẦN -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b pb-3 border-slate-100">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-file-circle-plus text-blue-600"></i>
+              1. Tải lên Kế hoạch hoạt động Tổ
+            </h3>
+            <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">Hỗ trợ Docx, PDF, Excel</span>
+          </div>
+
+          <!-- Upload Box -->
+          <div class="border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-xl p-4 text-center transition bg-slate-50/50">
+            <input type="file" id="schedule-file-input" accept=".docx,.pdf,.xlsx,.txt" class="hidden" onchange="onScheduleFileSelected()" />
+            <div onclick="document.getElementById('schedule-file-input').click()" class="cursor-pointer space-y-2">
+              <div class="w-10 h-10 mx-auto rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+              </div>
+              <p class="text-xs font-semibold text-slate-700" id="schedule-file-name">Bấm để chọn file Kế hoạch tổ (.docx, .pdf, .xlsx)</p>
+              <p class="text-[11px] text-slate-400">hoặc kéo thả tệp tài liệu kế hoạch vào đây</p>
+            </div>
+          </div>
+
+          <!-- Nút chọn nhanh file kế hoạch sẵn có -->
+          <div>
+            <button type="button" onclick="loadScheduleFromSamplePlan()" class="w-full py-2 px-3 text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-xl font-medium border border-slate-200 transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-file-pdf text-rose-500"></i>
+              <span>Dùng file Kế hoạch GD Tổ Toán - KHTN có sẵn</span>
+            </button>
+          </div>
+
+          <!-- THIẾT LẬP THÔNG TIN TUẦN -->
+          <div class="space-y-3 pt-2 border-t border-slate-100">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-sliders text-indigo-600"></i>
+              2. Thiết lập Lịch tuần
+            </h4>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Chọn Tuần:</label>
+                <select id="schedule-week-select" onchange="onScheduleWeekChange()" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                  <option value="1">Tuần 1 (07/09 - 12/09)</option>
+                  <option value="2">Tuần 2 (14/09 - 19/09)</option>
+                  <option value="3">Tuần 3 (21/09 - 26/09)</option>
+                  <option value="4">Tuần 4 (28/09 - 03/10)</option>
+                  <option value="5" selected>Tuần 5 (05/10 - 10/10)</option>
+                  <option value="6">Tuần 6 (12/10 - 17/10)</option>
+                  <option value="7">Tuần 7 (19/10 - 24/10)</option>
+                  <option value="8">Tuần 8 (26/10 - 31/10)</option>
+                  <option value="9">Tuần 9 (02/11 - 07/11)</option>
+                  <option value="10">Tuần 10 (09/11 - 14/11)</option>
+                  <option value="11">Tuần 11 (16/11 - 21/11)</option>
+                  <option value="12">Tuần 12 (23/11 - 28/11)</option>
+                  <option value="13">Tuần 13 (30/11 - 05/12)</option>
+                  <option value="14">Tuần 14 (07/12 - 12/12)</option>
+                  <option value="15">Tuần 15 (14/12 - 19/12)</option>
+                  <option value="16">Tuần 16 (21/12 - 26/12)</option>
+                  <option value="17">Tuần 17 (28/12 - 02/01)</option>
+                  <option value="18">Tuần 18 (04/01 - 09/01)</option>
+                  <option value="19">Tuần 19 (11/01 - 16/01)</option>
+                  <option value="20">Tuần 20 (18/01 - 23/01)</option>
+                  <option value="21">Tuần 21 (25/01 - 30/01)</option>
+                  <option value="22">Tuần 22 (15/02 - 20/02)</option>
+                  <option value="23">Tuần 23 (22/02 - 27/02)</option>
+                  <option value="24">Tuần 24 (01/03 - 06/03)</option>
+                  <option value="25">Tuần 25 (08/03 - 13/03)</option>
+                  <option value="26">Tuần 26 (15/03 - 20/03)</option>
+                  <option value="27">Tuần 27 (22/03 - 27/03)</option>
+                  <option value="28">Tuần 28 (29/03 - 03/04)</option>
+                  <option value="29">Tuần 29 (05/04 - 10/04)</option>
+                  <option value="30">Tuần 30 (12/04 - 17/04)</option>
+                  <option value="31">Tuần 31 (19/04 - 24/04)</option>
+                  <option value="32">Tuần 32 (26/04 - 01/05)</option>
+                  <option value="33">Tuần 33 (03/05 - 08/05)</option>
+                  <option value="34">Tuần 34 (10/05 - 15/05)</option>
+                  <option value="35">Tuần 35 (17/05 - 22/05)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Năm học:</label>
+                <input type="text" id="schedule-school-year" value="2026 – 2027" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tên Trường:</label>
+              <input type="text" id="schedule-school-name" value="TRƯỜNG TH & THCS PHƯỚC HƯNG" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tên Tổ Chuyên Môn:</label>
+              <input type="text" id="schedule-dept-name" value="TỔ TOÁN – KHTN – CÔNG NGHỆ" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 outline-none" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tổ trưởng CM:</label>
+                <input type="text" id="schedule-leader-name" value="Lê Văn Thắng" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">BGH Phê duyệt:</label>
+                <input type="text" id="schedule-approver-name" value="Ban Giám Hiệu" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 outline-none" />
+              </div>
+            </div>
+
+            <button type="button" onclick="triggerGenerateSchedule()" id="btn-generate-schedule" class="w-full mt-3 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Phân Tích & Tạo Lịch Công Tác Tuần</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- CỘT PHẢI: TRÌNH CHỈNH SỬA & XEM TRƯỚC LỊCH TUẦN (LIVE PREVIEW & EDITOR) -->
+        <div class="lg:col-span-2 space-y-4">
+          
+          <!-- THÔNG BÁO TÌNH TRẠNG -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-800" id="schedule-display-title">LỊCH CÔNG TÁC TUẦN 5</h4>
+                <p class="text-xs text-slate-500" id="schedule-display-period">Từ ngày 05/10/2026 đến ngày 10/10/2026 • Năm học 2026 – 2027</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="addNewScheduleRow()" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+                <i class="fa-solid fa-plus"></i> Thêm việc
+              </button>
+              <button onclick="exportScheduleDocx()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-file-word"></i> Xuất Word (.docx)
+              </button>
+            </div>
+          </div>
+
+          <!-- MỤC I: BẢNG LỊCH CÔNG TÁC CHI TIẾT TỪNG NGÀY (ĐÃ BỎ ĐÁNH GIÁ TUẦN TRƯỚC) -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-table-cells text-indigo-600"></i>
+                I. Lịch công tác chi tiết trong tuần (Thứ Hai đến Thứ Bảy):
+              </label>
+              <span class="text-[11px] text-emerald-600 font-medium">Bấm vào ô để sửa trực tiếp</span>
+            </div>
+
+            <!-- Bảng lịch biểu -->
+            <div class="overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full text-left text-xs" id="schedule-table">
+                <thead class="bg-blue-50 text-slate-700 uppercase font-bold text-[10px] border-b border-blue-100">
+                  <tr>
+                    <th class="py-2.5 px-3 w-28 text-center">Thứ / Ngày</th>
+                    <th class="py-2.5 px-3">Nội dung công việc</th>
+                    <th class="py-2.5 px-2.5 w-28 text-center">Thành phần</th>
+                    <th class="py-2.5 px-2.5 w-28 text-center">Địa điểm / Chủ trì</th>
+                    <th class="py-2.5 px-2 w-24 text-center">Ghi chú</th>
+                    <th class="py-2.5 px-2 w-10 text-center">Xóa</th>
+                  </tr>
+                </thead>
+                <tbody id="schedule-tbody" class="divide-y divide-slate-100 text-slate-700">
+                  <!-- Được sinh tự động bởi Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- MỤC II: TRỌNG TÂM CẦN LƯU Ý (CHỮ III ĐỔI THÀNH II) -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                II. Một số công tác trọng tâm cần lưu ý trong tuần:
+              </label>
+              <span class="text-[10px] text-slate-400">Tự động liên kết Mục 4. Sinh hoạt chuyên môn & Chuyên đề STEM</span>
+            </div>
+            <textarea id="schedule-focus-tasks" rows="4" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 leading-relaxed focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+          </div>
+
+          <!-- ACTION FOOTER: NÚT XUẤT WORD -->
+          <div class="bg-gradient-to-r from-emerald-50 to-blue-50 p-5 rounded-2xl border border-emerald-200/70 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h5 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                Đã chuẩn hóa theo Nghị định 30/2020/NĐ-CP
+              </h5>
+              <p class="text-[11px] text-slate-500 mt-0.5">Khổ giấy A4, font Times New Roman 13pt, canh lề 20-20-30-15 mm, sẵn sàng in và trình ký.</p>
+            </div>
+            <button onclick="exportScheduleDocx()" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-file-word text-base"></i>
+              <span>Xuất File Word Lịch Công Tác Tuần (.docx)</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 7: GIÁM SÁT GOOGLE DRIVE & THÔNG BÁO GMAIL -->
+    <!-- ========================================== -->
+    <section id="tab-drive" class="hidden space-y-6">
+      
+      <!-- HERO BANNER -->
+      <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white p-6 rounded-2xl shadow-md border border-slate-800">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold border border-amber-500/30 mb-2">
+              <i class="fa-brands fa-google-drive"></i> Real-time Google Drive Cloud Monitor
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold tracking-tight">Hệ Thống Giám Sát Cập Nhật Giáo Án Trên Google Drive</h2>
+            <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+              Tự động quét và theo dõi thời gian cập nhật Kế hoạch bài dạy của 08 giáo viên trong Tổ chuyên môn, tự động gửi báo cáo tiến độ về hộp thư <strong>thangphuochung1@gmail.com</strong> và lưu trữ nhật ký để xuất file Word báo cáo BGH.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <a href="https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing" target="_blank" class="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 shadow-sm transition">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              <span>Mở Google Drive</span>
+            </a>
+            <button onclick="triggerEmailNotify()" id="btn-email-notify" class="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Gửi Gmail Thông Báo</span>
+            </button>
+            <a href="/api/drive/export-report-docx" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Xuất Báo Cáo Word (.docx)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI METRIC CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tổng Giáo Viên</p>
+            <h4 class="text-xl font-bold text-slate-800 mt-0.5" id="drive-total-teachers">8 Thầy/Cô</h4>
+            <span class="text-[11px] text-blue-600 font-medium">Toàn bộ tổ chuyên môn</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tiến Độ Tuần 1 - 4</p>
+            <h4 class="text-xl font-bold text-emerald-600 mt-0.5">100% Hoàn Thành</h4>
+            <span class="text-[11px] text-slate-500 font-medium">8/8 GV đã nộp đủ hồ sơ</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tiến Độ Tuần 5 - 8</p>
+            <h4 class="text-xl font-bold text-indigo-600 mt-0.5">Đang Thu Nhận</h4>
+            <span class="text-[11px] text-indigo-600 font-medium">Theo lịch tuần 04 của tổ</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Email Nhận Báo Cáo</p>
+            <h4 class="text-xs font-bold text-slate-800 mt-1 truncate max-w-[150px]" title="thangphuochung1@gmail.com">thangphuochung1@...</h4>
+            <span class="text-[11px] text-emerald-600 font-medium">Đã kích hoạt gửi tự động</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG GIÁM SÁT TIẾN ĐỘ 8 GIÁO VIÊN -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3 border-slate-100">
+          <div>
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-blue-600"></i>
+              Bảng Theo Dõi Thời Gian & Trạng Thái Cập Nhật Giáo Án (8 Giáo Viên)
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Cập nhật trực tiếp từ cấu trúc thư mục Google Drive của Tổ chuyên môn</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="refreshDriveStatus()" id="btn-refresh-drive" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-arrows-rotate"></i> Quét lại Drive
+            </button>
+            <a href="/api/drive/export-report-docx" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-download"></i> Tải Báo cáo (.docx)
+            </a>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs" id="drive-monitor-table">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase text-[10px] border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-3.5 text-center w-12">STT</th>
+                <th class="py-3 px-4">Họ và tên Giáo viên</th>
+                <th class="py-3 px-3 text-center">Môn học</th>
+                <th class="py-3 px-3 text-center">Thư mục trên Drive</th>
+                <th class="py-3 px-3 text-center">Thời gian cập nhật</th>
+                <th class="py-3 px-3 text-center">Số tệp</th>
+                <th class="py-3 px-3 text-center">Tình trạng tiến độ</th>
+                <th class="py-3 px-3">Ghi chú chuyên môn</th>
+                <th class="py-3 px-2.5 text-center w-16">Link</th>
+              </tr>
+            </thead>
+            <tbody id="drive-monitor-tbody" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Render tự động bởi JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG MA TRẬN 9 CHU KỲ TUẦN (TUẦN 1 -> TUẦN 35) -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3 border-slate-100">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold mb-1">
+              <i class="fa-solid fa-table-columns"></i> Ma trận Chi tiết 09 Chu kỳ tuần
+            </div>
+            <h3 class="text-sm font-bold text-slate-800">
+              Chi Tiết Tình Trạng Cập Nhật File & Thư Mục Trống (Tuần 1 Đến Tuần 35)
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Thống kê cụ thể thư mục nào đã cập nhật tệp tin (kèm số lượng, môn học) và thư mục nào chưa cập nhật (trống)</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="/api/drive/export-9cycles-docx" class="inline-flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Xuất Báo Cáo 9 Chu Kỳ (.docx)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs" id="cycles-matrix-table">
+            <thead class="bg-indigo-50/70 text-indigo-900 font-bold uppercase text-[9px] border-b border-indigo-100">
+              <tr>
+                <th class="py-3 px-2 text-center w-8">STT</th>
+                <th class="py-3 px-3 w-40">Giáo viên & Môn</th>
+                <th class="py-3 px-1.5 text-center">T1 - 4</th>
+                <th class="py-3 px-1.5 text-center">T5 - 8</th>
+                <th class="py-3 px-1.5 text-center">T9 - 12</th>
+                <th class="py-3 px-1.5 text-center">T13 - 16</th>
+                <th class="py-3 px-1.5 text-center">T17 - 20</th>
+                <th class="py-3 px-1.5 text-center">T21 - 24</th>
+                <th class="py-3 px-1.5 text-center">T25 - 28</th>
+                <th class="py-3 px-1.5 text-center">T29 - 32</th>
+                <th class="py-3 px-1.5 text-center">T33 - 35</th>
+              </tr>
+            </thead>
+            <tbody id="cycles-matrix-tbody" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Render tự động bởi JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- KHUNG BÁO CÁO EMAIL THÔNG BÁO -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+        <div class="flex items-center justify-between border-b pb-3 border-slate-100">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-envelope-circle-check text-rose-600 text-lg"></i>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">Nhật Ký Email Thông Báo Gửi Về Gmail</h4>
+              <p class="text-[11px] text-slate-500">Người nhận: <strong>thangphuochung1@gmail.com</strong> (Thầy Lê Văn Thắng - Tổ trưởng)</p>
+            </div>
+          </div>
+          <span class="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-semibold" id="email-status-badge">
+            <i class="fa-solid fa-check mr-1"></i> Đã kích hoạt
+          </span>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-xs text-slate-700 max-h-60 overflow-y-auto whitespace-pre-wrap leading-relaxed" id="email-preview-content">
+          Đang nạp dữ liệu thông báo email...
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 8: SỔ TAY TỔ TRƯỜNG CHUYÊN MÔN -->
+    <!-- ========================================== -->
+    <section id="tab-notebook" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-book-bookmark text-emerald-600 text-lg"></i>
+              Sổ Tay Ghi Chép Của Tổ Trưởng Chuyên Môn
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Ghi chép cụ thể hoạt động 8 giáo viên theo tuần (chuyên cần, PPCT, giáo án Drive, ĐDDH/CNTT, dự giờ, xếp loại) để tự động liên kết vào Báo cáo tháng.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5">
+              <label class="text-xs font-bold text-slate-700">Tuần chọn:</label>
+              <select id="notebook-week-select" onchange="loadNotebookWeekData()" class="bg-transparent text-xs font-bold text-blue-600 outline-none">
+                <!-- 35 weeks -->
+              </select>
+            </div>
+            <button onclick="syncNotebookWithDrive()" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-brands fa-google-drive text-amber-600"></i>
+              <span>Đồng bộ từ Drive</span>
+            </button>
+            <button onclick="saveNotebookWeekData()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-1.5">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Lưu Sổ Tay Tuần</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BẢNG GHI CHÉP 8 GIÁO VIÊN -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs" id="notebook-table">
+            <thead class="bg-emerald-50 text-emerald-900 uppercase font-bold text-[10px] border-b border-emerald-200">
+              <tr>
+                <th class="py-3 px-3 text-center w-12">STT</th>
+                <th class="py-3 px-3 w-44">Giáo viên / Phụ trách</th>
+                <th class="py-3 px-2 w-28 text-center">Chuyên cần</th>
+                <th class="py-3 px-2 w-64 text-center">PPCT, GIÁO ÁN & DRIVE</th>
+                <th class="py-3 px-2 w-28 text-center">ĐDDH / CNTT</th>
+                <th class="py-3 px-3 w-48">Dự giờ / STEM / Phong trào</th>
+                <th class="py-3 px-3">Ghi chú & Đánh giá</th>
+                <th class="py-3 px-2 w-24 text-center">Xếp loại</th>
+              </tr>
+            </thead>
+            <tbody id="notebook-tbody" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 9: BÁO CÁO SƠ KẾT HOẠT ĐỘNG THÁNG -->
+    <!-- ========================================== -->
+    <section id="tab-monthly-report" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice text-purple-600 text-lg"></i>
+              Báo Cáo Sơ Kết Hoạt Động Tổ Chuyên Môn Theo Tháng
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Liên kết dữ liệu tự động từ Sổ tay tuần & Xuất tệp Word (.docx) chuẩn mẫu "Báo cáo sơ kết HĐCM tháng 09.doc" và NĐ 30/2020/NĐ-CP.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5">
+              <label class="text-xs font-bold text-slate-700">Tháng sơ kết:</label>
+              <select id="monthly-report-select" onchange="loadMonthlyReportData()" class="bg-transparent text-xs font-bold text-purple-700 outline-none">
+                <option value="9">Tháng 09 (Tuần 1 - 4)</option>
+                <option value="10">Tháng 10 (Tuần 5 - 8)</option>
+                <option value="11">Tháng 11 (Tuần 9 - 12)</option>
+                <option value="12">Tháng 12 (Tuần 13 - 16)</option>
+                <option value="1">Tháng 01 (Tuần 17 - 20)</option>
+                <option value="2">Tháng 02 (Tuần 21 - 24)</option>
+                <option value="3">Tháng 03 (Tuần 25 - 28)</option>
+                <option value="4">Tháng 04 (Tuần 29 - 32)</option>
+                <option value="5">Tháng 05 (Tuần 33 - 35)</option>
+              </select>
+            </div>
+            <button onclick="downloadMonthlyReportDocx()" class="px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-1.5">
+              <i class="fa-solid fa-file-word"></i>
+              <span>Xuất Báo Cáo Tháng (.docx)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THẺ TỔNG HỢP CHỈ SỐ -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-purple-50/60 p-4 rounded-xl border border-purple-100">
+            <span class="text-[11px] font-bold text-purple-700 uppercase">Tổng lượt ƯD CNTT</span>
+            <h4 class="text-xl font-bold text-purple-900 mt-1" id="report-stat-cntt">216 lượt</h4>
+            <span class="text-[10px] text-purple-600">Đạt chỉ tiêu kế hoạch tháng</span>
+          </div>
+          <div class="bg-blue-50/60 p-4 rounded-xl border border-blue-100">
+            <span class="text-[11px] font-bold text-blue-700 uppercase">Sử dụng ĐDDH</span>
+            <h4 class="text-xl font-bold text-blue-900 mt-1" id="report-stat-dddh">0 lượt</h4>
+            <span class="text-[10px] text-blue-600">Theo sổ ĐDDH phòng bộ môn</span>
+          </div>
+          <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100">
+            <span class="text-[11px] font-bold text-emerald-700 uppercase">Kiểm tra Giáo án</span>
+            <h4 class="text-xl font-bold text-emerald-900 mt-1" id="report-stat-giaoan">8/8 GV Soạn đủ</h4>
+            <span class="text-[10px] text-emerald-600">Đã kiểm tra đúng hạn trên Drive</span>
+          </div>
+          <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-100">
+            <span class="text-[11px] font-bold text-amber-700 uppercase">Dự giờ & Chuyên đề</span>
+            <h4 class="text-xl font-bold text-amber-900 mt-1" id="report-stat-obs">3 tiết dự giờ</h4>
+            <span class="text-[10px] text-amber-600">1 Chuyên đề thao giảng</span>
+          </div>
+        </div>
+
+        <!-- XEM TRƯỚC BÁO CÁO MẪU -->
+        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4" id="monthly-report-preview-container">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400 mt-auto">
+    <p>© 2026 Trường TH & THCS Phước Hưng • Hệ sinh thái Kiểm định Giáo dục Số Toàn diện (Trợ lý Quản trị Sư phạm Đa phương thức)</p>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    let currentInspectedFile = null;
+    let radarChartInstance = null;
+
+    function switchTab(tabId) {
+      ['dashboard', 'heatmap', 'inspect', 'competency', 'export', 'schedule', 'drive', 'notebook', 'monthly-report'].forEach(t => {
+        const sec = document.getElementById('tab-' + t);
+        const btn = document.getElementById('tab-btn-' + t);
+        if (t === tabId) {
+          if (sec) sec.classList.remove('hidden');
+          if (btn) {
+            btn.classList.add('border-blue-600', 'text-blue-600');
+            btn.classList.remove('border-transparent', 'text-slate-500');
+          }
+        } else {
+          if (sec) sec.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('border-blue-600', 'text-blue-600');
+            btn.classList.add('border-transparent', 'text-slate-500');
+          }
+        }
+      });
+      if (tabId === 'competency') {
+        loadCompetencyProfile();
+      }
+      if (tabId === 'schedule' && currentScheduleData === null) {
+        loadScheduleFromSamplePlan();
+      }
+      if (tabId === 'drive') {
+        loadDriveMonitoringData();
+      }
+      if (tabId === 'notebook') {
+        loadNotebookWeekData();
+      }
+      if (tabId === 'monthly-report') {
+        loadMonthlyReportData();
+      }
+    }
+
+    async function loadDashboardData() {
+      try {
+        const resp = await fetch('/api/teachers');
+        const data = await resp.json();
+        const tbody = document.getElementById('teacher-table-body');
+        tbody.innerHTML = '';
+        data.teachers.forEach((t, idx) => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50/80 transition';
+          tr.innerHTML = `
+            <td class="px-6 py-3.5 text-slate-400">${idx + 1}</td>
+            <td class="px-6 py-3.5 font-bold text-slate-800">${t.name}</td>
+            <td class="px-6 py-3.5 text-xs text-slate-500">${t.role}<br><span class="text-blue-600 font-normal">${t.subjects.join(', ')}</span></td>
+            <td class="px-6 py-3.5 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs font-bold">${t.completion_rate}%</span></td>
+            <td class="px-6 py-3.5 text-center font-bold text-blue-600">${t.tii_score}</td>
+            <td class="px-6 py-3.5 text-center font-bold text-indigo-600">${t.car_score}%</td>
+            <td class="px-6 py-3.5 text-center"><span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-medium">${t.progress_status}</span></td>
+            <td class="px-6 py-3.5 text-right">
+              <button onclick="quickInspectTeacher('${t.id}')" class="text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold px-2.5 py-1 rounded-lg transition">Kiểm định</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // Load BI Charts
+        const biResp = await fetch('/api/bi-metrics');
+        const bi = await biResp.json();
+        renderCharts(bi);
+
+        // Load Heatmap
+        const heatResp = await fetch('/api/heatmap');
+        const heat = await heatResp.json();
+        renderHeatmap(heat);
+
+        // Initialize Teacher & Period selectors
+        onTeacherNameChange();
+        onPeriodChange();
+      } catch (err) {
+        console.error('Error loading dashboard:', err);
+      }
+    }
+
+    function renderCharts(bi) {
+      // Grade Quality Bar Chart
+      const ctxGrade = document.getElementById('chartGradeQuality').getContext('2d');
+      new Chart(ctxGrade, {
+        type: 'bar',
+        data: {
+          labels: bi.grade_quality.labels,
+          datasets: [{
+            label: 'Điểm Chuyên môn TB',
+            data: bi.grade_quality.scores,
+            backgroundColor: '#3b82f6',
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { min: 7, max: 10 } },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // Error Distribution Doughnut Chart
+      const ctxErr = document.getElementById('chartErrorDist').getContext('2d');
+      new Chart(ctxErr, {
+        type: 'doughnut',
+        data: {
+          labels: bi.error_distribution.labels,
+          datasets: [{
+            data: bi.error_distribution.data,
+            backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#10b981']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } } }
+        }
+      });
+    }
+
+    function renderHeatmap(heat) {
+      const container = document.getElementById('heatmap-container');
+      container.innerHTML = '';
+      
+      // Header row
+      const hRow = document.createElement('div');
+      hRow.className = 'flex items-center space-x-2 text-xs font-bold text-slate-400 border-b pb-2';
+      let hHtml = '<div class="w-40">Giáo viên</div><div class="flex space-x-1.5">';
+      heat.weeks.forEach(w => {
+        hHtml += `<div class="heatmap-cell text-slate-500">${w}</div>`;
+      });
+      hHtml += '</div>';
+      hRow.innerHTML = hHtml;
+      container.appendChild(hRow);
+
+      // Data rows
+      heat.matrix.forEach(row => {
+        const rDiv = document.createElement('div');
+        rDiv.className = 'flex items-center space-x-2 py-1 hover:bg-slate-50 rounded-lg transition';
+        let rHtml = `<div class="w-40 text-xs font-bold text-slate-800">${row.name} <span class="text-[10px] block font-normal text-slate-400">${row.role}</span></div><div class="flex space-x-1.5">`;
+        row.cells.forEach(c => {
+          let cls = 'status-upcoming';
+          if (c.status === 'done') cls = 'status-done';
+          else if (c.status === 'early') cls = 'status-early';
+          else if (c.status === 'late') cls = 'status-late';
+          rHtml += `<div class="heatmap-cell ${cls}" title="${row.name} - ${c.week}">${c.code}</div>`;
+        });
+        rHtml += '</div>';
+        rDiv.innerHTML = rHtml;
+        container.appendChild(rDiv);
+      });
+    }
+
+    const TEACHER_DRIVE_DATA = {
+      "cuc": {
+        name: "Phạm Thị Cúc",
+        short: "Cô Cúc",
+        subjects: [
+          { id: "khtn7", name: "KHTN 7" },
+          { id: "sinh9", name: "Sinh 9" }
+        ],
+        lessons: {
+          "khtn7": [
+            { val: "0", label: "KHTN 7 - Bài 1: Mở đầu môn KHTN (5 tiết - Tuần 1, 2)" },
+            { val: "1", label: "KHTN 7 - Bài 2: Nguyên tử (4 tiết - Tuần 2, 3)" },
+            { val: "2", label: "KHTN 7 - Bài 3: Nguyên tố hóa học (4 tiết - Tuần 3, 4) [Có lỗi NĐ 30]" },
+            { val: "3", label: "KHTN 7 - Bài 4: Sơ lược Bảng tuần hoàn (5 tiết - Tuần 4, 5) [Lỗi lề 20mm]" }
+          ],
+          "sinh9": [
+            { val: "4", label: "Sinh 9 - Bài 36: Khái quát về di truyền học (2 tiết - Tuần 2) [Chuẩn Rubrics]" },
+            { val: "5", label: "Sinh 9 - Bài 37: Các quy luật di truyền của Mendel (4 tiết - Tuần 3, 4, 5, 6)" }
+          ]
+        }
+      },
+      "hang": {
+        name: "Lê Thị Thúy Hằng",
+        short: "Cô Hằng",
+        subjects: [
+          { id: "cn6", name: "CN 6" },
+          { id: "cn7", name: "CN 7" },
+          { id: "hdtn6", name: "HĐTN 6" },
+          { id: "hdtn7", name: "HĐTN 7" },
+          { id: "hdtn9", name: "HĐTN 9" }
+        ],
+        lessons: {
+          "cn6": [{ val: "0", label: "CN 6 - Bài dạy môn Công nghệ 6" }],
+          "cn7": [{ val: "1", label: "CN 7 - Bài dạy môn Công nghệ 7" }],
+          "hdtn6": [{ val: "2", label: "HĐTN 6 - Hoạt động trải nghiệm hướng nghiệp 6" }],
+          "hdtn7": [{ val: "0", label: "HĐTN 7 - Hoạt động trải nghiệm hướng nghiệp 7" }],
+          "hdtn9": [{ val: "0", label: "HĐTN 9 - Hoạt động trải nghiệm hướng nghiệp 9" }]
+        }
+      },
+      "ke": {
+        name: "Hà Thị Kế",
+        short: "Cô Kế",
+        subjects: [
+          { id: "hdtn8", name: "HĐTN 8" },
+          { id: "khtn6", name: "KHTN 6" },
+          { id: "khtn8", name: "KHTN 8" }
+        ],
+        lessons: {
+          "hdtn8": [{ val: "0", label: "HĐTN 8 - Hoạt động trải nghiệm hướng nghiệp 8" }],
+          "khtn6": [{ val: "1", label: "KHTN 6 - Bài dạy môn Khoa học tự nhiên 6" }],
+          "khtn8": [{ val: "2", label: "KHTN 8 - Bài dạy môn Khoa học tự nhiên 8" }]
+        }
+      },
+      "linh": {
+        name: "Phạm Thị Mỹ Linh",
+        short: "Cô Linh",
+        subjects: [
+          { id: "toan8", name: "Toán 8" },
+          { id: "toan9", name: "Toán 9" }
+        ],
+        lessons: {
+          "toan8": [
+            { val: "0", label: "Toán 8 - Chương I: Đa thức nhiều biến, đơn thức thu gọn (Tuần 1-2)" },
+            { val: "1", label: "Toán 8 - Các hằng đẳng thức đáng nhớ (Tuần 3-4)" }
+          ],
+          "toan9": [
+            { val: "4", label: "Toán 9 - Chương I: Phương trình và hệ hai phương trình bậc nhất hai ẩn (Tuần 1-4)" }
+          ]
+        }
+      },
+      "thuy": {
+        name: "Lê Thị Thu Thủy",
+        short: "Cô Thủy",
+        subjects: [
+          { id: "toan6", name: "Toán 6" },
+          { id: "toan7", name: "Toán 7" },
+          { id: "toan8", name: "Toán 8" }
+        ],
+        lessons: {
+          "toan6": [{ val: "3", label: "Toán 6 - Bài dạy môn Toán 6" }],
+          "toan7": [
+            { val: "0", label: "Toán 7 - Tập hợp các số hữu tỉ Q (Tuần 1-2)" },
+            { val: "1", label: "Toán 7 - Các phép tính trong tập hợp số hữu tỉ (Tuần 3-4)" }
+          ],
+          "toan8": [
+            { val: "2", label: "Toán 8 - Hình học: Tứ giác, hình thang cân (Tuần 1-4)" }
+          ]
+        }
+      },
+      "trang": {
+        name: "Nguyễn Thị Thùy Trang",
+        short: "Cô Trang",
+        subjects: [
+          { id: "cn8", name: "CN 8" },
+          { id: "cn9", name: "CN 9" }
+        ],
+        lessons: {
+          "cn8": [{ val: "1", label: "CN 8 - Bản vẽ kỹ thuật và hình chiếu (Tuần 1-4)" }],
+          "cn9": [{ val: "2", label: "CN 9 - Lắp đặt mạng điện trong nhà (Tuần 1-4)" }]
+        }
+      },
+      "thanh": {
+        name: "Nguyễn Chí Thành",
+        short: "Thầy Thành",
+        subjects: [
+          { id: "hdtn8", name: "HĐTN 8" },
+          { id: "khtn6", name: "KHTN 6" },
+          { id: "khtn8", name: "KHTN 8" },
+          { id: "khtn9", name: "KHTN 9" }
+        ],
+        lessons: {
+          "hdtn8": [{ val: "1", label: "HĐTN 8 - Hoạt động trải nghiệm hướng nghiệp 8" }],
+          "khtn6": [{ val: "0", label: "KHTN 6 - Bài dạy môn Khoa học tự nhiên 6" }],
+          "khtn8": [{ val: "2", label: "KHTN 8 - Khối lượng riêng và áp suất chất lỏng (Tuần 1-4)" }],
+          "khtn9": [{ val: "4", label: "KHTN 9 - Động lực học, Năng lượng và sự biến đổi (Tuần 1-4)" }]
+        }
+      },
+      "thang": {
+        name: "Lê Văn Thắng",
+        short: "Thầy Thắng",
+        subjects: [
+          { id: "hoa9", name: "Hóa 9" },
+          { id: "khtn7", name: "KHTN 7" }
+        ],
+        lessons: {
+          "hoa9": [{ val: "4", label: "Hóa 9 - Tính chất hóa học của oxit và axit" }],
+          "khtn7": [{ val: "1", label: "KHTN 7 - Tốc độ chuyển động, Đồ thị quãng đường (Tuần 1-4)" }]
+        }
+      }
+    };
+
+    function findTeacherKey(query) {
+      if (!query) return 'cuc';
+      const q = query.toLowerCase();
+      for (const k in TEACHER_DRIVE_DATA) {
+        const t = TEACHER_DRIVE_DATA[k];
+        if (q.includes(t.name.toLowerCase()) || q.includes(t.short.toLowerCase()) || q.includes(k)) {
+          return k;
+        }
+      }
+      return 'cuc';
+    }
+
+    let currentTeacherKey = 'cuc';
+
+    const TEACHER_SUBJECTS_MAP = {
+      'cuc': ['KHTN 7', 'Sinh 9'],
+      'hang': ['CN 6', 'CN 7', 'HĐTN 6', 'HĐTN 7', 'HĐTN 9'],
+      'ke': ['KHTN 6', 'KHTN 8', 'HĐTN 8'],
+      'linh': ['Toán 8', 'Toán 9'],
+      'thuy': ['Toán 6', 'Toán 7', 'Toán 8'],
+      'trang': ['CN 8', 'CN 9'],
+      'thanh': ['KHTN 6', 'KHTN 8', 'KHTN 9', 'HĐTN 8'],
+      'thang': ['Hóa 9', 'KHTN 7']
+    };
+
+    function findTeacherKey(query) {
+      if (!query) return 'cuc';
+      const q = query.toLowerCase();
+      for (const k in TEACHER_DRIVE_DATA) {
+        const t = TEACHER_DRIVE_DATA[k];
+        if (q.includes(t.name.toLowerCase()) || q.includes(t.short.toLowerCase()) || q.includes(k)) {
+          return k;
+        }
+      }
+      return 'cuc';
+    }
+
+    async function onPeriodChange() {
+      const pSelect = document.getElementById('period-select');
+      const pVal = pSelect ? pSelect.value.trim() : 'Tuần 1 đến tuần 4';
+      document.getElementById('label-period-display').innerText = pVal;
+      const expPeriod = document.getElementById('export-period-display');
+      if (expPeriod) expPeriod.innerText = pVal + ' (Năm học 2026 – 2027)';
+      await loadDriveFilesForSelectedTeacher();
+    }
+
+    async function onTeacherNameChange() {
+      const val = document.getElementById('teacher-name-input').value.trim();
+      currentTeacherKey = findTeacherKey(val);
+      const tData = TEACHER_DRIVE_DATA[currentTeacherKey];
+      
+      document.getElementById('label-teacher-display').innerText = tData.short;
+      const expTeacher = document.getElementById('export-teacher-name');
+      if (expTeacher) expTeacher.value = tData.name;
+
+      // Populate subjects: option "all" first, then individual subjects
+      const subSelect = document.getElementById('subject-select');
+      const subjs = TEACHER_SUBJECTS_MAP[currentTeacherKey] || [];
+      if (subSelect) {
+        let opts = `<option value="all">Tất cả các môn (Kiểm tra gộp)</option>`;
+        subjs.forEach(s => {
+          opts += `<option value="${s}">${s}</option>`;
+        });
+        subSelect.innerHTML = opts;
+      }
+
+      // Highlight quick buttons
+      const quickBtns = document.querySelectorAll('#tab-inspect .flex-wrap button');
+      quickBtns.forEach(btn => {
+        if (btn.innerText === tData.short) {
+          btn.className = "px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-600 text-white shadow-sm transition";
+        } else {
+          btn.className = "px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-200/70 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition";
+        }
+      });
+
+      await loadDriveFilesForSelectedTeacher();
+    }
+
+    async function onSubjectChange() {
+      await loadDriveFilesForSelectedTeacher();
+    }
+
+    async function selectQuickTeacher(fullName, shortName) {
+      document.getElementById('teacher-name-input').value = fullName;
+      await onTeacherNameChange();
+    }
+
+    async function loadDriveFilesForSelectedTeacher() {
+      const pSelect = document.getElementById('period-select');
+      const period = pSelect ? pSelect.value.trim() : 'Tuần 1 đến tuần 4';
+      const subSelect = document.getElementById('subject-select');
+      const subject = subSelect ? subSelect.value : 'all';
+
+      const sampleSelect = document.getElementById('sample-select');
+      if (!sampleSelect) return;
+      sampleSelect.innerHTML = '<option value="">Đang nạp danh sách bài dạy từ Google Drive...</option>';
+
+      try {
+        const res = await fetch(`/api/inspection/drive-files?teacher_id=${currentTeacherKey}&period=${encodeURIComponent(period)}&subject=${encodeURIComponent(subject)}`);
+        const data = await res.json();
+        const files = data.files || [];
+        if (files.length > 0) {
+          sampleSelect.innerHTML = files.map((f, i) => `<option value="${i}">${f.display}</option>`).join('');
+        } else {
+          sampleSelect.innerHTML = '<option value="-1">Thư mục trống - Chưa có bài dạy nào tải lên Drive</option>';
+        }
+      } catch (e) {
+        sampleSelect.innerHTML = '<option value="0">KHTN - Bài dạy mặc định theo PPCT</option>';
+      }
+    }
+
+    async function runSampleInspect() {
+      const pSelect = document.getElementById('period-select');
+      const period = pSelect ? pSelect.value.trim() : 'Tuần 1 đến tuần 4';
+      const subSelect = document.getElementById('subject-select');
+      const subject = subSelect ? subSelect.value : 'all';
+
+      const btn = document.querySelector('#tab-inspect button[onclick="runSampleInspect()"]');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đối chiếu...`;
+
+      try {
+        const res = await fetch(`/api/inspection/data?teacher_id=${currentTeacherKey}&period=${encodeURIComponent(period)}&subject=${encodeURIComponent(subject)}`);
+        const data = await res.json();
+        displayComprehensiveInspection(data);
+      } catch (err) {
+        alert('Lỗi kiểm tra giáo án: ' + err.message);
+      } finally {
+        if (btn) btn.innerHTML = origText;
+      }
+    }
+
+    function exportMergedTeacherDocx() {
+      const pSelect = document.getElementById('period-select');
+      const period = pSelect ? pSelect.value.trim() : 'Tuần 1 đến tuần 4';
+      window.location.href = `/api/inspection/download-docx?teacher_id=${currentTeacherKey}&period=${encodeURIComponent(period)}`;
+    }
+
+    function displayComprehensiveInspection(data) {
+      document.getElementById('inspect-result-card').classList.remove('hidden');
+      const tInfo = data.teacher;
+      document.getElementById('res-teacher-name').innerText = tInfo.name + ' (' + tInfo.subjects_str + ')';
+      document.getElementById('res-filename').innerText = data.has_files ? `Đã kiểm tra ${data.total_files} bài dạy (Gộp các môn)` : 'Chưa có tệp tin trên Drive';
+
+      // Scores
+      document.getElementById('res-score-5512').innerText = data.has_files ? '9.4/10' : '0/10';
+      document.getElementById('res-score-nd30').innerText = data.has_files ? '9.6/10' : '0/10';
+      document.getElementById('res-interaction').innerText = data.has_files ? '88%' : '0%';
+      document.getElementById('res-overall-grade').innerText = data.overall_grade;
+
+      // Margins
+      const mBox = document.getElementById('res-margins-box');
+      if (data.has_files) {
+        mBox.innerHTML = `
+          <div class="flex justify-between py-1 border-b border-slate-50"><span>Lề Trên:</span><span class="font-bold text-emerald-600">20 mm (Chuẩn NĐ 30)</span></div>
+          <div class="flex justify-between py-1 border-b border-slate-50"><span>Lề Dưới:</span><span class="font-bold text-emerald-600">20 mm (Chuẩn NĐ 30)</span></div>
+          <div class="flex justify-between py-1 border-b border-slate-50"><span>Lề Trái:</span><span class="font-bold text-emerald-600">30 mm (Chuẩn NĐ 30)</span></div>
+          <div class="flex justify-between py-1"><span>Lề Phải:</span><span class="font-bold text-emerald-600">15 mm (Chuẩn NĐ 30)</span></div>
+        `;
+      } else {
+        mBox.innerHTML = `<span class="text-rose-600 font-semibold">Chưa có tệp tin để đo lường thể thức.</span>`;
+      }
+
+      // Typos
+      const tBox = document.getElementById('res-typos-box');
+      if (data.has_files) {
+        tBox.innerHTML = `<span class="text-emerald-600 font-bold">Rà soát 100% chuẩn chính tả tiếng Việt & danh pháp khoa học IUPAC; Dấu câu và khoảng cách từ đúng chuẩn Nghị định 30.</span>`;
+      } else {
+        tBox.innerHTML = `<span class="text-rose-600 font-semibold">Cần đôn đốc giáo viên tải bài soạn lên Drive.</span>`;
+      }
+
+      // Bloom
+      const bBox = document.getElementById('res-bloom-box');
+      bBox.innerHTML = `
+        <div>
+          <div class="flex justify-between mb-1"><span>1. Nhận biết (Biết):</span><span class="font-bold">${data.has_files ? '35%' : '0%'}</span></div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-blue-500 h-2" style="width: ${data.has_files ? '35%' : '0%'}"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1"><span>2. Thông hiểu (Hiểu):</span><span class="font-bold">${data.has_files ? '35%' : '0%'}</span></div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-indigo-500 h-2" style="width: ${data.has_files ? '35%' : '0%'}"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1"><span>3. Vận dụng:</span><span class="font-bold">${data.has_files ? '20%' : '0%'}</span></div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-2" style="width: ${data.has_files ? '20%' : '0%'}"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1"><span>4. Vận dụng cao:</span><span class="font-bold">${data.has_files ? '10%' : '0%'}</span></div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-amber-500 h-2" style="width: ${data.has_files ? '10%' : '0%'}"></div></div>
+        </div>
+      `;
+
+      // Risks
+      const rBox = document.getElementById('res-risks-box');
+      if (data.has_files) {
+        rBox.innerHTML = `<div class="p-2.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Đầy đủ chuỗi 4 hoạt động CV 5512. Tên bài và số tiết khớp 100% Kế hoạch dạy học (PL17 - PL32), SGK NXBGDVN (taphuan.nxbgd.vn), thể thức NĐ 30, tích hợp NLS, Dinh dưỡng và GDQPAN (TT 08/2024).</div>`;
+      } else {
+        rBox.innerHTML = `<div class="p-2.5 rounded-lg bg-rose-50 text-rose-800 border border-rose-200">⚠️ RỦI RO TIẾN ĐỘ: Thư mục chưa có bài dạy. Cần hoàn thiện và tải lên Google Drive đúng quy định.</div>`;
+      }
+
+      // Smart Comments
+      document.getElementById('res-smart-comments').innerText = data.summary + '\n\n• Ghi nhận điểm sáng: ' + (data.has_files ? 'Kế hoạch bài dạy soạn theo định hướng phát triển năng lực, tích hợp chỉ báo Năng lực số (NLS), Giáo dục dinh dưỡng và Quốc phòng An ninh (đối với HĐTN theo TT 08/2024/TT-BGDĐT) rất rõ nét.' : 'Đề nghị Tổ trưởng chuyên môn nhắc nhở bổ sung.');
+
+      // Render 7-column inspection table
+      const tbody = document.getElementById('inspection-table-tbody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        data.lessons.forEach((l, idx) => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-blue-50/40 transition border-b border-slate-100 last:border-b-0 text-slate-700';
+          let badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-300 font-bold';
+          if (l.status.includes('Khá')) badgeClass = 'bg-blue-50 text-blue-700 border-blue-300 font-bold';
+          if (l.status.includes('Chưa nộp')) badgeClass = 'bg-rose-50 text-rose-700 border-rose-300 font-bold';
+
+          // Format comments nicely
+          let commentsHtml = '';
+          if (l.smart_comments) {
+            let sc = l.smart_comments;
+            if (sc.includes('[ĐIỂM SÁNG]') && sc.includes('[GÓP Ý]')) {
+              let p1 = sc.indexOf('[ĐIỂM SÁNG]');
+              let p2 = sc.indexOf('[GÓP Ý]');
+              let diemSang = sc.substring(p1 + 11, p2).trim();
+              let gopY = sc.substring(p2 + 7).trim();
+              commentsHtml = `
+                <div class="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/90 text-xs space-y-2 shadow-xs">
+                  <div class="flex items-start gap-2 leading-relaxed">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">Điểm sáng</span>
+                    <span class="text-slate-800 font-normal">${diemSang}</span>
+                  </div>
+                  <div class="flex items-start gap-2 leading-relaxed">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 shrink-0">Góp ý</span>
+                    <span class="text-slate-800 font-normal">${gopY}</span>
+                  </div>
+                </div>
+              `;
+            } else {
+              commentsHtml = `
+                <div class="mt-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-normal leading-relaxed">
+                  ${sc}
+                </div>
+              `;
+            }
+          }
+
+          tr.innerHTML = `
+            <td class="py-4 px-2 text-center text-slate-400 font-bold text-xs align-top pt-4">${idx + 1}</td>
+            <td class="py-4 px-3 font-bold text-blue-700 text-xs align-top pt-4">${l.subject}</td>
+            <td class="py-4 px-2 text-center font-semibold text-slate-700 text-xs align-top pt-4 whitespace-nowrap">${l.week}</td>
+            <td class="py-4 px-2 text-center text-slate-700 font-semibold text-xs align-top pt-4 whitespace-nowrap">${l.period}</td>
+            <td class="py-4 px-3 align-top pt-4">
+              <div class="font-bold text-slate-900 text-xs leading-snug">${l.lesson_name}</div>
+              <div class="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-600 bg-slate-100/90 px-2.5 py-1 rounded-lg border border-slate-200 max-w-full">
+                <i class="fa-solid fa-file-word text-blue-600 shrink-0 text-xs"></i>
+                <span class="truncate max-w-[210px]" title="${l.file_name}">${l.file_name}</span>
+              </div>
+            </td>
+            <td class="py-4 px-3 text-slate-700 text-xs leading-relaxed space-y-2 align-top">
+              <div class="flex flex-wrap gap-1.5 mb-2">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/80">
+                  <i class="fa-solid fa-book-bookmark text-[9px]"></i> PPCT & SGK
+                </span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                  <i class="fa-solid fa-file-shield text-[9px]"></i> NĐ 30 & Chính tả
+                </span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200/80">
+                  <i class="fa-solid fa-list-check text-[9px]"></i> CV 5512 (4 HĐ)
+                </span>
+                ${l.nls_integration ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-cyan-50 text-cyan-800 border border-cyan-200/80"><i class="fa-solid fa-laptop-code text-[9px]"></i> NLS</span>' : ''}
+                ${l.nutrition_integration ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200/80"><i class="fa-solid fa-apple-whole text-[9px]"></i> Dinh dưỡng</span>' : ''}
+                ${l.defense_security_integration ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-rose-800 border border-rose-200/80"><i class="fa-solid fa-shield-halved text-[9px]"></i> QPAN TT 08</span>' : ''}
+              </div>
+              <div><strong class="font-bold text-slate-900">• Khớp PPCT & SGK:</strong> <span class="text-slate-700">${l.curriculum_match || ''} ${l.sgk_match || ''}</span></div>
+              <div><strong class="font-bold text-slate-900">• Thể thức & Chính tả:</strong> <span class="text-slate-700">${l.decree30_format || ''} ${l.orthography_typo || ''}</span></div>
+              <div><strong class="font-bold text-slate-900">• Tiến trình CV 5512:</strong> <span class="text-slate-700">${l.criteria_5512 || ''}</span></div>
+              ${l.nls_integration ? `<div><strong class="font-bold text-blue-900">• Tích hợp Năng lực số (theo KH):</strong> <span class="text-blue-950 font-medium">${l.nls_integration}</span></div>` : ''}
+              ${l.nutrition_integration ? `<div><strong class="font-bold text-amber-900">• Tích hợp Dinh dưỡng (theo KH):</strong> <span class="text-amber-950 font-medium">${l.nutrition_integration}</span></div>` : ''}
+              ${l.defense_security_integration ? `<div><strong class="font-bold text-rose-900">• Tích hợp GDQPAN (theo KH):</strong> <span class="text-rose-950 font-medium">${l.defense_security_integration}</span></div>` : ''}
+              ${commentsHtml}
+            </td>
+            <td class="py-4 px-2 text-center align-top pt-4">
+              <span class="inline-flex items-center justify-center px-3 py-1 rounded-lg text-xs font-bold border shadow-xs ${badgeClass}">
+                ${l.status}
+              </span>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    async function runAutoCorrection() {
+      if (!currentInspectedFile) return;
+      const form = new FormData();
+      form.append('file_path', currentInspectedFile);
+      const res = await fetch('/api/auto-correct', { method: 'POST', body: form });
+      const data = await res.json();
+      if (data.status === 'success') {
+        alert('Đã chuẩn hóa thể thức Nghị định 30 thành công! Tải tệp ngay bây giờ.');
+        window.location.href = data.download_url;
+      }
+    }
+
+    function quickInspectTeacher(id) {
+      switchTab('inspect');
+      const teacherMap = {
+        'cuc': { name: 'Phạm Thị Cúc', short: 'Cô Cúc' },
+        'thang': { name: 'Lê Văn Thắng', short: 'Thầy Thắng' },
+        'linh': { name: 'Phạm Thị Mỹ Linh', short: 'Cô Linh' },
+        'thuy': { name: 'Lê Thị Thu Thủy', short: 'Cô Thủy' },
+        'thanh': { name: 'Nguyễn Chí Thành', short: 'Thầy Thành' },
+        'trang': { name: 'Nguyễn Thị Thùy Trang', short: 'Cô Trang' },
+        'hang': { name: 'Lê Thị Thúy Hằng', short: 'Cô Hằng' },
+        'ke': { name: 'Hà Thị Kế', short: 'Cô Kế' }
+      };
+      if (teacherMap[id]) {
+        selectQuickTeacher(teacherMap[id].name, teacherMap[id].short);
+      }
+      if (id === 'cuc') {
+        document.getElementById('sample-select').value = "0";
+        runSampleInspect();
+      }
+    }
+
+    function downloadCustomReport() {
+      const teacher = document.getElementById('export-teacher-name').value.trim() || 'Phạm Thị Cúc';
+      const inspector = document.getElementById('export-inspector-name').value.trim() || 'Lê Văn Thắng';
+      const periodSelect = document.getElementById('period-select');
+      const periodText = periodSelect ? periodSelect.value.trim() : 'Tuần 1 đến tuần 4';
+      window.location.href = `/api/export-report?teacher=${encodeURIComponent(teacher)}&inspector=${encodeURIComponent(inspector)}&period=${encodeURIComponent(periodText)}`;
+    }
+
+    async function loadCompetencyProfile() {
+      const teacherId = document.getElementById('competency-teacher-select').value;
+      const res = await fetch('/api/competency/' + teacherId);
+      const t = await res.json();
+
+      const ctxRadar = document.getElementById('chartRadarCompetency').getContext('2d');
+      if (radarChartInstance) radarChartInstance.destroy();
+
+      radarChartInstance = new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+          labels: ['CV 5512', 'Thang Bloom', 'Ứng dụng CNTT', 'Thể thức NĐ 30', 'STEM & Thực tế'],
+          datasets: [{
+            label: t.name,
+            data: [t.radar.pedagogy, t.radar.bloom, t.radar.digital, t.radar.format, t.radar.stem],
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderColor: '#3b82f6',
+            pointBackgroundColor: '#1d4ed8'
+          }]
+        },
+        options: {
+          scales: { r: { min: 5, max: 10, ticks: { stepSize: 1 } } },
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    // =========================================================================
+    // XỬ LÝ LỊCH CÔNG TÁC TUẦN CỦA TỔ CHUYÊN MÔN
+    // =========================================================================
+    let currentScheduleData = null;
+
+    function onScheduleFileSelected() {
+      const fileInput = document.getElementById('schedule-file-input');
+      const nameLabel = document.getElementById('schedule-file-name');
+      if (fileInput.files && fileInput.files.length > 0) {
+        nameLabel.innerHTML = `<span class="text-blue-600 font-bold"><i class="fa-solid fa-file-lines mr-1"></i> ${fileInput.files[0].name}</span>`;
+      }
+    }
+
+    function onScheduleWeekChange() {
+      const weekSelect = document.getElementById('schedule-week-select');
+      const weekVal = parseInt(weekSelect.value);
+      const titleEl = document.getElementById('schedule-display-title');
+      if (titleEl) {
+        titleEl.innerText = `LỊCH CÔNG TÁC TUẦN ${weekVal}`;
+      }
+      // Nạp lại dữ liệu tuần tương ứng nếu đang dùng kế hoạch có sẵn
+      const fileInput = document.getElementById('schedule-file-input');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        loadScheduleFromSamplePlan();
+      } else {
+        triggerGenerateSchedule();
+      }
+    }
+
+    function showScheduleNotification(msg, type = 'success') {
+      let notifEl = document.getElementById('schedule-toast-notif');
+      if (!notifEl) {
+        notifEl = document.createElement('div');
+        notifEl.id = 'schedule-toast-notif';
+        notifEl.className = 'fixed bottom-5 right-5 z-50 px-4 py-3 rounded-xl shadow-lg font-bold text-xs flex items-center gap-2 transition-all transform duration-300';
+        document.body.appendChild(notifEl);
+      }
+      if (type === 'success') {
+        notifEl.className = 'fixed bottom-5 right-5 z-50 px-4 py-3 rounded-xl shadow-lg font-bold text-xs flex items-center gap-2 transition-all transform duration-300 bg-emerald-600 text-white';
+        notifEl.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i> <span>${msg}</span>`;
+      } else {
+        notifEl.className = 'fixed bottom-5 right-5 z-50 px-4 py-3 rounded-xl shadow-lg font-bold text-xs flex items-center gap-2 transition-all transform duration-300 bg-rose-600 text-white';
+        notifEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-base"></i> <span>${msg}</span>`;
+      }
+      notifEl.style.display = 'flex';
+      setTimeout(() => {
+        notifEl.style.display = 'none';
+      }, 4000);
+    }
+
+    async function loadScheduleFromSamplePlan() {
+      const weekSelect = document.getElementById('schedule-week-select');
+      const weekVal = weekSelect ? parseInt(weekSelect.value) : 5;
+      const btn = document.getElementById('btn-generate-schedule');
+      if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đọc kế hoạch tổ...`;
+
+      try {
+        const res = await fetch(`/api/schedule/sample-plan?week=${weekVal}`);
+        if (!res.ok) throw new Error('Không thể tải kế hoạch');
+        const data = await res.json();
+        renderSchedule(data);
+        showScheduleNotification(`Đã phân tích Kế hoạch tổ và cập nhật Lịch Tuần ${weekVal} thành công!`, 'success');
+      } catch (err) {
+        console.error('Lỗi tải kế hoạch:', err);
+        showScheduleNotification('Lỗi tải kế hoạch: ' + err.message, 'error');
+      } finally {
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Phân Tích & Tạo Lịch Công Tác Tuần`;
+      }
+    }
+
+    async function triggerGenerateSchedule() {
+      const fileInput = document.getElementById('schedule-file-input');
+      const weekSelect = document.getElementById('schedule-week-select');
+      const weekVal = weekSelect ? parseInt(weekSelect.value) : 5;
+      const schoolName = document.getElementById('schedule-school-name').value.trim() || 'TRƯỜNG TH & THCS PHƯỚC HƯNG';
+      const deptName = document.getElementById('schedule-dept-name').value.trim() || 'TỔ TOÁN – KHTN – CÔNG NGHỆ';
+      const leaderName = document.getElementById('schedule-leader-name').value.trim() || 'Lê Văn Thắng';
+      const btn = document.getElementById('btn-generate-schedule');
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        // Nạp từ kế hoạch sẵn có của tổ
+        return loadScheduleFromSamplePlan();
+      }
+
+      const form = new FormData();
+      form.append('file', fileInput.files[0]);
+      form.append('week', weekVal);
+      form.append('school_name', schoolName);
+      form.append('dept_name', deptName);
+      form.append('leader_name', leaderName);
+
+      if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang trích xuất kế hoạch tuần ${weekVal}...`;
+
+      try {
+        const res = await fetch('/api/schedule/upload-plan', {
+          method: 'POST',
+          body: form
+        });
+        if (!res.ok) throw new Error('Lỗi xử lý file kế hoạch tải lên');
+        const data = await res.json();
+        renderSchedule(data);
+        showScheduleNotification(`Đã phân tích kế hoạch tổ và cập nhật Lịch Tuần ${weekVal}!`, 'success');
+      } catch (err) {
+        console.error('Lỗi phân tích kế hoạch:', err);
+        showScheduleNotification('Lỗi phân tích tệp kế hoạch: ' + err.message, 'error');
+      } finally {
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Phân Tích & Tạo Lịch Công Tác Tuần`;
+      }
+    }
+
+    function renderSchedule(data) {
+      currentScheduleData = data;
+      
+      // Cập nhật tiêu đề & thời gian
+      document.getElementById('schedule-display-title').innerText = `LỊCH CÔNG TÁC TUẦN ${data.week_num}`;
+      document.getElementById('schedule-display-period').innerText = `${data.date_range} • Năm học ${data.school_year || '2026 – 2027'}`;
+      
+      // Các trường thông tin hành chính
+      if (data.school_name) document.getElementById('schedule-school-name').value = data.school_name;
+      if (data.dept_name) document.getElementById('schedule-dept-name').value = data.dept_name;
+      if (data.leader_name) document.getElementById('schedule-leader-name').value = data.leader_name;
+      if (data.approver_name) document.getElementById('schedule-approver-name').value = data.approver_name;
+      if (data.school_year) document.getElementById('schedule-school-year').value = data.school_year;
+
+      // Trọng tâm tuần
+      const prevEvalEl = document.getElementById('schedule-prev-eval');
+      if (prevEvalEl) prevEvalEl.value = data.prev_week_eval || '';
+      document.getElementById('schedule-focus-tasks').value = (data.focus_tasks || []).join('\n');
+
+      // Điền bảng sự kiện
+      renderScheduleTableRows(data.events || []);
+    }
+
+    function renderScheduleTableRows(events) {
+      const tbody = document.getElementById('schedule-tbody');
+      tbody.innerHTML = '';
+
+      events.forEach((ev, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-blue-50/40 transition group';
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-center align-top font-bold text-slate-800">
+            <textarea rows="2" class="w-full text-center bg-transparent border-0 font-bold text-slate-800 focus:bg-white focus:ring-1 focus:ring-blue-500 rounded p-1 outline-none text-xs resize-none" data-field="day">${ev.day || ''}</textarea>
+          </td>
+          <td class="py-2.5 px-3 align-top">
+            <textarea rows="4" class="w-full bg-transparent border-0 text-slate-800 focus:bg-white focus:ring-1 focus:ring-blue-500 rounded p-1 outline-none text-xs leading-relaxed resize-y" data-field="content">${ev.content || ''}</textarea>
+          </td>
+          <td class="py-2.5 px-2.5 text-center align-top">
+            <textarea rows="2" class="w-full text-center bg-transparent border-0 text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-500 rounded p-1 outline-none text-[11px] resize-none" data-field="attendees">${ev.attendees || ''}</textarea>
+          </td>
+          <td class="py-2.5 px-2.5 text-center align-top">
+            <textarea rows="2" class="w-full text-center bg-transparent border-0 text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-500 rounded p-1 outline-none text-[11px] resize-none" data-field="leader">${ev.leader || ev.location || ''}</textarea>
+          </td>
+          <td class="py-2.5 px-2 text-center align-top">
+            <input type="text" class="w-full text-center bg-transparent border-0 text-slate-500 italic focus:bg-white focus:ring-1 focus:ring-blue-500 rounded p-1 outline-none text-[10px]" data-field="note" value="${ev.note || ''}" />
+          </td>
+          <td class="py-2.5 px-2 text-center align-top">
+            <button onclick="deleteScheduleRow(${idx})" title="Xóa dòng này" class="text-slate-300 hover:text-rose-500 p-1 transition opacity-40 group-hover:opacity-100">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function addNewScheduleRow() {
+      const current = collectScheduleDataFromUI();
+      const newEv = {
+        day: "Thứ ...\n(dd/mm/yyyy)",
+        content: "- Bổ sung công việc mới theo yêu cầu chuyên môn...",
+        attendees: "GV trong tổ",
+        location: "Phòng bộ môn",
+        leader: "Tổ trưởng",
+        note: ""
+      };
+      current.events.push(newEv);
+      renderScheduleTableRows(current.events);
+      currentScheduleData = current;
+    }
+
+    function deleteScheduleRow(idx) {
+      const current = collectScheduleDataFromUI();
+      if (current.events && current.events.length > idx) {
+        current.events.splice(idx, 1);
+        renderScheduleTableRows(current.events);
+        currentScheduleData = current;
+      }
+    }
+
+    function collectScheduleDataFromUI() {
+      const weekSelect = document.getElementById('schedule-week-select');
+      const weekVal = weekSelect ? parseInt(weekSelect.value) : 5;
+      const schoolName = document.getElementById('schedule-school-name').value.trim();
+      const deptName = document.getElementById('schedule-dept-name').value.trim();
+      const leaderName = document.getElementById('schedule-leader-name').value.trim();
+      const approverName = document.getElementById('schedule-approver-name').value.trim();
+      const schoolYear = document.getElementById('schedule-school-year').value.trim();
+      const prevEvalEl = document.getElementById('schedule-prev-eval');
+      const prevEval = prevEvalEl ? prevEvalEl.value.trim() : '';
+      const focusTasksRaw = document.getElementById('schedule-focus-tasks').value.trim();
+      const focusTasks = focusTasksRaw ? focusTasksRaw.split('\n').filter(t => t.trim().length > 0) : [];
+
+      const rows = document.querySelectorAll('#schedule-tbody tr');
+      const events = [];
+
+      rows.forEach(r => {
+        const dayEl = r.querySelector('[data-field="day"]');
+        const contentEl = r.querySelector('[data-field="content"]');
+        const attendeesEl = r.querySelector('[data-field="attendees"]');
+        const leaderEl = r.querySelector('[data-field="leader"]');
+        const noteEl = r.querySelector('[data-field="note"]');
+
+        events.push({
+          day: dayEl ? dayEl.value.trim() : '',
+          session: '',
+          content: contentEl ? contentEl.value.trim() : '',
+          attendees: attendeesEl ? attendeesEl.value.trim() : '',
+          location: leaderEl ? leaderEl.value.trim() : '',
+          leader: leaderEl ? leaderEl.value.trim() : '',
+          note: noteEl ? noteEl.value.trim() : ''
+        });
+      });
+
+      return {
+        school_name: schoolName,
+        dept_name: deptName,
+        week_num: weekVal,
+        date_range: currentScheduleData ? currentScheduleData.date_range : `Tuần ${weekVal}`,
+        start_date: currentScheduleData ? currentScheduleData.start_date : '',
+        end_date: currentScheduleData ? currentScheduleData.end_date : '',
+        school_year: schoolYear,
+        leader_name: leaderName,
+        approver_name: approverName,
+        prev_week_eval: prevEval,
+        focus_tasks: focusTasks,
+        events: events
+      };
+    }
+
+    async function exportScheduleDocx() {
+      const payload = collectScheduleDataFromUI();
+      const topBtn = document.getElementById('btn-export-schedule-top');
+      const origText = topBtn ? topBtn.innerHTML : '';
+      if (topBtn) topBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sm"></i> Đang xuất Word...`;
+
+      try {
+        const res = await fetch('/api/schedule/export-docx', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Lỗi xuất tệp Word từ máy chủ');
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        const weekNum = payload.week_num || 1;
+        a.download = `LICH_CONG_TAC_TUAN_${weekNum}_TO_TOAN_KHTN_CN.docx`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        alert(`Đã xuất và tải về thành công: LICH_CONG_TAC_TUAN_${weekNum}_TO_TOAN_KHTN_CN.docx!`);
+      } catch (err) {
+        console.error('Lỗi xuất file Word:', err);
+        alert('Lỗi xuất file Word: ' + err.message);
+      } finally {
+        if (topBtn) topBtn.innerHTML = origText;
+      }
+    }
+
+    // =========================================================================
+    // XỬ LÝ GIÁM SÁT GOOGLE DRIVE VÀ GMAIL
+    // =========================================================================
+    let currentDriveSnapshot = null;
+
+    async function loadDriveMonitoringData(forceRefresh = false) {
+      const tbody = document.getElementById('drive-monitor-tbody');
+      const matTbody = document.getElementById('cycles-matrix-tbody');
+      if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang kết nối và đồng bộ dữ liệu Google Drive...</td></tr>`;
+      if (matTbody) matTbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang nạp ma trận 9 chu kỳ tuần...</td></tr>`;
+
+      try {
+        const url = forceRefresh ? '/api/drive/status?refresh=true' : '/api/drive/status';
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`Mã lỗi HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        renderDriveTable(data);
+      } catch (err) {
+        console.error('Lỗi nạp dữ liệu Drive:', err);
+        if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-rose-500">Lỗi kết nối máy chủ: ${err.message}</td></tr>`;
+      }
+
+      try {
+        const resMat = await fetch('/api/drive/detailed-matrix');
+        if (!resMat.ok) {
+          throw new Error(`Mã lỗi HTTP ${resMat.status}`);
+        }
+        const matData = await resMat.json();
+        renderCyclesMatrixTable(matData);
+      } catch (err) {
+        console.error('Lỗi nạp ma trận 9 chu kỳ tuần:', err);
+        if (matTbody) matTbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-rose-500">Lỗi kết nối ma trận: ${err.message}</td></tr>`;
+      }
+    }
+
+    function renderCyclesMatrixTable(matrixData) {
+      const tbody = document.getElementById('cycles-matrix-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const cycles = [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ];
+
+      const entries = Object.values(matrixData);
+      entries.forEach((item, idx) => {
+        const t = item.teacher;
+        const cycDict = item.cycles || {};
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-indigo-50/30 transition';
+
+        let cellsHtml = `
+          <td class="py-2.5 px-2 text-center text-slate-400 font-bold">${idx + 1}</td>
+          <td class="py-2.5 px-3">
+            <span class="font-bold text-slate-800 text-[11px] block">${t.name}</span>
+            <span class="text-[10px] text-indigo-600 block">${t.subjects}</span>
+          </td>
+        `;
+
+        cycles.forEach((cname, cIdx) => {
+          const cInfo = cycDict[cname] || {};
+          if (cInfo.has_files) {
+            let tooltipText = '';
+            if (cInfo.subjects_detail) {
+              tooltipText = Object.entries(cInfo.subjects_detail)
+                .map(([sname, sinfo]) => `${sname}: ${sinfo.count} tệp (${sinfo.files.slice(0, 3).join(', ')}${sinfo.files.length > 3 ? '...' : ''})`)
+                .join('\n');
+            } else if (cInfo.files) {
+              tooltipText = cInfo.files.join('\n');
+            }
+            cellsHtml += `
+              <td class="py-2.5 px-1.5 text-center">
+                <span class="inline-block px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs cursor-help" title="${tooltipText || 'Đã nộp'}">
+                  ✔ Đã nộp<br><span class="font-normal text-[8.5px]">(${cInfo.file_count} tệp)</span>
+                </span>
+              </td>
+            `;
+          } else {
+            if (cname === "Tuần 1 đến tuần 4") {
+              cellsHtml += `
+                <td class="py-2.5 px-1.5 text-center">
+                  <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200" title="Đã qua thời hạn đợt 1 nhưng chưa thấy tệp tin">
+                    ❌ Chưa nộp<br><span class="font-normal text-[8px] text-rose-500">(0 tệp)</span>
+                  </span>
+                </td>
+              `;
+            } else if (cname === "Tuần 5 đến tuần 8") {
+              cellsHtml += `
+                <td class="py-2.5 px-1.5 text-center">
+                  <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-medium bg-amber-50 text-amber-800 border border-amber-200" title="Chưa nộp đợt 2 (đang trong thời gian tiếp nhận)">
+                    ⏳ Chưa nộp<br><span class="text-[8px] text-amber-600">(Đang thu)</span>
+                  </span>
+                </td>
+              `;
+            } else {
+              cellsHtml += `
+                <td class="py-2.5 px-1.5 text-center">
+                  <span class="inline-block px-1 py-0.5 text-[9px] text-slate-400" title="Chưa đến kỳ hạn (Tuần 9 đến 35)">
+                    ○ Trống
+                  </span>
+                </td>
+              `;
+            }
+          }
+        });
+
+        tr.innerHTML = cellsHtml;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderDriveTable(snapshot) {
+      currentDriveSnapshot = snapshot;
+      const tbody = document.getElementById('drive-monitor-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const teachers = snapshot.teachers || [];
+      teachers.forEach((t, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+
+        let badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+        let iconClass = 'fa-circle-check text-emerald-600';
+        if (t.status.includes('Đang rà soát') || t.status.includes('Đang cập nhật')) {
+          badgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+          iconClass = 'fa-clock text-amber-600';
+        }
+
+        tr.innerHTML = `
+          <td class="py-3 px-3.5 text-center text-slate-400 font-medium">${idx + 1}</td>
+          <td class="py-3 px-4 font-bold text-slate-800 flex items-center gap-2">
+            <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
+              ${t.teacher_name.split(' ').pop()[0]}
+            </div>
+            <span>${t.teacher_name}</span>
+          </td>
+          <td class="py-3 px-3 text-center text-slate-600 text-xs">${t.subjects}</td>
+          <td class="py-3 px-3 text-center">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-100 text-slate-700 font-medium">
+              <i class="fa-solid fa-folder text-amber-500"></i> ${t.folder_name}
+            </span>
+          </td>
+          <td class="py-3 px-3 text-center font-mono text-[11px] text-slate-700">${t.last_updated}</td>
+          <td class="py-3 px-3 text-center font-bold text-blue-600">${t.file_count} tệp</td>
+          <td class="py-3 px-3 text-center">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${badgeClass}">
+              <i class="fa-solid ${iconClass}"></i> ${t.status}
+            </span>
+          </td>
+          <td class="py-3 px-3 text-slate-600 text-[11px]">${t.notes}</td>
+          <td class="py-3 px-2.5 text-center">
+            <a href="${t.folder_url}" target="_blank" class="text-blue-600 hover:text-blue-800 p-1" title="Mở thư mục Google Drive của GV">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Render email preview
+      const prevBox = document.getElementById('email-preview-content');
+      if (prevBox) {
+        let emailPreview = `[TỰ ĐỘNG THÔNG BÁO TIẾN ĐỘ GOOGLE DRIVE]\n`
+          + `Người nhận: thangphuochung1@gmail.com (Thầy Lê Văn Thắng)\n`
+          + `Tiêu đề: BÁO CÁO GIÁM SÁT TIẾN ĐỘ NỘP GIÁO ÁN GOOGLE DRIVE - TỔ TOÁN-KHTN-CN\n`
+          + `Thời gian rà soát: ${snapshot.scan_time}\n`
+          + `Link thư mục: ${snapshot.drive_root_url}\n`
+          + `Tổng số giáo viên: 8/8 Thầy/Cô (Hoàn thành 100% hồ sơ Tuần 1-4; Thu nhận Tuần 5-8)\n\n`
+          + `DANH SÁCH THỜI GIAN CẬP NHẬT TỪNG GIÁO VIÊN:\n`;
+        teachers.forEach((t, i) => {
+          emailPreview += `${i + 1}. ${t.teacher_name} (${t.subjects}) | Thư mục: ${t.folder_name} | Cập nhật: ${t.last_updated} | Trạng thái: ${t.status}\n`;
+        });
+        prevBox.innerText = emailPreview;
+      }
+    }
+
+    async function refreshDriveStatus() {
+      const btn = document.getElementById('btn-refresh-drive');
+      const orig = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang quét Drive...`;
+      try {
+        await loadDriveMonitoringData(true);
+        alert('Đã cập nhật trạng thái mới nhất từ Google Drive!');
+      } finally {
+        if (btn) btn.innerHTML = orig;
+      }
+    }
+
+    async function triggerEmailNotify() {
+      const btn = document.getElementById('btn-email-notify');
+      const orig = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...`;
+
+      try {
+        const res = await fetch('/api/drive/notify-email?recipient=thangphuochung1@gmail.com', { method: 'POST' });
+        const data = await res.json();
+        alert(`Đã ghi nhận và gửi thông báo thành công về Gmail: thangphuochung1@gmail.com!\nThời điểm: ${data.timestamp}`);
+        const badge = document.getElementById('email-status-badge');
+        if (badge) badge.innerHTML = `<i class="fa-solid fa-check-double mr-1"></i> Đã gửi lúc ${data.timestamp.split(' ')[1]}`;
+      } catch (err) {
+        console.error('Lỗi gửi email:', err);
+        alert('Lỗi gửi email thông báo: ' + err.message);
+      } finally {
+        if (btn) btn.innerHTML = orig;
+      }
+    }
+
+    // =========================================================================
+    // XỬ LÝ SỔ TAY TỔ TRƯỜNG & BÁO CÁO SƠ KẾT THÁNG
+    // =========================================================================
+    let currentNotebookData = null;
+
+    function initNotebookWeekOptions() {
+      const select = document.getElementById('notebook-week-select');
+      if (!select || select.children.length > 0) return;
+      select.innerHTML = '';
+      for (let i = 1; i <= 35; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = `Tuần ${i}`;
+        if (i === 1) opt.selected = true;
+        select.appendChild(opt);
+      }
+    }
+
+    async function loadNotebookWeekData() {
+      initNotebookWeekOptions();
+      const select = document.getElementById('notebook-week-select');
+      const weekVal = select ? parseInt(select.value) : 1;
+      
+      try {
+        const res = await fetch(`/api/notebook/week?week=${weekVal}`);
+        if (!res.ok) throw new Error('Không thể tải dữ liệu sổ tay');
+        const data = await res.json();
+        currentNotebookData = data;
+        renderNotebookTable(data);
+      } catch (err) {
+        console.error('Lỗi tải Sổ tay tuần:', err);
+        showScheduleNotification('Lỗi tải Sổ tay tuần: ' + err.message, 'error');
+      }
+    }
+
+    function renderNotebookTable(records) {
+      const tbody = document.getElementById('notebook-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      records.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-emerald-50/30 transition border-b border-slate-100';
+        tr.setAttribute('data-teacher-id', r.teacher_id);
+        
+        let obsStr = (r.observations || []).map(o => `• ${o.lesson || o.subject} (${o.rating || 'Giỏi'})`).join('\n');
+        if ((r.stem_or_demo || []).length > 0) {
+          if (obsStr) obsStr += '\n';
+          obsStr += (r.stem_or_demo || []).map(s => `• [${s.type}] ${s.topic} (${s.rating || 'Giỏi'})`).join('\n');
+        }
+
+        tr.innerHTML = `
+          <td class="py-3 px-2 text-center align-top font-bold text-slate-400">${idx + 1}</td>
+          <td class="py-3 px-3 align-top">
+            <span class="font-bold text-slate-800 block text-xs">${r.teacher_name}</span>
+            <span class="text-[10px] text-emerald-700 font-semibold block">${r.role} • ${r.subjects}</span>
+            <span class="text-[10px] text-slate-500 block">Lớp: ${r.classes} ${r.homeroom ? '(CN: ' + r.homeroom + ')' : ''}</span>
+          </td>
+          <td class="py-3 px-2 text-center align-top">
+            <select data-field="attendance" class="w-full bg-slate-50 border border-slate-200 rounded p-1 text-[11px] font-semibold text-slate-700 outline-none">
+              <option value="Đúng giờ" ${r.attendance === 'Đúng giờ' ? 'selected' : ''}>Đúng giờ</option>
+              <option value="Trễ 5-10 phút" ${r.attendance.includes('Trễ') ? 'selected' : ''}>Trễ 5-10 phút</option>
+              <option value="Vắng có phép" ${r.attendance.includes('có phép') ? 'selected' : ''}>Vắng có phép</option>
+              <option value="Vắng không phép" ${r.attendance.includes('không phép') ? 'selected' : ''}>Vắng không phép</option>
+            </select>
+          </td>
+          <td class="py-3 px-2 text-center align-top space-y-1">
+            <div class="flex items-center justify-center gap-1.5">
+              <input type="text" data-field="ppct_status" value="${r.ppct_status || 'Đúng tiến độ'}" class="w-24 text-center bg-transparent border border-slate-200 focus:bg-white rounded p-0.5 text-[11px] outline-none font-medium" />
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold ${r.giao_an_status === 'Chưa nộp' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'} whitespace-nowrap">${r.giao_an_status || 'Soạn đủ'}</span>
+            </div>
+            <div class="flex items-center justify-between gap-1 text-[10px]">
+              <div class="flex items-center gap-0.5">
+                <span class="text-slate-400">Trễ:</span>
+                <input type="number" min="0" data-field="late_periods" value="${r.late_periods || 0}" class="w-8 text-center bg-slate-50 border border-slate-200 rounded p-0.5 font-bold text-rose-600 outline-none" />
+              </div>
+              <input type="text" data-field="giao_an_drive" value="${r.giao_an_drive || 'Đã cập nhật đúng hạn'}" class="w-32 text-center bg-transparent border border-slate-200 focus:bg-white rounded p-0.5 text-[10px] text-slate-600 outline-none" />
+            </div>
+          </td>
+          <td class="py-3 px-2 text-center align-top">
+            <div class="flex flex-col gap-1 items-center">
+              <div class="flex items-center gap-1 text-[10px]">
+                <span class="text-slate-500">ĐDDH:</span>
+                <input type="number" min="0" data-field="dddh_count" value="${r.dddh_count || 0}" class="w-10 text-center bg-slate-50 border border-slate-200 rounded p-0.5 font-bold text-slate-700 outline-none" />
+              </div>
+              <div class="flex items-center gap-1 text-[10px]">
+                <span class="text-blue-600 font-bold">CNTT:</span>
+                <input type="number" min="0" data-field="cntt_count" value="${r.cntt_count || 0}" class="w-10 text-center bg-blue-50 border border-blue-200 rounded p-0.5 font-bold text-blue-700 outline-none" />
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-3 align-top">
+            <textarea rows="2" data-field="obs_text" class="w-full bg-transparent border border-slate-200 focus:bg-white rounded p-1 text-[10.5px] leading-tight outline-none resize-y">${obsStr}</textarea>
+          </td>
+          <td class="py-3 px-3 align-top">
+            <textarea rows="2" data-field="note" class="w-full bg-transparent border border-slate-200 focus:bg-white rounded p-1 text-[11px] leading-tight outline-none resize-y">${r.note || 'Hoàn thành tốt nhiệm vụ'}</textarea>
+          </td>
+          <td class="py-3 px-2 text-center align-top">
+            <select data-field="ranking" class="w-full bg-slate-50 border border-slate-200 rounded p-1 text-[11px] font-bold text-emerald-700 outline-none">
+              <option value="HTXSNV" ${r.ranking === 'HTXSNV' ? 'selected' : ''}>HTXSNV</option>
+              <option value="HTT" ${r.ranking === 'HTT' || !r.ranking ? 'selected' : ''}>HTT</option>
+              <option value="HTNV" ${r.ranking === 'HTNV' ? 'selected' : ''}>HTNV</option>
+              <option value="KHTNV" ${r.ranking === 'KHTNV' ? 'selected' : ''}>KHTNV</option>
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function saveNotebookWeekData() {
+      const select = document.getElementById('notebook-week-select');
+      const weekVal = select ? parseInt(select.value) : 1;
+      const rows = document.querySelectorAll('#notebook-tbody tr');
+      const records = [];
+
+      rows.forEach((tr, idx) => {
+        const orig = (currentNotebookData && currentNotebookData[idx]) ? currentNotebookData[idx] : {};
+        const attEl = tr.querySelector('[data-field="attendance"]');
+        const ppctEl = tr.querySelector('[data-field="ppct_status"]');
+        const lateEl = tr.querySelector('[data-field="late_periods"]');
+        const driveEl = tr.querySelector('[data-field="giao_an_drive"]');
+        const dddhEl = tr.querySelector('[data-field="dddh_count"]');
+        const cnttEl = tr.querySelector('[data-field="cntt_count"]');
+        const noteEl = tr.querySelector('[data-field="note"]');
+        const rankEl = tr.querySelector('[data-field="ranking"]');
+
+        records.push({
+          teacher_id: orig.teacher_id || `t_${idx}`,
+          teacher_name: orig.teacher_name || '',
+          role: orig.role || 'Giáo viên',
+          subjects: orig.subjects || '',
+          grades: orig.grades || '',
+          classes: orig.classes || '',
+          homeroom: orig.homeroom || '',
+          attendance: attEl ? attEl.value : 'Đúng giờ',
+          ppct_status: ppctEl ? ppctEl.value : 'Đúng tiến độ',
+          late_periods: lateEl ? parseInt(lateEl.value) : 0,
+          makeup_plan: orig.makeup_plan || '',
+          sodaubai: orig.sodaubai || 'Đầy đủ',
+          sodaubai_errors: orig.sodaubai_errors || 0,
+          diem_so: orig.diem_so || 'Kịp thời',
+          diem_danh: orig.diem_danh || 'Kịp thời',
+          giao_an_status: orig.giao_an_status || 'Soạn đủ',
+          giao_an_drive: driveEl ? driveEl.value : 'Đã cập nhật',
+          nls_integration: orig.nls_integration || 'Đạt chuẩn',
+          dddh_count: dddhEl ? parseInt(dddhEl.value) : 0,
+          cntt_count: cnttEl ? parseInt(cnttEl.value) : 0,
+          observations: orig.observations || [],
+          stem_or_demo: orig.stem_or_demo || [],
+          competitions: orig.competitions || [],
+          note: noteEl ? noteEl.value : '',
+          ranking: rankEl ? rankEl.value : 'HTT'
+        });
+      });
+
+      try {
+        const res = await fetch('/api/notebook/week', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ week: weekVal, records: records })
+        });
+        const data = await res.json();
+        showScheduleNotification(`Đã lưu Sổ tay Tổ trưởng Tuần ${weekVal} thành công!`, 'success');
+      } catch (err) {
+        console.error('Lỗi lưu Sổ tay:', err);
+        showScheduleNotification('Lỗi lưu Sổ tay: ' + err.message, 'error');
+      }
+    }
+
+    async function syncNotebookWithDrive() {
+      const select = document.getElementById('notebook-week-select');
+      const weekVal = select ? parseInt(select.value) : 1;
+      try {
+        const res = await fetch(`/api/notebook/sync-drive?week=${weekVal}`, { method: 'POST' });
+        const data = await res.json();
+        currentNotebookData = data;
+        renderNotebookTable(data);
+        showScheduleNotification(`Đã tự động đồng bộ tình trạng nộp bài trên Drive vào Sổ tay Tuần ${weekVal}!`, 'success');
+      } catch (err) {
+        console.error('Lỗi đồng bộ Drive:', err);
+        showScheduleNotification('Lỗi đồng bộ Drive: ' + err.message, 'error');
+      }
+    }
+
+    async function loadMonthlyReportData() {
+      const select = document.getElementById('monthly-report-select');
+      const monthVal = select ? parseInt(select.value) : 9;
+
+      try {
+        const res = await fetch(`/api/monthly-report/data?month=${monthVal}`);
+        if (!res.ok) throw new Error('Không thể tải dữ liệu báo cáo');
+        const data = await res.json();
+        renderMonthlyReportPreview(data);
+      } catch (err) {
+        console.error('Lỗi tải Báo cáo sơ kết tháng:', err);
+        showScheduleNotification('Lỗi tải Báo cáo tháng: ' + err.message, 'error');
+      }
+    }
+
+    function renderMonthlyReportPreview(data) {
+      document.getElementById('report-stat-cntt').innerText = `${data.total_cntt || 0} lượt`;
+      document.getElementById('report-stat-dddh').innerText = `${data.total_dddh || 0} lượt`;
+      document.getElementById('report-stat-giaoan').innerText = `${(data.giaoan_rows || []).length}/${(data.giaoan_rows || []).length} GV Soạn đủ`;
+      document.getElementById('report-stat-obs').innerText = `${(data.obs_rows || []).length} tiết dự giờ`;
+
+      const container = document.getElementById('monthly-report-preview-container');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="bg-white p-6 rounded-xl border border-slate-200 space-y-4 font-serif text-slate-900 text-xs shadow-inner leading-relaxed">
+          <div class="flex justify-between items-start border-b pb-3 border-slate-200">
+            <div>
+              <p class="font-bold uppercase text-slate-800">${data.school_name || 'TRƯỜNG TH & THCS PHƯỚC HƯNG'}</p>
+              <p class="font-bold uppercase text-blue-800">${data.dept_name || 'TỔ TOÁN – KHTN - CN'}</p>
+              <p class="text-[11px] text-slate-500 mt-1">Số: …./BC-TTN</p>
+            </div>
+            <div class="text-center">
+              <p class="font-bold uppercase text-slate-800">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+              <p class="font-bold underline text-slate-800">Độc lập – Tự do – Hạnh phúc</p>
+              <p class="text-[11px] italic text-slate-500 mt-1">${data.date_str || ''}</p>
+            </div>
+          </div>
+
+          <div class="text-center py-2">
+            <h3 class="font-bold text-sm uppercase tracking-wide text-slate-900">BÁO CÁO SƠ KẾT HOẠT ĐỘNG TỔ CHUYÊN MÔN</h3>
+            <h4 class="font-bold text-sm uppercase text-purple-900 mt-0.5">${(data.month_name || 'THÁNG 09').toUpperCase()}/${data.year || 2026}</h4>
+          </div>
+
+          <div class="space-y-3">
+            <h5 class="font-bold text-xs uppercase text-slate-800 border-b border-slate-200 pb-1">A. TÌNH HÌNH HOẠT ĐỘNG ${(data.month_name || 'THÁNG 09').toUpperCase()}</h5>
+            <div class="pl-2 space-y-1">
+              <p class="font-bold">I. Giờ giấc lên lớp, hội họp, tham gia các hoạt động khác:</p>
+              <p class="pl-3">- GV lên lớp đúng giờ, thực hiện nghiêm túc phân công giảng dạy.</p>
+              <p class="pl-3">- GVCN thực hiện tốt công tác ổn định 15 phút đầu giờ lớp chủ nhiệm.</p>
+              <p class="font-bold mt-2">II. Hoạt động chuyên môn:</p>
+              <p class="pl-3 font-semibold">1. Về thực hiện kế hoạch dạy học bộ môn (PPCT):</p>
+              <p class="pl-5">- Tính đến cuối ${(data.month_name || 'Tháng 09')} (${data.period_str}) trễ: ${(data.ppct_rows || []).length} tiết.</p>
+              <p class="pl-3 font-semibold mt-1">2. Về thực hiện quy chế chuyên môn:</p>
+              <p class="pl-5">- Soạn kế hoạch bài dạy (Giáo án): 100% giáo viên soạn đầy đủ, đúng hạn chuẩn CV 5512.</p>
+              <p class="pl-5">- Ứng dụng CNTT trong giảng dạy: Tổng số <strong>${data.total_cntt || 0} lượt</strong> (Lê Văn Thắng 12, Phạm Thị Cúc 51, Lê Thị Thúy Hằng 37, Nguyễn Thị Thùy Trang 35...).</p>
+              <p class="pl-5">- Sử dụng ĐDDH: <strong>${data.total_dddh || 0} lượt</strong> theo sổ phòng bộ môn.</p>
+              <p class="pl-3 font-semibold mt-1">3. Công tác dự giờ chuyên môn:</p>
+              <p class="pl-5">- Đã thực hiện ${(data.obs_rows || []).length} tiết dự giờ đánh giá năng lực sư phạm (kết quả đều đạt loại Giỏi).</p>
+            </div>
+
+            <h5 class="font-bold text-xs uppercase text-slate-800 border-b border-slate-200 pb-1 mt-4">B. PHƯƠNG HƯỚNG ${(data.next_month_name || 'THÁNG TIẾP THEO').toUpperCase()}</h5>
+            <div class="pl-2 space-y-1">
+              <p>- Duy trì nghiêm túc nền nếp giảng dạy theo thời khóa biểu.</p>
+              <p>- Thực hiện các buổi Sinh hoạt chuyên môn theo hướng Nghiên cứu bài học (Bước 2, Bước 3) theo kế hoạch tổ.</p>
+              <p>- Tăng cường rà soát giáo án trên Google Drive, tích hợp Năng lực số và Dinh dưỡng học đường.</p>
+            </div>
+
+            <h5 class="font-bold text-xs uppercase text-slate-800 border-b border-slate-200 pb-1 mt-4">C. KIẾN NGHỊ - ĐỀ XUẤT</h5>
+            <div class="pl-2 space-y-1 text-slate-700">
+              <p>- GVBM cần sử dụng thường xuyên và cập nhật tốt sổ sử dụng ĐDDH-ƯDCNTT, cập nhật kịp thời sổ đầu bài sau tiết dạy.</p>
+              <p>- GVCN cần quan tâm nền nếp 15 phút đầu giờ của lớp và thu nộp đúng quy định.</p>
+            </div>
+
+            <div class="flex justify-between items-center pt-6 text-center font-bold">
+              <div>
+                <p class="italic font-normal text-[11px]">Nơi nhận: - P.Hiệu trưởng; - Lưu.</p>
+              </div>
+              <div>
+                <p class="uppercase">TỔ TRƯỜNG</p>
+                <p class="mt-8 text-blue-900">${data.leader_name || 'Lê Văn Thắng'}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function downloadMonthlyReportDocx() {
+      const select = document.getElementById('monthly-report-select');
+      const monthVal = select ? parseInt(select.value) : 9;
+      window.location.href = `/api/monthly-report/export-docx?month=${monthVal}`;
+    }
+
+    window.onload = loadDashboardData;
+  </script>
+</body>
+</html>

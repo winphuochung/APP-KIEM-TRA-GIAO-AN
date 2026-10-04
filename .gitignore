@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.venv/
+env/
+venv/
+ENV/
+.idea/
+.vscode/
+.system_generated/
+scratch/
+tmp/
+*.tmp
+uvicorn_out.log
+uvicorn_err.log

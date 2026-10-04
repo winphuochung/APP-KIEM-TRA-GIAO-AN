@@ -1,0 +1,95 @@
+=== ALL ARIA LABELS ===
+Tìm hiểu thêm
+Loại bỏ
+Trình đơn chính
+Quay lại
+Đóng
+Drive
+Các ứng dụng của Google
+Đăng nhập
+Drive
+Danh sách các mục
+Sắp xếp
+Sắp xếp
+Điều khiển cách sắp xếp
+Sắp xếp theo
+Chiều sắp xếp
+Thư mục
+Cô Cúc Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Cô Hằng Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Cô Kế Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Cô Linh Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Cô Thủy Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Cô Trang Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Thầy Thành Shared folder
+Modified 29 thg 9
+Size not available
+More actions
+Download
+Thầy Thắng Shared folder
+Modified 26 thg 9
+Size not available
+More actions
+Download
+circular progressbar, single color
+
+=== TEACHER MATCHES ===
+Teacher Cúc: 8 occurrences
+  Snippet: /div><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Cô Cúc Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1Y57MXplWyQitPENHEQO4McKd7hlL
+  Snippet: McKd7hlLHBtV" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Cô Cúc Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Cúc</strong></spa
+  Snippet: data-tooltip="Cô Cúc Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Cúc</strong></span></div></div></div></div></div></td><td class="NYP1ee M3pype" data-column-field="5
+Teacher Hằng: 8 occurrences
+  Snippet: /div><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Cô Hằng Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1jfXZGd-nH9kgVRsJDg_ldIUFdbR
+  Snippet: dIUFdbR4-MUI" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Cô Hằng Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Hằng</strong></s
+  Snippet: ata-tooltip="Cô Hằng Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Hằng</strong></span></div></div></div></div></div></td><td class="NYP1ee M3pype" data-column-field="
+Teacher Kế: 11 occurrences
+  Snippet: te_name" content="Google Drive"><meta name="viewport" content="width=1000, user-scalable=no"><title>Kế hoạch bài dạy - Google Drive</title><script nonce="-k_Ga7PjicNyktEbhbzPWg">
+    var _DRIVE_numDum
+  Snippet: ></span></span></span><span class="aqdrmf-E-Gtdoyb"><span class="aqdrmf-E-fpDzbe-r" jsname="K4r5Ff">Kết hợp với tệp</span></span><span jsname="orbTae" class="aqdrmf-E-JMEf7e"></span><span class="O68mG
+  Snippet: /div><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Cô Kế Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:10aAFjxR95vKnmLzyvcU7OivbD3GTP
+Teacher Linh: 8 occurrences
+  Snippet: /div><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Cô Linh Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1slzRqoYLd7pkSfeK3sxDBwzS_5f
+  Snippet: BwzS_5fYA7vd" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Cô Linh Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Linh</strong></s
+  Snippet: ata-tooltip="Cô Linh Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Linh</strong></span></div></div></div></div></div></td><td class="NYP1ee M3pype" data-column-field="
+Teacher Thủy: 8 occurrences
+  Snippet: /div><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Cô Thủy Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1vRyDMAB4lLyxDyPgYsit2VdO7Zc
+  Snippet: 2VdO7ZcPyuNi" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Cô Thủy Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Thủy</strong></s
+  Snippet: ata-tooltip="Cô Thủy Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Thủy</strong></span></div></div></div></div></div></td><td class="NYP1ee M3pype" data-column-field="
+Teacher Trang: 9 occurrences
+  Snippet: 69,null,1,70,"Đã xảy ra lỗi khi đang tải bộ ứng dụng. Vui lòng thử lại sau vài phút hoặc chuyển đến trang %1$sCác sản phẩm của Google%2$s.",3,0,0,74,0,null,null,null,null,null,null,null,"/widget/app/s
+  Snippet: /div><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Cô Trang Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1OwIYYK7ENQ4f3aXwS6RrnuA8Mg
+  Snippet: nuA8Mgl7_qKj" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Cô Trang Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Cô Trang</strong><
+Teacher Thành: 9 occurrences
+  Snippet: 6400,null,null,null,null,0,null,0,0,"1184720131",3,0,0,0,1],0,null,null,null,null,0,"",0,1,0,0,"Gói thành viên của Google",0,"CAMSEhUXmrS-NbK-BOSJBacGg-KDAA==","1",0,"Đóng","Đang tải",""]]],};this.gba
+  Snippet: iv><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Thầy Thành Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1_hZDldFUOUvjJnkw9-Dm8I3kJb
+  Snippet: 3kJbUCc5Hr" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Thầy Thành Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Thầy Thành</strong
+Teacher Thắng: 8 occurrences
+  Snippet: iv><div class="rxUYqf" jsaction="error:piPPke" jsname="XJXImb"><div class="JxSEve" aria-label="Thầy Thắng Shared folder" data-handled-by-drag-and-drop="true" ssk='5:auSv138:1S1wipWDzCGRaEonbFDFClIzmui
+  Snippet: zmui1yEXZJ" jsname="vtaz5c" data-tooltip-class="cAHxfe" data-tooltip-delay="500" data-tooltip="Thầy Thắng Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Thầy Thắng</strong
+  Snippet: ooltip="Thầy Thắng Shared folder"><span class="WQJtxb" ssk='5:xyMN01#0'><strong class="DNoYtb">Thầy Thắng</strong></span></div></div></div></div></div></td><td class="NYP1ee M3pype" data-column-field=
+
+=== FOLDER MATCHES (0) ===

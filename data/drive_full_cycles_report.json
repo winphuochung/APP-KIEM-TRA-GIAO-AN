@@ -1,0 +1,2084 @@
+{
+  "cuc": {
+    "teacher": {
+      "id": "cuc",
+      "name": "Phạm Thị Cúc",
+      "folder_name": "Cô Cúc",
+      "drive_id": "1osWHYh3g7O47vyut81mjbOhGMGfhlpUU",
+      "subjects": "KHTN 7, Sinh 9"
+    },
+    "total_files": 17,
+    "last_updated": "30/09/2026 09:28",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1osWHYh3g7O47vyut81mjbOhGMGfhlpUU",
+        "has_files": true,
+        "file_count": 9,
+        "files": [
+          "Tuần  3,4 - Tiết  10 đến 13- BÀI 3. NGUYÊN TỐ HÓA HỌC.docx",
+          "Tuần 1,2 Tiết 1 đẽn 5  BÀI 1. PHƯƠNG PHÁP VÀ KĨ NĂNG HỌC TẬP MÔN KHTN.docx",
+          "Tuần 2,3 Tiết 6 đến 9  - BÀI 2. NGUYÊN TỬ.docx",
+          "Tuần 4--5 Tiết 14 đến 18   BÀI 4. SƠ LƯỢC BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC.docx",
+          "Tuần 5,6  Tiết 19 đến tiết 22  - BÀI 5. PHÂN TỬ - ĐƠN CHẤT - HỢP CHẤT.docx",
+          "Tuần 6,7 Tiết 23 đến 26   BÀI 6. GIỚI THIỆU VỀ LIÊN KẾT HÓA HỌC.docx",
+          "Tuần 7,8 Tiét 27 đến 29 - BÀI 7. Hóa trị công thức hóa học.docx",
+          "Tuần 2 BÀI 36. NLS  .docx",
+          "Tuần 3,4,5,6  BÀI 37. NLS .docx"
+        ],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "10ypc7wavrO_CTWHjScXj63hPvmIrwYQF",
+            "count": 7,
+            "files": [
+              "Tuần  3,4 - Tiết  10 đến 13- BÀI 3. NGUYÊN TỐ HÓA HỌC.docx",
+              "Tuần 1,2 Tiết 1 đẽn 5  BÀI 1. PHƯƠNG PHÁP VÀ KĨ NĂNG HỌC TẬP MÔN KHTN.docx",
+              "Tuần 2,3 Tiết 6 đến 9  - BÀI 2. NGUYÊN TỬ.docx",
+              "Tuần 4--5 Tiết 14 đến 18   BÀI 4. SƠ LƯỢC BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC.docx",
+              "Tuần 5,6  Tiết 19 đến tiết 22  - BÀI 5. PHÂN TỬ - ĐƠN CHẤT - HỢP CHẤT.docx",
+              "Tuần 6,7 Tiết 23 đến 26   BÀI 6. GIỚI THIỆU VỀ LIÊN KẾT HÓA HỌC.docx",
+              "Tuần 7,8 Tiét 27 đến 29 - BÀI 7. Hóa trị công thức hóa học.docx"
+            ]
+          },
+          "Sinh 9": {
+            "folder_id": "1GKCjshu58RQ3-l1adaZzbprYLsqrHak2",
+            "count": 2,
+            "files": [
+              "Tuần 2 BÀI 36. NLS  .docx",
+              "Tuần 3,4,5,6  BÀI 37. NLS .docx"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (9 tệp: KHTN 7 (7 tệp), Sinh 9 (2 tệp))"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "1yaWWTjqy7-ytEEkoLEr5lb6UOnD6M-4j",
+        "has_files": true,
+        "file_count": 8,
+        "files": [
+          "Tuần 4--5 Tiết 14 đến 18   BÀI 4. SƠ LƯỢC BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC.docx",
+          "Tuần 5,6  Tiết 19 đến tiết 22  - BÀI 5. PHÂN TỬ - ĐƠN CHẤT - HỢP CHẤT.docx",
+          "Tuần 6,7 Tiết 23 đến 26   BÀI 6. GIỚI THIỆU VỀ LIÊN KẾT HÓA HỌC.docx",
+          "Tuần 7,8 Tiét 27 đến 29 - BÀI 7. Hóa trị công thức hóa học.docx",
+          "Tuần 8  Tiết 30-31  - BÀI 8. TỐC ĐỘ CHUYỂN ĐỘNG.docx",
+          "Tuần 8,9 Tiết 32 đến 33- BÀI 9. ĐO TỐC ĐỘ.docx",
+          "Tuần 3,4,5,6  BÀI 37. NLS .docx",
+          "Tuần 7,9 BÀI 38. NLS  (1).docx"
+        ],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1n2Jf-gCS45cg84QQ2DEwz7T4s5zwPHWy",
+            "count": 6,
+            "files": [
+              "Tuần 4--5 Tiết 14 đến 18   BÀI 4. SƠ LƯỢC BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC.docx",
+              "Tuần 5,6  Tiết 19 đến tiết 22  - BÀI 5. PHÂN TỬ - ĐƠN CHẤT - HỢP CHẤT.docx",
+              "Tuần 6,7 Tiết 23 đến 26   BÀI 6. GIỚI THIỆU VỀ LIÊN KẾT HÓA HỌC.docx",
+              "Tuần 7,8 Tiét 27 đến 29 - BÀI 7. Hóa trị công thức hóa học.docx",
+              "Tuần 8  Tiết 30-31  - BÀI 8. TỐC ĐỘ CHUYỂN ĐỘNG.docx",
+              "Tuần 8,9 Tiết 32 đến 33- BÀI 9. ĐO TỐC ĐỘ.docx"
+            ]
+          },
+          "Sinh 9": {
+            "folder_id": "1RrT4O1oxGfcBBUTJSwAQwruxcrv6dVNg",
+            "count": 2,
+            "files": [
+              "Tuần 3,4,5,6  BÀI 37. NLS .docx",
+              "Tuần 7,9 BÀI 38. NLS  (1).docx"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (8 tệp: KHTN 7 (6 tệp), Sinh 9 (2 tệp))"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "1yZmePqkvOfsTYgGptfRRvSWDIQDsTncX",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1nXfD-4dJjG8sM7BbvLhhvidYI9bMCv12",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1i7YzPTJaOeF8EslAoESQfbbPogNVWB6r",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1itaUrl9Fr_IMSw_iz1KA1pm6pYbiHI3q",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1Gzy3i412jRwLKkI6F9WPkXh_BLBrHKrk",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1faE465iDd-ECPFO4CMbWpkz5IUi7Pcra",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1SWKhvm_4dv-URbxnYsgVfDiV3OBoELCk",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1IoDDWn8JO95_DBvl0m1ipCPKol8sxX8z",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1pFR1xo41-O0Z-roz0oyS97gwKoZqZGS4",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "1927-AAcfq1RtIRhZkiQNPCTnOUCUktgr",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1fxQqLIzNQ_DCTwqslmNIE5ohOAjU-Qne",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1z6tFCg3NaZ2MxZjB1vFYJlajKu13P9ig",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "1C2bFzI6_FEgIne8K4a8fbOBMlIdG2vcs",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "10r5DfCmbiloLRBBIoEoutuI75_fhWoBR",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1RKYEGbk3N8X0K4eGxyD70lxspAwQ1gAl",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1kmGEOj-L1JQ85OXd3RHt7bao4ce5FfFj",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1mOJzFhA8ZnwlgL8WYycmNWFbo-h6bulI",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1ZNMwJfN7Do52NQL6edm7eh_JJ_0NbWGv",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "18kNqQ_gRQjPl84bgu-fHkpAU0M36Vcdp",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "KHTN 7": {
+            "folder_id": "1h9IVkBgoWvwwAhq9ZbqfK0nR9UYOlOQ_",
+            "count": 0,
+            "files": []
+          },
+          "Sinh 9": {
+            "folder_id": "1oFrNK8edhb_F8bSdr3KbxLo7K4nAE3xP",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "hang": {
+    "teacher": {
+      "id": "hang",
+      "name": "Lê Thị Thúy Hằng",
+      "folder_name": "Cô Hằng",
+      "drive_id": "1qLYBtzQ71hv_DKQWMO0YSlqCgl8s0Tfn",
+      "subjects": "CN 6, CN 7, HĐTN 6, 7, 9"
+    },
+    "total_files": 34,
+    "last_updated": "03/10/2026 14:45",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1qLYBtzQ71hv_DKQWMO0YSlqCgl8s0Tfn",
+        "has_files": true,
+        "file_count": 15,
+        "files": [
+          "CN 6 tuần 1, 2.docx",
+          "CN 6 tuần 3, 4.docx",
+          "Tuần 1, 2.docx",
+          "Tuần 3.docx",
+          "Tuần 4, 5.docx",
+          "HĐTN 6 CĐ 2 T 4, 5, 6, 7.docx",
+          "HĐTN 6 CĐ1 T 1, 2, 3.docx",
+          "HĐTN 6 QML CĐ1 T1, 3.docx",
+          "HĐTN 6 QMT CĐ1 T 1, 3.docx",
+          "QMT CĐ2 HĐTN 6 T 4, 6.docx",
+          "CĐ2 HĐTN 7 SHCĐ T4, 5, 6, 7.docx",
+          "HĐTN 7 CĐ1 SHCĐ T1, 2, 3.docx",
+          "HĐTN 7 QML CĐ1 T1, 3.docx",
+          "HĐTN 7 QMT CĐ1 T1, 3.docx",
+          "HĐTN 9 tuần 4.docx"
+        ],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "15i0Lpy67l-nJ_QEhlBWb7n0tI72vpbqH",
+            "count": 2,
+            "files": [
+              "CN 6 tuần 1, 2.docx",
+              "CN 6 tuần 3, 4.docx"
+            ]
+          },
+          "CN 7": {
+            "folder_id": "1EHe0A94MN2TTQE7E6Dhv1YEJLj9qCSBT",
+            "count": 3,
+            "files": [
+              "Tuần 1, 2.docx",
+              "Tuần 3.docx",
+              "Tuần 4, 5.docx"
+            ]
+          },
+          "HĐTN 6": {
+            "folder_id": "1gsdz54fdg4R9UKPX2Rnjo7bjLM8249TC",
+            "count": 5,
+            "files": [
+              "HĐTN 6 CĐ 2 T 4, 5, 6, 7.docx",
+              "HĐTN 6 CĐ1 T 1, 2, 3.docx",
+              "HĐTN 6 QML CĐ1 T1, 3.docx",
+              "HĐTN 6 QMT CĐ1 T 1, 3.docx",
+              "QMT CĐ2 HĐTN 6 T 4, 6.docx"
+            ]
+          },
+          "HĐTN 7": {
+            "folder_id": "13CrpvkmEZD1d8qSoP4ASudHTqOoLGzRz",
+            "count": 4,
+            "files": [
+              "CĐ2 HĐTN 7 SHCĐ T4, 5, 6, 7.docx",
+              "HĐTN 7 CĐ1 SHCĐ T1, 2, 3.docx",
+              "HĐTN 7 QML CĐ1 T1, 3.docx",
+              "HĐTN 7 QMT CĐ1 T1, 3.docx"
+            ]
+          },
+          "HĐTN 9": {
+            "folder_id": "1KwKWBsn8J91YQkA55BJqt2d2jL69y4xN",
+            "count": 1,
+            "files": [
+              "HĐTN 9 tuần 4.docx"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (15 tệp: CN 6 (2 tệp), CN 7 (3 tệp), HĐTN 6 (5 tệp), HĐTN 7 (4 tệp), HĐTN 9 (1 tệp))"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "14ZBqI6QMtVkxVK4z070RScIsr-h80sZ5",
+        "has_files": true,
+        "file_count": 19,
+        "files": [
+          "CN 6 tuần 5.docx",
+          "CN 6 tuần 6, 7.docx",
+          "CN 6 tuần 8, 11.docx",
+          "Tuần 4, 5.docx",
+          "Tuần 6.docx",
+          "Tuần 7.docx",
+          "Tuần 8, 11.docx",
+          "HĐTN 6 CĐ 2 T 4, 5, 6, 7.docx",
+          "QML CĐ2 HĐTN 6 T 5, 7.docx",
+          "QMT CĐ2 HĐTN 6 T 4, 6.docx",
+          "CĐ2 HĐTN 7 SHCĐ T4, 5, 6, 7.docx",
+          "CĐ3 HĐTN SHCĐ T 8, 9, 10.docx",
+          "HĐTN 7 QML CĐ3 T 7, 9.docx",
+          "KIỂM TRA GIỮA KÌ I HĐTN 7 26 - 27 T 8.docx",
+          "HĐTN 9 CĐ3 SHCĐ T8, 9, 10, 11.docx",
+          "HĐTN 9 QML CĐ2 T5, 7.docx",
+          "HĐTN 9 QMT CĐ2 T6.docx",
+          "HĐTN SHCĐ CĐ2 T 5, 6, 7.docx",
+          "KIỂM TRA GIỮA KÌ I HĐTN 9 26 - 27 T8.docx"
+        ],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "1bfsZYMM48Vbov09GGyopwYrIbIw05dCz",
+            "count": 3,
+            "files": [
+              "CN 6 tuần 5.docx",
+              "CN 6 tuần 6, 7.docx",
+              "CN 6 tuần 8, 11.docx"
+            ]
+          },
+          "CN 7": {
+            "folder_id": "1yBIu9fFU8g4wZT14eaQ9NkjQ5Yv9ewcC",
+            "count": 4,
+            "files": [
+              "Tuần 4, 5.docx",
+              "Tuần 6.docx",
+              "Tuần 7.docx",
+              "Tuần 8, 11.docx"
+            ]
+          },
+          "HĐTN 6": {
+            "folder_id": "1aB714kaDKcPtzM95SOZCgCdqd9Zq1DYn",
+            "count": 3,
+            "files": [
+              "HĐTN 6 CĐ 2 T 4, 5, 6, 7.docx",
+              "QML CĐ2 HĐTN 6 T 5, 7.docx",
+              "QMT CĐ2 HĐTN 6 T 4, 6.docx"
+            ]
+          },
+          "HĐTN 7": {
+            "folder_id": "1YUYhCQeYQ9EvDuf7PJwTTYXJF8N0gKfp",
+            "count": 4,
+            "files": [
+              "CĐ2 HĐTN 7 SHCĐ T4, 5, 6, 7.docx",
+              "CĐ3 HĐTN SHCĐ T 8, 9, 10.docx",
+              "HĐTN 7 QML CĐ3 T 7, 9.docx",
+              "KIỂM TRA GIỮA KÌ I HĐTN 7 26 - 27 T 8.docx"
+            ]
+          },
+          "HĐTN 9": {
+            "folder_id": "1qA6rYB4tZc7scza7_Hzh9fXU2sIPp2CQ",
+            "count": 5,
+            "files": [
+              "HĐTN 9 CĐ3 SHCĐ T8, 9, 10, 11.docx",
+              "HĐTN 9 QML CĐ2 T5, 7.docx",
+              "HĐTN 9 QMT CĐ2 T6.docx",
+              "HĐTN SHCĐ CĐ2 T 5, 6, 7.docx",
+              "KIỂM TRA GIỮA KÌ I HĐTN 9 26 - 27 T8.docx"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (19 tệp: CN 6 (3 tệp), CN 7 (4 tệp), HĐTN 6 (3 tệp), HĐTN 7 (4 tệp), HĐTN 9 (5 tệp))"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "1hI1YV95lGKEcMPAnfLsUEbV_cg3TDb7O",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "1eAsr5B2J15dSK4SklIvVKIa1vs-2jQ5E",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1rsf1s8738drDwX-fBWXn_8GeyDDhyldh",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "1xr-zdrxdzrjWYz43DS2L-e1unPh_EcUP",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "1de4FCFWKVODQVTp8NbR4E1pzfmG_BpTB",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "1yrnz_6rH31xou-52o3GCONdY_kpfcbqc",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1B5LFNr2DReMooYwWUCfL-3QkKzobkCij",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "1U5fWjihtE57Hd-cPKJonPH8Nq1-SVW1-",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1sbsx4fus8hCZ3qYfhy8qMHWjC44F4lzk",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "1RHKh1p1rc_AxXKVmCqIBpJNlub9UyxW_",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "1K3RdWncUALTapME0egTT0zB7j6PD9slI",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "1bhJqXSzKV7f2haczIBlQegUcC7ILNCO1",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1kMVpHi14XmJWnwKILdcBrC3z3dRdAYz-",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "11YNK7j8RPaHi8g9UDJEc-r0gdiby3O0q",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1Pd-lB_nt_C2bywXO2N8a0TVPzqdHNOgU",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "1gsHsvwdJ5okKsxQZ9TxIAiBj1f1Eeke4",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "1U3DYt6nmPYCPjBzWfKawCtRABJ1nFb1X",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "1XumUoA2o6xugINwBMeovlywkWQSBBO0o",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "1VKKELMWZVycLdu-ayPzllH9RYqYjpqA5",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "19h4ytLjPwo8Pfrh0SXUY1KyDcOTLoyGq",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1GFPDxwwpOtf8gRtw9ollTml0DUgVLEtW",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "1U-pmJtYGH3tbS186K7ocCq6JMH-1wm4g",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "1e0gn0suetWpJtlRX6HSs0ng817vF3u9g",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "13ZlTg-ceymkH6ufVPg9QNa8Y3egtky7J",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "10pjHPQrKrfGPYFXRBQnTqTIweIg86Hj5",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "1Src6CvilXz_onG6eolbPVNY69YTJeXMG",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1pOI0cGaut4PoiCDYFAP1P3SMCUkPB7Rq",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "13uRdnmjuVt0faZ1Zf8S0ijBuAZzdghc-",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "1tF3DVPX5iqC5xORQJKr845upWxEhcUuD",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "1CPJn9mNHEoWWUlsdtNuZ5IvbukL1ebQf",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1-dmot3WCO8xvwCTT6_KrxiILqVv_Bbe8",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "1NGz7E2bKx0TZ-wwKxPWSAEEfBGQFFAjm",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1E6BWP0KQsjq49W1ocqPfC8J3xG4Q5Tmg",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "1HBshBZK_YQxO73ke0HUQksosa4kxc7j-",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "1cpzjh2hz8EKqk3aT0kzLcnhz3rmW0RcB",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "1hirhheJbIJ_JsAsbI8ZK7ze_I8zg4dVl",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "14Rl1ksS1swjYBAwo91F6-mm_nxNpXspH",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 6": {
+            "folder_id": "1PPxTqApunXCnHaY-Na1xUj-ylWclQypc",
+            "count": 0,
+            "files": []
+          },
+          "CN 7": {
+            "folder_id": "1ivHYcDIV4WpZqsRepBwvMIAqCo9ofq2p",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 6": {
+            "folder_id": "1i_xiNXUeaHU70hz1Lqp9xv5YGdehe70B",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 7": {
+            "folder_id": "15zWLWqqb4bi-jhnOoU7kqT8z8AuIVC-s",
+            "count": 0,
+            "files": []
+          },
+          "HĐTN 9": {
+            "folder_id": "1DtDOIepozsWpBOnLRd3xZxPuHDJ05X2T",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "ke": {
+    "teacher": {
+      "id": "ke",
+      "name": "Hà Thị Kế",
+      "folder_name": "Cô Kế",
+      "drive_id": "1QxfIrlVVuDh0M_w6CISE9ltRjbwwQXyU",
+      "subjects": "HĐTN 8, KHTN 6, KHTN 8"
+    },
+    "total_files": 17,
+    "last_updated": "03/10/2026 05:07",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1QxfIrlVVuDh0M_w6CISE9ltRjbwwQXyU",
+        "has_files": true,
+        "file_count": 12,
+        "files": [
+          "HĐTN 8 (Tuần 1-4, tiết 1 đến 6) CĐ1- Em với nhà trường.pdf",
+          "HĐTN 8(QML), Tuần 1, tiết 1, chủ đề. Tọa đàm mini'xây dựng tình bạn thời 4.0 .pdf",
+          "HĐTN8 (QML), Tuần 3, tiết 2,Diễn đàn nói không với bạo lực học đường .pdf",
+          "HĐTN8(QMT), Tuần 2, tiết 1-2, CĐ. Sang Tao Video Tự hào trường tôi.pdf",
+          "Tuần 1, tiết 1-2, Bài 1, Giáo án KHTN 6.pdf",
+          "Tuần 1, tiết 3, Bài 2 KHTN 6.pdf",
+          "Tuần 1, tiết 4, Bài 3, KHTN 6.pdf",
+          "Tuần 2-3, tiết 7đến 9, Bài 5, KHTN 6.pdf",
+          "Tuần 2, tiết 5-6, Bài 4, KHTN 6.pdf",
+          "Tuần 3, tiết 10-11, bài 6, KHTN 6.pdf",
+          "Tuần 4, tiết 13-15,BÀI 8, KHTN 6.pdf",
+          "Tuần 4, tiết 1,KHTN8, Bài 30.pdf"
+        ],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "10wF05ypGbISzo-VQwyRIDuXofWPOUEDY",
+            "count": 4,
+            "files": [
+              "HĐTN 8 (Tuần 1-4, tiết 1 đến 6) CĐ1- Em với nhà trường.pdf",
+              "HĐTN 8(QML), Tuần 1, tiết 1, chủ đề. Tọa đàm mini'xây dựng tình bạn thời 4.0 .pdf",
+              "HĐTN8 (QML), Tuần 3, tiết 2,Diễn đàn nói không với bạo lực học đường .pdf",
+              "HĐTN8(QMT), Tuần 2, tiết 1-2, CĐ. Sang Tao Video Tự hào trường tôi.pdf"
+            ]
+          },
+          "KHTN 6": {
+            "folder_id": "1Axn2W2wYfYMtOGseIoSFTfrREFbPnFtO",
+            "count": 7,
+            "files": [
+              "Tuần 1, tiết 1-2, Bài 1, Giáo án KHTN 6.pdf",
+              "Tuần 1, tiết 3, Bài 2 KHTN 6.pdf",
+              "Tuần 1, tiết 4, Bài 3, KHTN 6.pdf",
+              "Tuần 2-3, tiết 7đến 9, Bài 5, KHTN 6.pdf",
+              "Tuần 2, tiết 5-6, Bài 4, KHTN 6.pdf",
+              "Tuần 3, tiết 10-11, bài 6, KHTN 6.pdf",
+              "Tuần 4, tiết 13-15,BÀI 8, KHTN 6.pdf"
+            ]
+          },
+          "KHTN 8": {
+            "folder_id": "1_RTxnPQxwLn6fp6GYvc0EPgCosgognlx",
+            "count": 1,
+            "files": [
+              "Tuần 4, tiết 1,KHTN8, Bài 30.pdf"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (12 tệp: HĐTN 8 (4 tệp), KHTN 6 (7 tệp), KHTN 8 (1 tệp))"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "1rd_wM_2puylviINVMesv9g_CkaRwyWHd",
+        "has_files": true,
+        "file_count": 5,
+        "files": [
+          "HDTN8(QML) Tuần 5 , tiết 3, Chủ đề. Workshop Vẽ bản đồ tính cách cá nhân.pdf",
+          "HDTN8(QML), Tuần 7, tiết 4,Chủ đề.Tranh Bien Cam Xuc nên hay không nên thể hiện.pdf",
+          "HDTN8(QMT), Tuần 6, tiết 3-4_Chủ đề.Ngay Hoi.Kham Pha Ban Than.pdf",
+          "HĐTN 8 (Tuần 4-7, tiết 7 đến 13) CĐ2.Khám phá bản thân.pdf",
+          "HĐTN 8, Tuần 8, Tiết 14-15, Kiểm tra Giữa kì 1, HĐTN8..pdf"
+        ],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1rgqqeQp30kaVHwIEZt1kms03eKatKUoO",
+            "count": 5,
+            "files": [
+              "HDTN8(QML) Tuần 5 , tiết 3, Chủ đề. Workshop Vẽ bản đồ tính cách cá nhân.pdf",
+              "HDTN8(QML), Tuần 7, tiết 4,Chủ đề.Tranh Bien Cam Xuc nên hay không nên thể hiện.pdf",
+              "HDTN8(QMT), Tuần 6, tiết 3-4_Chủ đề.Ngay Hoi.Kham Pha Ban Than.pdf",
+              "HĐTN 8 (Tuần 4-7, tiết 7 đến 13) CĐ2.Khám phá bản thân.pdf",
+              "HĐTN 8, Tuần 8, Tiết 14-15, Kiểm tra Giữa kì 1, HĐTN8..pdf"
+            ]
+          },
+          "KHTN 6": {
+            "folder_id": "1gZusZ-hCZmF5-JGIrLaq0CkTzm8mAmc9",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1VrKllF5P_KzgZq5cTIDv0dqOFFrt49eo",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (5 tệp: HĐTN 8 (5 tệp))"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "1m9Kd3nWnWwA5MEf8i2o5cpoanopJxbHT",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1PlJrySPzpBDds8ZQBcxiCSGzep4i7I2X",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1GhggJm34xCWD1JjHYyngoDxI4I6o9sxv",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1vTn2Y89bUYWgN41hFZ6avwVXzg-ZfUMI",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1BozrotOKaDlYYWtmmIF4-510C3AXXPeW",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1yRF7lTs5ZP-pH0TlyurYvhKEJaHOUckS",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1OWqCGlSvnZSFpk_sC0H1C76ZVpKIMt6-",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1vMVQJDhW1QsZbKf20qk1jkdBWmz7_nr1",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1Kl9rRwJD_85ri9K3SFvVg8iiK8ngc6Vq",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1PaJUyuCUeNvmkryPv0mNIoKYnbNO_w9T",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1QA8cBGT3OuDYzHMy6CHZXphkdJTGyw-I",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "14HLExl9FRyGUuKzCu3fRwj6QRWil7HQG",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "1NytUCQ1ROVPFGRVRgGT7gqQIJ2UH-IdD",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1iZ9BdFCfmqnTgQ7TSkgKqqxkG7G5UO7h",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1TVN64wElLgteKT4AP2QAvPlsMJA6SWsQ",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "175RgjwkUyY7TxZvIdbi7Ij25rQu4X2zN",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "1lofzuAth8hM6o76aUyVZfXY6-7PZZS4W",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1YNa6C0K4We8THTwl_-l8hN0NfR9A-uaD",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1OzmQiksBCN2DDYIMyfhgiMQaVhBn-f_E",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1gWXalBPUgGEmJxDyJcLREdp8EsQUL_Av",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1gKNjZXiVr3NSqCBOytecrYoqFbFH6--M",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1Z2h_NJe2J391f95rWrV1ZGyJCJGOGzon",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1S5Fq-exZCOo0ollV_Xp_dfF83D-K8miM",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1ckTWomN-pTNlCzhOJL5ifEdJhTwRA31a",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "1vvBpJmiJ5AGdSJvvxAbXyFsx1GW-yJvP",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1N2Sln5I8RPXI9OyTvNvWb7gccdNwi_zI",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1Ct9kQol9PsRbemLd9QHAdK0PhDk83zvV",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1AWgo3d2t85V-qagXYW5QNU_c3WUQ0whc",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "linh": {
+    "teacher": {
+      "id": "linh",
+      "name": "Phạm Thị Mỹ Linh",
+      "folder_name": "Cô Linh",
+      "drive_id": "1opvjduSHcMj9LgQzpZLKQwY05n10U1LZ",
+      "subjects": "Toán 8, Toán 9"
+    },
+    "total_files": 0,
+    "last_updated": "29/09/2026",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1opvjduSHcMj9LgQzpZLKQwY05n10U1LZ",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1SWhcij0wHLKltdmsG77Q-B0hHmqcfNwb",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "17eRCT6B56Zf4Hq_pSX15Ca75eNPLOCjp",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "1VZbigjG3ASx1JTmuRqdGhGLIF9q6Tg7L",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "16pCe3gUt1gRwnEntuX6CqrrcBhYvxNgb",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "1k0wk0HrxxUyLA-f0nLY2XttEmMGVpFmI",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "15yy050QyZUcXPGNCqqA-2LHifJgi-ASh",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1we8r9k126bF7BXrqgU-wYDiiXx5adBr8",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "18De31NE6Z_5AP7TCDAWkoHrwE6uLbhiR",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1L9mJTNQciKia7m8TNDd9maplI0Edohbg",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1J3DZBkjWvhUDpXtrQAZvM4Cd7uEpXbn6",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "1vsXteWCDaR9CkiIKJ5kMxlNiIhBl6ta2",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1ByrL0r1cVm63E3l8vwvKB06bN-NH0Bie",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1zHYh-Y3lW0XbRb_bKnWKbdmcBootlxA3",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "1un2qLdKcuripHw2TQmSRkrvyg-Dc8xKm",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "1QiK3zx8-S21zAvBbGPyv6BH-29pxOuuv",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1hdC7EfORBVOTJjObuqhimmOsvK0taqkY",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "1jq6fHfIGyu8hMdSD9i1EgFRLj1KaOJ_P",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "1_OZypHPF7Vhthi9aZRbJ6DQYthAdVz89",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1l9yQiA_dNMjE3poQefjxzhFmrKQgpGQw",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "1nGGPiGmCY3g_X5sK-5jHQo6aZNnJ2inJ",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "195poDuC6dfOzIPJllPnzFxBUC5wTunHx",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1OdM7M9W7DN17s5jUSs5I2v8dxjx9eJLp",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "167rf-CJBwswa0TSor5OfF_f7gxDgLk0J",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "1XvpC4q8OVx4colUMa7fm6uuUSdcTptfa",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 8": {
+            "folder_id": "1ueWFd9RUXMKn4a5mcmC0svyB0PHWzNVR",
+            "count": 0,
+            "files": []
+          },
+          "Toán 9": {
+            "folder_id": "1Sn8PiDn4VoacDraPldhZmZSAfZzT8zJk",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "thuy": {
+    "teacher": {
+      "id": "thuy",
+      "name": "Lê Thị Thu Thủy",
+      "folder_name": "Cô Thủy",
+      "drive_id": "12axoHjwhRLYSQP7ura3LfgqrMsAffAyr",
+      "subjects": "Toán 6, Toán 7, Toán 8"
+    },
+    "total_files": 20,
+    "last_updated": "01/10/2026 13:41",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "12axoHjwhRLYSQP7ura3LfgqrMsAffAyr",
+        "has_files": true,
+        "file_count": 20,
+        "files": [
+          "Thủy_toán 7 tuần 1 - 8/PPCT_Toan_7_2026-2027_NLS đổi.docx",
+          "Toán 8 nộp/Tiết  27, 28. Bài tập cuối chương.docx",
+          "Toán 8 nộp/Tiết  31, 32, 36. Bài 15. Định lý thales.docx",
+          "Toán 8 nộp/Tiết 1, 2.Bài 1.  Đơn thức.docx",
+          "Toán 8 nộp/Tiết 3. Bài 10. Tứ giác.docx",
+          "Toán 8 nộp/Tiết 4,7,8_Bài 11.Hình thang cân.docx",
+          "Toán 8 nộp/Tiết 5,6. Bài 2. Đa thức.docx",
+          "Toán 8 nộp/Tiết 9. Bài 3. Phép cộng và phép trừ đa thức.docx",
+          "Toán 8 nộp/Tiết 10. Luyện tập chung.docx",
+          "Toán 8 nộp/Tiết 11, Luyện tập chung.docx",
+          "Toán 8 nộp/Tiết 12, 15. Bài 12. Hình bình hành.docx",
+          "Toán 8 nộp/Tiết 13, 14_ Bài 4. Phép nhân đa thức.docx",
+          "Toán 8 nộp/Tiết 16. Luyện tập chung.docx",
+          "Toán 8 nộp/Tiết 17, 18. Bài 5. Phép chia đa thức cho đơn thức.docx",
+          "Toán 8 nộp/Tiết 19. Bài 13. Hình chữ nhật.docx",
+          "Toán 8 nộp/Tiết 20, 23. Bài 14. Hình thoi và hình vuông.docx",
+          "Toán 8 nộp/Tiết 21, 22. Luyện tập chung.docx",
+          "Toán 8 nộp/Tiết 24. Luyện tập chung..docx",
+          "Toán 8 nộp/Tiết 25, 26.Bài tập cuối chương 1.docx",
+          "Toán 8 nộp/Tiết 29, 30. Bài 6. hiệu hai bình phương..docx"
+        ],
+        "subjects_detail": {
+          "Toán 7": {
+            "folder_id": "195kNCQlrgc2HRAJ68GkhUeL7mSj_lK3M",
+            "count": 1,
+            "files": [
+              "Thủy_toán 7 tuần 1 - 8/PPCT_Toan_7_2026-2027_NLS đổi.docx"
+            ]
+          },
+          "Toán 8": {
+            "folder_id": "11oJ_qqTQhBUVGgAuAaQ6J5xcXNolIET-",
+            "count": 19,
+            "files": [
+              "Toán 8 nộp/Tiết  27, 28. Bài tập cuối chương.docx",
+              "Toán 8 nộp/Tiết  31, 32, 36. Bài 15. Định lý thales.docx",
+              "Toán 8 nộp/Tiết 1, 2.Bài 1.  Đơn thức.docx",
+              "Toán 8 nộp/Tiết 3. Bài 10. Tứ giác.docx",
+              "Toán 8 nộp/Tiết 4,7,8_Bài 11.Hình thang cân.docx",
+              "Toán 8 nộp/Tiết 5,6. Bài 2. Đa thức.docx",
+              "Toán 8 nộp/Tiết 9. Bài 3. Phép cộng và phép trừ đa thức.docx",
+              "Toán 8 nộp/Tiết 10. Luyện tập chung.docx",
+              "Toán 8 nộp/Tiết 11, Luyện tập chung.docx",
+              "Toán 8 nộp/Tiết 12, 15. Bài 12. Hình bình hành.docx",
+              "Toán 8 nộp/Tiết 13, 14_ Bài 4. Phép nhân đa thức.docx",
+              "Toán 8 nộp/Tiết 16. Luyện tập chung.docx",
+              "Toán 8 nộp/Tiết 17, 18. Bài 5. Phép chia đa thức cho đơn thức.docx",
+              "Toán 8 nộp/Tiết 19. Bài 13. Hình chữ nhật.docx",
+              "Toán 8 nộp/Tiết 20, 23. Bài 14. Hình thoi và hình vuông.docx",
+              "Toán 8 nộp/Tiết 21, 22. Luyện tập chung.docx",
+              "Toán 8 nộp/Tiết 24. Luyện tập chung..docx",
+              "Toán 8 nộp/Tiết 25, 26.Bài tập cuối chương 1.docx",
+              "Toán 8 nộp/Tiết 29, 30. Bài 6. hiệu hai bình phương..docx"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (20 tệp: Toán 7 (1 tệp), Toán 8 (19 tệp))"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "1psaTDYkivdj_BnMfvDtZxKoWJeY6Dhwb",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1mx7oAukkGBEtNNjpEHxfwstxyIhS9mUJ",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1dvzZ8HAjuZMkdHa23ZFS8S8VXlSUaqaK",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "1oYOClxbfeQMIx3vT3cTLbrsAnIp9J_dx",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1jGPQ1ofg2elkZhhZqLYiC64EtgLEZRCD",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1r6I3Pk9uPtQosPGEkswoS-qLpWETpX3c",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1PBWN8x2mz7lU0yY3k7NzhMQyaKa8GneS",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1dJQ1FJWm91Zwnpot8G023iqyr8tlT9Wg",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1-4pz3M_SYrInuaUEAhT7HYtPQf_CYl_L",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1BYqn4bjdzNV73Or4TaOXb92TjvuL8N6q",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1sp29KD4OMekY3W0cRgLaPNYKeSl80LWz",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1asz1GkO4qNwIzFWxj1FMiarbXEjx0xYV",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "19hPS2OBviH7c3dWLcqGMlGydUg91IHxD",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1iaxfKBsZ_MsYWaL6mdruR8Ckpeye12tM",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1cTE3sa8AcLC6cwhO24aXUesACb_IqK2T",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "1mTBBAkIJVpeJySju9skUs-U7ZsHHkLj8",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1FxMbpQMwhPINofeQSrZ5mmy1ueoz5Xk4",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1Vu1RydBI4EiGeBuIZaWYf5iQ7G6ylbH-",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1y8qhV-UIITYRxwdz7Qti5O1jDJANTGBG",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "1_TZnN3SVz23HBG6yqd4MNcPeJmbWG8qa",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1RGCd7tCjW4cqFVkG_GdGx1hGvf_Rt9Ej",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "1_J6Z6kGFTYRV3CEABRxV86EB4XUOo0pz",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Toán 6": {
+            "folder_id": "170yGoXc_b4SDVNOzxaSRTwVWC8G70wqI",
+            "count": 0,
+            "files": []
+          },
+          "Toán 7": {
+            "folder_id": "1e2uU5bzQLbN-4lKVyRLu8CppM5008ZGJ",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "trang": {
+    "teacher": {
+      "id": "trang",
+      "name": "Nguyễn Thị Thùy Trang",
+      "folder_name": "Cô Trang",
+      "drive_id": "1cecicN1-cXp5U1quKmaEs3TCgNhdcCNn",
+      "subjects": "CN 8, CN 9"
+    },
+    "total_files": 0,
+    "last_updated": "29/09/2026",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1cecicN1-cXp5U1quKmaEs3TCgNhdcCNn",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1NXBCSoufadualtfSNY017CUntx_OuQEE",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1lPEWGOeJwOnjlDzExr7DiTlKWdMlWJwV",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "188srpT72IGUHIbCoK7YZpPqrzuqlwxVs",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1Vfvvku5VtVH9m-faxBzNu0g2VnL5pPAO",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1FVZ7ZN40YZOj6zrp2DnIr_aXp1HELPbo",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "10bSvAqnQsL8DnPZBjz1JYnnWKyEIyuqd",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1T2JkQ6064BZ8aOJHpZN_r44ANZr6zj1r",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1JO7cXc-DKz5OfX_jAS-IqzT3X0SrXrmA",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1O4xV5_4R1crm1fjlRvj1vS-7tb5FU6ez",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1tYdwYDWLtFl66J4m937kyCY7xaZyPqDp",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1RJsKYAu5AhBUmpuZNO-Jp0xJRHt3D17m",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1E2rwQa9lfWyXt5nq9dlBLAnvz8cT6Xnk",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1KYekwrK2lxFZSytgLQX4eEQL5tZRa6KO",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1GTUQAGTnLlmDsaAfQsA91l40k4K9VjRb",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "17i_x2bri2dm02aB6e4o-d64Ajw5jI-b_",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1bs6k4TXQ5gnkTOW2RYG-F2Fo4j0VLZ7K",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1B__sgfUVqU8d2kZMeZNKVqmnxVhGpeee",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "13adShXSrolVVhXbm9vhLmNY7u0IU8Xv2",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1bvzZdsEyiQUjjnTsdxs8fE74p8qBrSv4",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "17wvRLzpyDDFoWM41c4Z9PQ1lmudhk28t",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1B425OaPsyBfVxf6pcfasMJZ4eTRtMUOk",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1mV9nhmnwzeFYX9qU4RvEZnAoyzx_LL1t",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "13wLs6mdceMSzrUocZfYzZ1vysTdIGV60",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "1Z58PFa---mC6JhIkwzkDK4uBuXpGx_zJ",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "CN 8": {
+            "folder_id": "1iLkFC8AELkEkhFhZBlwuftIMYxkbXlcy",
+            "count": 0,
+            "files": []
+          },
+          "CN 9": {
+            "folder_id": "1RXGS0zi8gisLATOQGQpU4SxqQkIThuLT",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "thanh": {
+    "teacher": {
+      "id": "thanh",
+      "name": "Nguyễn Chí Thành",
+      "folder_name": "Thầy Thành",
+      "drive_id": "1DzjU29kNh9jJERyeLs9qQWwHotXpThyO",
+      "subjects": "HĐTN 8, KHTN 6, 8, 9"
+    },
+    "total_files": 30,
+    "last_updated": "30/09/2026 22:23",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1DzjU29kNh9jJERyeLs9qQWwHotXpThyO",
+        "has_files": true,
+        "file_count": 30,
+        "files": [
+          "chủ đề 1 Chúng em với nhà trường.docx",
+          "chủ đề 2 Khám phá bản thân.docx",
+          "PPCT  môn-HĐTN K8_26-27_NLS.docx",
+          "KHTN 6/Tuần  8_ Tiết 29, 30_on_tap giữa kỳ I.docx",
+          "KHTN 6/Tuần 1_ tiết 3_b2_an_toan_trong_phong_thuc_hanh.46fb208d48 (1).docx",
+          "KHTN 6/tuần 1_ tiết 4_b3_su_dung_kinh_lup.c60691a772.docx",
+          "KHTN 6/Tuần 1_tiết 1,2_b1_gioi_thieu_ve_khoa_hoc_tu_nhien.8bffe89e44 (1).docx",
+          "KHTN 6/Tuần 2_ tiết 5,6___b4_su_dung_kinh_hien_vi_quang_hoc.a2a9d0c04f.docx",
+          "KHTN 6/Tuần 2,3_ Tiết 7, 8, 9_b5_do_do_dai.b5bafa9aca.docx",
+          "KHTN 6/Tuần 3, Tiết 10, 11_b6_do_khoi_luong.08b013383d.docx",
+          "KHTN 6/Tuần 3, tiết 12_b7_do_thoi_gian.1eb1152041.docx",
+          "KHTN 6/Tuần 4, Tiết 13, 14, 15_b8_do_nhiet_do.11d1f4baf8 (1).docx",
+          "KHTN 6/Tuần 4, tiết 16_on_tap_chuơng_1.docx",
+          "KHTN 6/Tuần 5 - tiết 17, 18 _b9_su_da_dang_cua_chat.9cbd61f41b.docx",
+          "KHTN 6/Tuần 5 , 6 - tiết 19, 20, 21 _b10_cac_the_cua_chat_va_su_chuyen_the.ac4519a9b1.docx",
+          "KHTN 6/Tuần 6 - tiết 22, 23, 24_b11_oxygen_khong_khi.K6_DA_SUA.docx",
+          "KHTN 6/Tuần 7 - tiết 26, 27_b12_mot_so_vat_lieu.c50b7282bf.docx",
+          "KHTN 6/Tuần 7_tiết 25_on_tap_chuơng_2.docx",
+          "KHTN 6/Tuần 7.. - tiết 28, 33_b13_mot_so_nguyen_lieu.939a1abff9_DA_SUA.docx",
+          "KHTN 8/Tuần 1 - tiết 1_su_dung_mot_so.b2f34e8fe5.docx",
+          "KHTN 8/Tuần 1, 2_ tiết 2, 3. b13_klg_rieng.f0e81f2abe (1).docx",
+          "KHTN 8/Tuần 2_ tiết 4_b14_thuc_hanh.f66ced1c86.docx",
+          "KHTN 8/Tuần 3_ tiết 5, 6_b15_ap_suat.9139a621c1.docx",
+          "KHTN 8/Tuần 4_ tiết 7, 8_b16_ap_suat_chat_long.8ac2844c2a.docx",
+          "KHTN 8/Tuần 5, 6 - tiết 9,10_ Lực đẩy Ảcimec.docx",
+          "KHTN 8/Tuần 7, 8, 11 - tiết 11,12, 14_b18_tac_dung_lam_quay.8e43916ff3_DA_SUA.docx",
+          "KHTN 8/Tuần ̣9, tiết _13_bt_ÔN TẬP_.docx",
+          "KHTN 9/Tuần 2, 3_ Tiết 1, 2, 3_b2_dongnang_vatli9_kntt.30448feb2d (2).docx",
+          "KHTN 9/Tuần 4, 5, 6, 7_ Tiết 4, 5, 6, 7_b3_conang_vatli9_kntt.f048e567a4.docx",
+          "KHTN 9/Tuần 8 - tiết 8 ontapghk1_vatli9_kntt_DA_SUA.docx"
+        ],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1V4kykZ38tmmk-Isa5MjE4bzDYT555ytn",
+            "count": 3,
+            "files": [
+              "chủ đề 1 Chúng em với nhà trường.docx",
+              "chủ đề 2 Khám phá bản thân.docx",
+              "PPCT  môn-HĐTN K8_26-27_NLS.docx"
+            ]
+          },
+          "KHTN 6": {
+            "folder_id": "1wkgtYtvUZZ3hrRt90YQiXZ3laH3gxVbD",
+            "count": 16,
+            "files": [
+              "KHTN 6/Tuần  8_ Tiết 29, 30_on_tap giữa kỳ I.docx",
+              "KHTN 6/Tuần 1_ tiết 3_b2_an_toan_trong_phong_thuc_hanh.46fb208d48 (1).docx",
+              "KHTN 6/tuần 1_ tiết 4_b3_su_dung_kinh_lup.c60691a772.docx",
+              "KHTN 6/Tuần 1_tiết 1,2_b1_gioi_thieu_ve_khoa_hoc_tu_nhien.8bffe89e44 (1).docx",
+              "KHTN 6/Tuần 2_ tiết 5,6___b4_su_dung_kinh_hien_vi_quang_hoc.a2a9d0c04f.docx",
+              "KHTN 6/Tuần 2,3_ Tiết 7, 8, 9_b5_do_do_dai.b5bafa9aca.docx",
+              "KHTN 6/Tuần 3, Tiết 10, 11_b6_do_khoi_luong.08b013383d.docx",
+              "KHTN 6/Tuần 3, tiết 12_b7_do_thoi_gian.1eb1152041.docx",
+              "KHTN 6/Tuần 4, Tiết 13, 14, 15_b8_do_nhiet_do.11d1f4baf8 (1).docx",
+              "KHTN 6/Tuần 4, tiết 16_on_tap_chuơng_1.docx",
+              "KHTN 6/Tuần 5 - tiết 17, 18 _b9_su_da_dang_cua_chat.9cbd61f41b.docx",
+              "KHTN 6/Tuần 5 , 6 - tiết 19, 20, 21 _b10_cac_the_cua_chat_va_su_chuyen_the.ac4519a9b1.docx",
+              "KHTN 6/Tuần 6 - tiết 22, 23, 24_b11_oxygen_khong_khi.K6_DA_SUA.docx",
+              "KHTN 6/Tuần 7 - tiết 26, 27_b12_mot_so_vat_lieu.c50b7282bf.docx",
+              "KHTN 6/Tuần 7_tiết 25_on_tap_chuơng_2.docx",
+              "KHTN 6/Tuần 7.. - tiết 28, 33_b13_mot_so_nguyen_lieu.939a1abff9_DA_SUA.docx"
+            ]
+          },
+          "KHTN 8": {
+            "folder_id": "1Xg6e8wLyUYyXK6K92qzWN0_Mtgo0VmxB",
+            "count": 8,
+            "files": [
+              "KHTN 8/Tuần 1 - tiết 1_su_dung_mot_so.b2f34e8fe5.docx",
+              "KHTN 8/Tuần 1, 2_ tiết 2, 3. b13_klg_rieng.f0e81f2abe (1).docx",
+              "KHTN 8/Tuần 2_ tiết 4_b14_thuc_hanh.f66ced1c86.docx",
+              "KHTN 8/Tuần 3_ tiết 5, 6_b15_ap_suat.9139a621c1.docx",
+              "KHTN 8/Tuần 4_ tiết 7, 8_b16_ap_suat_chat_long.8ac2844c2a.docx",
+              "KHTN 8/Tuần 5, 6 - tiết 9,10_ Lực đẩy Ảcimec.docx",
+              "KHTN 8/Tuần 7, 8, 11 - tiết 11,12, 14_b18_tac_dung_lam_quay.8e43916ff3_DA_SUA.docx",
+              "KHTN 8/Tuần ̣9, tiết _13_bt_ÔN TẬP_.docx"
+            ]
+          },
+          "KHTN 9": {
+            "folder_id": "1cdt9Ox0C0RU3k0QgpklaKzoIOkev4Pc0",
+            "count": 3,
+            "files": [
+              "KHTN 9/Tuần 2, 3_ Tiết 1, 2, 3_b2_dongnang_vatli9_kntt.30448feb2d (2).docx",
+              "KHTN 9/Tuần 4, 5, 6, 7_ Tiết 4, 5, 6, 7_b3_conang_vatli9_kntt.f048e567a4.docx",
+              "KHTN 9/Tuần 8 - tiết 8 ontapghk1_vatli9_kntt_DA_SUA.docx"
+            ]
+          }
+        },
+        "status": "ĐÃ CẬP NHẬT (30 tệp: HĐTN 8 (3 tệp), KHTN 6 (16 tệp), KHTN 8 (8 tệp), KHTN 9 (3 tệp))"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "1f0jPnFv4LGWf2eotmOdevJXaULcbUGZE",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1Tk2vgzVM5sSA_hwuOSFwA2JkQRLyePs9",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1UC_wSwp0IoPuhu7X7lUnfwwNFrRcILEs",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1gDZt5-EJLY8kQ1y4qaaby5NhdPAis7G5",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1hMP44KL8-H1waqxQUcEop60v1TLbZoLa",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "18sQGv3nDoa-NohBjoOkyG8IQvl0yXu5c",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "12eRzj8DpRCE_PAo_O4JNARR2SvCyV_NY",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "13CgO2FZyzy5kBssU85r1OuEXtWIYpc5T",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "13FPnLwhN6cdHn8XJYn3BRgod03aYw_82",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1HbTLeYbMU0cdyHiuj50CramJm1ah4Qn9",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "18psbBN3Wm0mFf7eFMpJ4slROxN1VvZwQ",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1j5tgOK0tUp4L7NLsPZ_U9P8dvoZnZzun",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1WyCh00_fkiPedZ7phRgktqoG1CqK5LaB",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1cIyFD8CiM9Cu0CjAI-nB46rLNTanPb6a",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "10uc1qd_38iNVdjM--UFblW5txFT3ip98",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1tO5RXgIUIaWXEoJEIM7IRWTfmvjELnc7",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1HzsoZ5V4agl8Et1L1p-RPetPEQ4WrkMD",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1xuG5ZT-1uwWceJ5-q1jc7g2bVXPPZGO1",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1zXwR_Uf9IZ6RPzto5h4B6RFq4gNXJjng",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1FQHMnmDGCz1Ocon-fMq6aHw2CDL332Ta",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "1iiw4oL1AfAPkallwUlYFP3wB1IPR6xm-",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1FapCvkMskK2c1_YlcPF6-nbFPj2BFIlt",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1LkuIUJRBvLz2PweF7rkT3IdVQLEi-urd",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1shHa5FGWqSYeo7SNUNSAayI8f-G46GRz",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1KaN6DGXmWffy8EszpP1XWZawb8tBBKDA",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "1bkcYsRhrtutzUPwuvKyWoG3tauTXYSVq",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1x7vK-lgtIpUP-38SOXhRrTXsMCLv4ktH",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1un12UUPX8uw3Bbyp_OZ7lJUM0oC8xsm-",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1q2uep1eJNQwhuTtehIiDSDBFrykpQXhZ",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1lEOP1Vt6r0n8sVKh6BhAS3wRlWZ6KKX8",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1QwIH0V7JbN0eQ4tjXeq9cNy2hFPRTWNT",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1liFwiHMIyMj-DpqLirn27XIOmIqBzjlS",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "1-drRR7JyzTcXuWMzjgvUHMLxUkzB5YSF",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "18Iud-KJiJJigcXE5sL13KqX367iWPmzo",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1cBVYRNfZYwhmb-kkAey5hr1miFTEJnJO",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "1e6A47CId754-v75QT01DHH4f-wztfbTA",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "HĐTN 8": {
+            "folder_id": "1NmIwe7v400DF-ks93VzNw9FsccdWpPtv",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 6": {
+            "folder_id": "10Aw6eLkknK7WZRalId6L9usPw-ufBt7D",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 8": {
+            "folder_id": "1M05N9VmKjchz2pnfw1u6rPzZE1EGjH6q",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 9": {
+            "folder_id": "1V0lbLrIh7ST0HVRlP6RXP3yDkNswDBud",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  },
+  "thang": {
+    "teacher": {
+      "id": "thang",
+      "name": "Lê Văn Thắng",
+      "folder_name": "Thầy Thắng (Tổ trưởng)",
+      "drive_id": "1WrRYp5MKJaGPbbYaTtisWwP7RwukvJKx",
+      "subjects": "Hóa 9, KHTN 7"
+    },
+    "total_files": 0,
+    "last_updated": "29/09/2026",
+    "cycles": {
+      "Tuần 1 đến tuần 4": {
+        "name": "Tuần 1 đến tuần 4",
+        "subfolder_id": "1WrRYp5MKJaGPbbYaTtisWwP7RwukvJKx",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1f-HW_wR6wiT5kX8w-NxSXlFTQmY5vJ4Y",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1mMGvzVk3TzyabyHz_CBMdHn5AOABuEHy",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 5 đến tuần 8": {
+        "name": "Tuần 5 đến tuần 8",
+        "subfolder_id": "1eq9pnvx6D31rp-sW_49BcpBNhpZJOIOA",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1eUJ2rSoGvqj8608KtkyX87WdXkK0X9uW",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "13Cq-Mhx6TooZCyzxDwl8GD-5JnmcRx9A",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 9 đến tuần 12": {
+        "name": "Tuần 9 đến tuần 12",
+        "subfolder_id": "15MUMQqH4004SIygPOUSfLkMz5ho5h0Lq",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1llMCfBbKK-tDy6nVh6yv1_oamJU1Lw72",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1a5eokNw34woWLxwLwM-cXsdPdunFQzrp",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 13 đến tuần 16": {
+        "name": "Tuần 13 đến tuần 16",
+        "subfolder_id": "1T11Rlpw2hw6TD08c1h-02DJgn8nyesge",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1o9zvDV_Cm1DaXh0ycOU1AGVvAtOxk8GN",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1h-NVVDZ8erFKuIQ6MtsMYB2kd6oMQeOj",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 17 đến tuần 20": {
+        "name": "Tuần 17 đến tuần 20",
+        "subfolder_id": "1YAeTxPwdW6BhPKkxZLrhgR7IIHKIUKLS",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "12ypKOec_gARLQR7z8Wqmf8p7-0rDdMKO",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1B1EbQPs8UvGvvxhHxAT7DAGvim1e0kEd",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 21 đến tuần 24": {
+        "name": "Tuần 21 đến tuần 24",
+        "subfolder_id": "1L8bC4k-ehdWmnmGI4yyiZVV2TAOWDP7w",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1xwIbaDSoONJkc_Bu_cIr-s6XUeU0Drqh",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1xIFiyen4I9VGOabpwQzRdZ9T4sOezowr",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 25 đến tuần 28": {
+        "name": "Tuần 25 đến tuần 28",
+        "subfolder_id": "1OQ1SxL93B_co74pzbLbcLOg_YwCYQscX",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1RpZCS2d4M0fE1xWsL-6UyxBKlXvablnP",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1XPBrIXlFqJiPa52BG6SsU8bgqu9cHdcp",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 29 đến tuần 32": {
+        "name": "Tuần 29 đến tuần 32",
+        "subfolder_id": "1gP7zjJWjW7bWxOcrf62B4fqxhxUZ1uhc",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1nXrCzWPjkDtcHQv7pEcrCfjIgPXx8Zth",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1V4afhzgnOSMcsYhIPVPXpaj0CZsDHqaD",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      },
+      "Tuần 33 đến tuần 35": {
+        "name": "Tuần 33 đến tuần 35",
+        "subfolder_id": "10kYZw8Umet97Pk_qUVRDwYNt_MpmYX5s",
+        "has_files": false,
+        "file_count": 0,
+        "files": [],
+        "subjects_detail": {
+          "Hóa 9": {
+            "folder_id": "1zRqlVI6TCCs0_yD12qCRoNi-I9b1jvBG",
+            "count": 0,
+            "files": []
+          },
+          "KHTN 7": {
+            "folder_id": "1vksIE_bNy8dNg1kaK9UY3I8Eu6YScRW2",
+            "count": 0,
+            "files": []
+          }
+        },
+        "status": "Chưa cập nhật (0 tệp)"
+      }
+    }
+  }
+}
