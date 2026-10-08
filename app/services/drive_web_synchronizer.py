@@ -65,11 +65,15 @@ def process_single_teacher_sync(t_id, meta, now_str):
     cycles_data = {}
     teacher_files_count = 0
 
+    root_files = [pf["name"] for pf in period_folders if not pf.get("is_folder", False) and any(pf.get("name", "").endswith(ext) for ext in ['.docx', '.pdf', '.doc', '.xlsx'])]
+
     for pf in period_folders:
+        if not pf.get("is_folder", False):
+            continue
         p_name = pf["name"]
         p_id = pf["id"]
         
-        sub_items = scrape_drive_folder_items(p_id) if pf["is_folder"] else []
+        sub_items = scrape_drive_folder_items(p_id)
         files_list = []
         subjs_detail = {}
 
@@ -85,7 +89,8 @@ def process_single_teacher_sync(t_id, meta, now_str):
                 }
                 files_list.extend(s_files)
             else:
-                files_list.append(item["name"])
+                if any(item["name"].endswith(ext) for ext in ['.docx', '.pdf', '.doc', '.xlsx']):
+                    files_list.append(item["name"])
 
         if files_list and not subjs_detail:
             for fname in files_list:
@@ -108,10 +113,13 @@ def process_single_teacher_sync(t_id, meta, now_str):
         teacher_files_count += f_count
 
         cycles_data[p_name] = {
-            "status": f"ĐÃ ĐỒNG BỘ AUTO DRIVE ({f_count} tệp)" if f_count > 0 else "CHƯA NỘP",
+            "status": f"ĐÃ NỘP ({f_count} tệp)" if f_count > 0 else "CHƯA NỘP",
             "file_count": f_count,
             "subjects_detail": subjs_detail
         }
+
+    if root_files:
+        teacher_files_count += len(root_files)
 
     return t_id, {
         "teacher": {
@@ -124,7 +132,8 @@ def process_single_teacher_sync(t_id, meta, now_str):
         },
         "total_files": teacher_files_count,
         "last_updated": now_str,
-        "cycles": cycles_data
+        "cycles": cycles_data,
+        "root_files": root_files
     }, teacher_files_count
 
 
@@ -159,16 +168,33 @@ def perform_zero_config_drive_sync():
                 t_id, t_record, f_count = future.result()
                 scanned_teachers_count += 1
                 total_files_scanned += f_count
-                
-                # Cập nhật 100% chuẩn xác theo thực tế trên Drive (kể cả khi 0 tệp / chưa nộp)
                 live_report[t_id] = t_record
-            except Exception as e:
+            except Exception:
                 pass
 
-    # Lưu lại kết quả vào drive_live_exact_report.json
+    # 1. Lưu lại kết quả vào drive_live_exact_report.json
     target_path = os.path.join(DATA_DIR, "drive_live_exact_report.json")
     with open(target_path, "w", encoding="utf-8") as f:
         json.dump(live_report, f, ensure_ascii=False, indent=2)
+
+    # 2. Cập nhật drive_full_cycles_report.json
+    try:
+        from app.services.cycle_report_generator import generate_fallback_9_cycles_matrix, generate_9_cycles_monitoring_word
+        full_cycles = generate_fallback_9_cycles_matrix()
+        full_cycles_path = os.path.join(DATA_DIR, "drive_full_cycles_report.json")
+        with open(full_cycles_path, "w", encoding="utf-8") as f:
+            json.dump(full_cycles, f, ensure_ascii=False, indent=2)
+        generate_9_cycles_monitoring_word()
+    except Exception as e:
+        print(f"Error updating full cycles report: {e}")
+
+    # 3. Cập nhật drive_monitoring_log.json
+    try:
+        from app.services.drive_monitor import scan_google_drive_status, export_drive_monitoring_report_word
+        scan_google_drive_status()
+        export_drive_monitoring_report_word()
+    except Exception as e:
+        print(f"Error updating monitoring log: {e}")
 
     return {
         "status": "success",
@@ -177,3 +203,4 @@ def perform_zero_config_drive_sync():
         "scanned_teachers": scanned_teachers_count,
         "total_files_scanned": total_files_scanned
     }
+

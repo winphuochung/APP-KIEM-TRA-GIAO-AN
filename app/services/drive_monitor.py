@@ -123,9 +123,11 @@ def scan_google_drive_status():
         with open(live_path, "r", encoding="utf-8") as f:
             live_data = json.load(f)
         
-        for t_key, t_val in live_data.items():
-            t_meta = t_val["teacher"]
-            cycles = t_val["cycles"]
+        for t in TEACHER_FOLDERS:
+            t_key = t["id"]
+            t_val = live_data.get(t_key, {})
+            t_meta = t_val.get("teacher", t)
+            cycles = t_val.get("cycles", {})
             t1_4 = cycles.get("Tuần 1 đến tuần 4", {})
             t5_8 = cycles.get("Tuần 5 đến tuần 8", {})
             
@@ -152,10 +154,10 @@ def scan_google_drive_status():
                 "folder_name": t_meta["folder_name"],
                 "drive_id": t_meta["drive_id"],
                 "folder_url": f"https://drive.google.com/drive/folders/{t_meta['drive_id']}?usp=sharing",
-                "subjects": t_meta["subjects"],
-                "subfolders": list(cycles.keys()),
-                "file_count": t_val["total_files"],
-                "last_updated": t_val["last_updated"],
+                "subjects": t_meta["subjects"] if isinstance(t_meta.get("subjects"), list) else [s.strip() for s in t_meta.get("subjects", "").split(", ") if s.strip()],
+                "subfolders": list(cycles.keys()) if cycles else ["Tuần 1 đến tuần 4", "Tuần 5 đến tuần 8"],
+                "file_count": tot_f,
+                "last_updated": t_val.get("last_updated", now_str),
                 "status": status,
                 "notes": notes,
                 "week1_4_count": t1_4_count,
