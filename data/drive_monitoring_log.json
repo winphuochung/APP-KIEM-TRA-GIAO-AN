@@ -1,5 +1,5 @@
 {
-  "scan_time": "08/10/2026 13:21",
+  "scan_time": "08/10/2026 13:32",
   "drive_root_url": "https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing",
   "total_teachers": 8,
   "completed_count": 7,
@@ -27,10 +27,28 @@
       ],
       "file_count": 17,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 17 tệp (Tuần 1-4: 9 tệp, Tuần 5-8: 8 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-4 & 5-8 (Trống 7 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-4 & 5-8",
+      "notes": "✔ Đã nộp (17 tệp): Tuần 1-4: 9 tệp, Tuần 5-8: 8 tệp. ❌ Thư mục trống file (Không nộp): 7 thư mục gồm Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
       "week1_4_count": 9,
-      "week5_8_count": 8
+      "week5_8_count": 8,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 9 tệp, Tuần 5-8: 8 tệp",
+      "empty_cycles": [
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 7,
+      "empty_cycles_text": "Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": ""
     },
     {
       "id": "hang",
@@ -58,10 +76,28 @@
       ],
       "file_count": 35,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 35 tệp (Tuần 1-4: 15 tệp, Tuần 5-8: 20 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-4 & 5-8 (Trống 7 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-4 & 5-8",
+      "notes": "✔ Đã nộp (35 tệp): Tuần 1-4: 15 tệp, Tuần 5-8: 20 tệp. ❌ Thư mục trống file (Không nộp): 7 thư mục gồm Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
       "week1_4_count": 15,
-      "week5_8_count": 20
+      "week5_8_count": 20,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 15 tệp, Tuần 5-8: 20 tệp",
+      "empty_cycles": [
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 7,
+      "empty_cycles_text": "Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": ""
     },
     {
       "id": "ke",
@@ -87,10 +123,28 @@
       ],
       "file_count": 27,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 27 tệp (Tuần 1-4: 13 tệp, Tuần 5-8: 13 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-12 (Trống 6 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-12",
+      "notes": "✔ Đã nộp (27 tệp): Tuần 1-4: 13 tệp, Tuần 5-8: 13 tệp, Tuần 9-12: 1 tệp. ❌ Thư mục trống file (Không nộp): 6 thư mục gồm Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
       "week1_4_count": 13,
-      "week5_8_count": 13
+      "week5_8_count": 13,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 13 tệp, Tuần 5-8: 13 tệp, Tuần 9-12: 1 tệp",
+      "empty_cycles": [
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 6,
+      "empty_cycles_text": "Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": ""
     },
     {
       "id": "linh",
@@ -115,10 +169,28 @@
       ],
       "file_count": 14,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 14 tệp (Tuần 1-4: 7 tệp, Tuần 5-8: 7 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-4 & 5-8 (Trống 7 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-4 & 5-8",
+      "notes": "✔ Đã nộp (14 tệp): Tuần 1-4: 7 tệp, Tuần 5-8: 7 tệp. ❌ Thư mục trống file (Không nộp): 7 thư mục gồm Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35. Lưu ý: Thư mục môn Toán 8 trống file (0 tệp).",
       "week1_4_count": 7,
-      "week5_8_count": 7
+      "week5_8_count": 7,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 7 tệp, Tuần 5-8: 7 tệp",
+      "empty_cycles": [
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 7,
+      "empty_cycles_text": "Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": "Thư mục môn Toán 8 trống file (0 tệp)"
     },
     {
       "id": "thuy",
@@ -144,10 +216,28 @@
       ],
       "file_count": 40,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 40 tệp (Tuần 1-4: 19 tệp, Tuần 5-8: 20 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-4 & 5-8 (Trống 7 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-4 & 5-8",
+      "notes": "✔ Đã nộp (40 tệp): Tuần 1-4: 19 tệp, Tuần 5-8: 20 tệp. ❌ Thư mục trống file (Không nộp): 7 thư mục gồm Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35. Lưu ý: Thư mục môn Toán 6 trống file (0 tệp).",
       "week1_4_count": 19,
-      "week5_8_count": 20
+      "week5_8_count": 20,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 19 tệp, Tuần 5-8: 20 tệp",
+      "empty_cycles": [
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 7,
+      "empty_cycles_text": "Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": "Thư mục môn Toán 6 trống file (0 tệp)"
     },
     {
       "id": "trang",
@@ -172,10 +262,28 @@
       ],
       "file_count": 9,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 9 tệp (Tuần 1-4: 4 tệp, Tuần 5-8: 5 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-4 & 5-8 (Trống 7 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-4 & 5-8",
+      "notes": "✔ Đã nộp (9 tệp): Tuần 1-4: 4 tệp, Tuần 5-8: 5 tệp. ❌ Thư mục trống file (Không nộp): 7 thư mục gồm Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
       "week1_4_count": 4,
-      "week5_8_count": 5
+      "week5_8_count": 5,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 4 tệp, Tuần 5-8: 5 tệp",
+      "empty_cycles": [
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 7,
+      "empty_cycles_text": "Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": ""
     },
     {
       "id": "thanh",
@@ -202,10 +310,28 @@
       ],
       "file_count": 30,
       "last_updated": "08/10/2026 13:07",
-      "status": "Đã nộp Tuần 1-4 & Tuần 5-8",
-      "notes": "Đã nộp 30 tệp (Tuần 1-4: 17 tệp, Tuần 5-8: 13 tệp). Tuần 9 đến 35: Chưa nộp",
+      "status": "Đã nộp Tuần 1-4 & 5-8 (Trống 7 thư mục tuần)",
+      "status_main": "Đã nộp Tuần 1-4 & 5-8",
+      "notes": "✔ Đã nộp (30 tệp): Tuần 1-4: 17 tệp, Tuần 5-8: 13 tệp. ❌ Thư mục trống file (Không nộp): 7 thư mục gồm Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
       "week1_4_count": 17,
-      "week5_8_count": 13
+      "week5_8_count": 13,
+      "submitted_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8"
+      ],
+      "submitted_cycles_text": "Tuần 1-4: 17 tệp, Tuần 5-8: 13 tệp",
+      "empty_cycles": [
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 7,
+      "empty_cycles_text": "Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": ""
     },
     {
       "id": "thang",
@@ -231,10 +357,27 @@
       ],
       "file_count": 0,
       "last_updated": "08/10/2026 13:07",
-      "status": "CHƯA NỘP (Thư mục trống)",
-      "notes": "Thư mục trên Google Drive chưa có tệp giáo án nào (0/9 chu kỳ tuần)",
+      "status": "CHƯA NỘP (Trống 9/9 thư mục tuần)",
+      "status_main": "CHƯA NỘP",
+      "notes": "❌ Thư mục trống file (Không nộp): Trống toàn bộ 9/9 thư mục tuần (Tuần 1-4, Tuần 5-8, Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35). Cả 3 môn phụ trách (Hóa 9, KHTN 7, Toán 9) đều chưa có tệp tin nào.",
       "week1_4_count": 0,
-      "week5_8_count": 0
+      "week5_8_count": 0,
+      "submitted_cycles": [],
+      "submitted_cycles_text": "",
+      "empty_cycles": [
+        "Tuần 1 đến tuần 4",
+        "Tuần 5 đến tuần 8",
+        "Tuần 9 đến tuần 12",
+        "Tuần 13 đến tuần 16",
+        "Tuần 17 đến tuần 20",
+        "Tuần 21 đến tuần 24",
+        "Tuần 25 đến tuần 28",
+        "Tuần 29 đến tuần 32",
+        "Tuần 33 đến tuần 35"
+      ],
+      "empty_cycles_count": 9,
+      "empty_cycles_text": "Tuần 1-4, Tuần 5-8, Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35",
+      "empty_subjects_note": "Cả 3 môn phụ trách (Hóa 9, KHTN 7, Toán 9) đều trống file (0 tệp)"
     }
   ]
 }
