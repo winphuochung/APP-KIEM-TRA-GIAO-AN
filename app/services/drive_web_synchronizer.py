@@ -57,8 +57,23 @@ def scrape_drive_folder_items(folder_id):
         return []
 
 
+def get_all_files_recursive(folder_id, max_depth=3):
+    """Lấy tất cả các tệp đệ quy trong 1 thư mục bất kể số cấp lồng nhau."""
+    if max_depth <= 0:
+        return []
+    items = scrape_drive_folder_items(folder_id)
+    files = []
+    for it in items:
+        if it.get("is_folder", False):
+            files.extend(get_all_files_recursive(it["id"], max_depth - 1))
+        else:
+            if any(it.get("name", "").endswith(ext) for ext in ['.docx', '.pdf', '.doc', '.xlsx']):
+                files.append(it["name"])
+    return files
+
+
 def process_single_teacher_sync(t_id, meta, now_str):
-    """Quét dữ liệu Google Drive của 1 giáo viên theo thời gian thực."""
+    """Quét dữ liệu Google Drive của 1 giáo viên theo thời gian thực (đệ quy sâu)."""
     drive_id = meta["drive_id"]
     period_folders = scrape_drive_folder_items(drive_id)
     
@@ -80,8 +95,7 @@ def process_single_teacher_sync(t_id, meta, now_str):
         for item in sub_items:
             if item["is_folder"]:
                 subj_name = item["name"]
-                subj_files_items = scrape_drive_folder_items(item["id"])
-                s_files = [sf["name"] for sf in subj_files_items if not sf["is_folder"]]
+                s_files = get_all_files_recursive(item["id"], max_depth=3)
                 subjs_detail[subj_name] = {
                     "folder_id": item["id"],
                     "count": len(s_files),

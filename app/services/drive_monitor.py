@@ -32,7 +32,7 @@ TEACHER_FOLDERS = [
         "name": "Lê Thị Thúy Hằng",
         "folder_name": "Cô Hằng",
         "drive_id": "1jfXZGd-nH9kgVRsJDg_ldIUFdbR4-MUI",
-        "subjects": "CN 6, CN 7, HĐTN 6, 7, 9",
+        "subjects": "CN 6, CN 7, HĐTN 6, HĐTN 7, HĐTN 9",
         "expected_weeks": "Tuần 1-4, Tuần 5-8"
     },
     {
@@ -40,7 +40,7 @@ TEACHER_FOLDERS = [
         "name": "Hà Thị Kế",
         "folder_name": "Cô Kế",
         "drive_id": "10aAFjxR95vKnmLzyvcU7OivbD3GTP88r",
-        "subjects": "HĐTN 8, KHTN 6, KHTN 8",
+        "subjects": "KHTN 6, KHTN 8, HĐTN 8",
         "expected_weeks": "Tuần 1-4, Tuần 5-8"
     },
     {
@@ -72,7 +72,7 @@ TEACHER_FOLDERS = [
         "name": "Nguyễn Chí Thành",
         "folder_name": "Thầy Thành",
         "drive_id": "1_hZDldFUOUvjJnkw9-Dm8I3kJbUCc5Hr",
-        "subjects": "HĐTN 8, KHTN 6, 8, 9",
+        "subjects": "KHTN 6, KHTN 8, KHTN 9, HĐTN 8",
         "expected_weeks": "Tuần 1-4, Tuần 5-8"
     },
     {
@@ -80,7 +80,7 @@ TEACHER_FOLDERS = [
         "name": "Lê Văn Thắng",
         "folder_name": "Thầy Thắng (Tổ trưởng)",
         "drive_id": "1S1wipWDzCGRaEonbFDFClIzmui1yEXZJ",
-        "subjects": "Hóa 9, KHTN 7",
+        "subjects": "Hóa 9, KHTN 7, Toán 9",
         "expected_weeks": "Tuần 1-4, Tuần 5-8"
     }
 ]
