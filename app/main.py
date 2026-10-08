@@ -368,18 +368,25 @@ def download_drive_report_docx():
         )
 
 @app.get("/api/drive/detailed-matrix")
-def get_detailed_matrix():
+def get_detailed_matrix(refresh: bool = False):
     """Lấy dữ liệu chi tiết 8 giáo viên qua 9 chu kỳ tuần (Tuần 1 đến tuần 35)"""
     mat_path = resolve_data_file("drive_full_cycles_report.json")
+    if not refresh:
+        try:
+            if os.path.exists(mat_path):
+                with open(mat_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    if data and isinstance(data, dict) and len(data) > 0:
+                        return data
+        except Exception:
+            pass
+    matrix = generate_fallback_9_cycles_matrix()
     try:
-        if os.path.exists(mat_path):
-            with open(mat_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                if data and isinstance(data, dict) and len(data) > 0:
-                    return data
-        return generate_fallback_9_cycles_matrix()
+        with open(mat_path, "w", encoding="utf-8") as f:
+            json.dump(matrix, f, ensure_ascii=False, indent=2)
     except Exception:
-        return generate_fallback_9_cycles_matrix()
+        pass
+    return matrix
 
 
 @app.get("/api/drive/export-9cycles-docx")
