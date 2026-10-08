@@ -2519,9 +2519,8 @@
         tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
 
         const isUnsubmitted = (t.file_count === 0 || t.status.includes('CHƯA NỘP'));
-        const emptyCount = t.empty_cycles_count || (t.empty_cycles ? t.empty_cycles.length : (isUnsubmitted ? 9 : 7));
-        const emptyText = t.empty_cycles_text || (t.empty_cycles ? t.empty_cycles.map(c => c.replace(' đến tuần ', '-')).join(', ') : (isUnsubmitted ? 'Tuần 1-4, Tuần 5-8, Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35' : 'Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35'));
-        const submittedText = t.submitted_cycles_text || (t.file_count > 0 ? `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp)` : 'Chưa có');
+        const emptyItems = t.empty_folders_detail || [];
+        const submittedItems = t.submitted_subjs_summary || [];
 
         let statusCellHtml = '';
         let notesCellHtml = '';
@@ -2532,8 +2531,8 @@
               <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold border bg-rose-100 text-rose-800 border-rose-300 shadow-2xs">
                 <i class="fa-solid fa-circle-xmark text-rose-600"></i> CHƯA NỘP
               </span>
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border bg-rose-50 text-rose-700 border-rose-200">
-                <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Trống 9/9 thư mục
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-bold border bg-rose-50 text-rose-700 border-rose-200">
+                <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Chưa có tệp trên Drive
               </span>
             </div>
           `;
@@ -2541,47 +2540,56 @@
             <div class="p-2 rounded-lg bg-rose-50 border border-rose-200 text-[11px] text-rose-900 space-y-1">
               <div class="font-bold flex items-center gap-1.5 text-rose-700">
                 <i class="fa-solid fa-circle-exclamation text-rose-600"></i>
-                <span>Thư mục còn trống file (Không nộp) [Toàn bộ 9/9 thư mục]:</span>
+                <span>Thư mục không có nộp file:</span>
               </div>
-              <div class="text-[10px] text-rose-700 font-mono bg-white/80 p-1.5 rounded border border-rose-100 leading-relaxed font-semibold">
-                ${emptyText}
-              </div>
-              <div class="text-[10px] text-rose-800 font-medium flex items-center gap-1">
-                <i class="fa-solid fa-info-circle text-rose-500"></i>
-                <span>Cả 3 môn phụ trách (${Array.isArray(t.subjects) ? t.subjects.join(', ') : t.subjects}) đều chưa có tệp giáo án nào.</span>
+              <div class="text-[10.5px] text-rose-800 font-medium pl-3 space-y-0.5">
+                ${emptyItems.length > 0 ? emptyItems.map(item => `<div>• <strong class="text-rose-700">${item} (0 tệp)</strong></div>`).join('') : `<div>• Tuần 1 đến 4 thư mục Hóa 9, KHTN 7, Toán 9 không có nộp file (0 tệp)</div><div>• Tuần 5 đến 8 thư mục Hóa 9, KHTN 7, Toán 9 không có nộp file (0 tệp)</div>`}
               </div>
             </div>
           `;
         } else {
+          const hasEmpty = emptyItems.length > 0;
           statusCellHtml = `
             <div class="flex flex-col items-center gap-1">
               <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold border bg-emerald-100 text-emerald-800 border-emerald-200">
-                <i class="fa-solid fa-circle-check text-emerald-600"></i> ${t.status_main || (t.week1_4_count > 0 && t.week5_8_count > 0 ? 'Đã nộp Tuần 1-4 & 5-8' : 'Đã nộp')}
+                <i class="fa-solid fa-circle-check text-emerald-600"></i> ${t.status_main || 'Đã nộp'}
               </span>
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border bg-rose-50 text-rose-700 border-rose-200 shadow-2xs">
-                <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Trống ${emptyCount}/9 thư mục tuần
-              </span>
+              ${hasEmpty ? `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-semibold border bg-amber-50 text-amber-800 border-amber-300 shadow-2xs text-center">
+                  <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Có thư mục môn chưa nộp file
+                </span>
+              ` : `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-semibold border bg-emerald-50 text-emerald-700 border-emerald-200 shadow-2xs">
+                  <i class="fa-solid fa-check-double text-emerald-600"></i> Đầy đủ các môn phụ trách
+                </span>
+              `}
             </div>
           `;
+
           notesCellHtml = `
             <div class="space-y-1.5 py-0.5">
-              <div class="text-[11px] text-emerald-800 font-semibold flex items-start gap-1.5">
-                <i class="fa-solid fa-check text-emerald-600 mt-0.5 flex-shrink-0"></i>
-                <span><strong>Đã có tệp (${t.file_count} tệp):</strong> ${submittedText}</span>
+              <div class="text-[11px] text-emerald-800 font-semibold flex items-start gap-1">
+                <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 flex-shrink-0"></i>
+                <span><strong>Đã nộp (${t.file_count} tệp):</strong> ${submittedItems.join('; ') || `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp)`}</span>
               </div>
-              <div class="p-1.5 rounded-lg bg-rose-50/90 border border-rose-200/90 text-[11px] text-rose-900">
-                <div class="font-bold flex items-center gap-1 text-rose-700 mb-0.5">
-                  <i class="fa-solid fa-folder-open text-rose-500"></i>
-                  <span>Thư mục còn trống file (Không nộp) [${emptyCount} thư mục]:</span>
+              ${hasEmpty ? `
+                <div class="p-1.5 rounded-lg bg-rose-50 border border-rose-200/90 text-[11px] text-rose-900 space-y-0.5">
+                  <div class="font-bold flex items-center gap-1 text-rose-700">
+                    <i class="fa-solid fa-circle-exclamation text-rose-600"></i>
+                    <span>Thư mục không có nộp file:</span>
+                  </div>
+                  <div class="text-[10.5px] text-rose-800 font-medium pl-3 space-y-0.5">
+                    ${emptyItems.map(item => `<div>• <strong class="text-rose-700">${item} (0 tệp)</strong></div>`).join('')}
+                  </div>
                 </div>
-                <div class="text-[10px] text-rose-700 font-mono bg-white/70 px-2 py-1 rounded border border-rose-100 font-medium leading-relaxed">
-                  ${emptyText}
+              ` : `
+                <div class="p-1 rounded-md bg-emerald-50/70 border border-emerald-200 text-[10.5px] text-emerald-700 flex items-center gap-1 font-medium">
+                  <i class="fa-solid fa-check text-emerald-600"></i>
+                  <span>Đã nộp đầy đủ các thư mục môn phụ trách (không có thư mục môn nào trống file).</span>
                 </div>
-                ${t.empty_subjects_note ? `
-                  <div class="text-[10px] text-amber-800 font-semibold mt-1 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation text-amber-600"></i>
-                    <span>Lưu ý: ${t.empty_subjects_note}</span>
-                  </div>` : ''}
+              `}
+              <div class="text-[10px] text-slate-400 italic pl-1">
+                ${t.id === 'ke' ? '(Tuần 13 đến 35: Chưa đến hạn nộp)' : '(Tuần 9 đến 35: Chưa đến hạn nộp)'}
               </div>
             </div>
           `;
@@ -2632,15 +2640,15 @@
           + `Thời gian rà soát: ${snapshot.scan_time}\n`
           + `Link thư mục: ${snapshot.drive_root_url}\n`
           + `Tổng số giáo viên: 8 Thầy/Cô (Tổng số tệp thực tế: ${totalF} tệp)\n\n`
-          + `DANH SÁCH CHI TIẾT TIẾN ĐỘ & CÁC THƯ MỤC CÒN TRỐNG FILE:\n`;
+          + `DANH SÁCH CHI TIẾT TIẾN ĐỘ & TÌNH HÌNH NỘP FILE TỪNG GIÁO VIÊN:\n`;
         teachers.forEach((t, i) => {
+          const emp = t.empty_folders_detail && t.empty_folders_detail.length > 0 ? t.empty_folders_detail.map(e => `${e} (0 tệp)`).join('; ') : 'Đã nộp đầy đủ các môn';
           emailPreview += `\n${i + 1}. ${t.teacher_name} (${Array.isArray(t.subjects) ? t.subjects.join(', ') : t.subjects})\n`
             + `   - Thư mục Drive: ${t.folder_name}\n`
             + `   - Cập nhật: ${t.last_updated} | Số tệp: ${t.file_count} tệp\n`
             + `   - Tình trạng: ${t.status}\n`
-            + `   - Đã nộp: ${t.submitted_cycles_text || (t.file_count > 0 ? `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp)` : 'Chưa có')}\n`
-            + `   - THƯ MỤC TRỐNG FILE (KHÔNG NỘP): ${t.empty_cycles_text || 'Không có'}\n`
-            + (t.empty_subjects_note ? `   - Lưu ý: ${t.empty_subjects_note}\n` : '');
+            + `   - Đã nộp: ${(t.submitted_subjs_summary && t.submitted_subjs_summary.join('; ')) || (t.file_count > 0 ? `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp)` : 'Chưa có')}\n`
+            + `   - Thư mục không có nộp file: ${emp}\n`;
         });
         prevBox.innerText = emailPreview;
       }

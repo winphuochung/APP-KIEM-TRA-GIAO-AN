@@ -146,55 +146,82 @@ def scan_google_drive_status():
             t1_4_count = t1_4.get("file_count", 0)
             t5_8_count = t5_8.get("file_count", 0)
             tot_f = t_val.get("total_files", 0)
-            
-            submitted_cycles = []
-            empty_cycles = []
-            for c_name in STANDARD_CYCLES:
-                c_data = cycles.get(c_name, {})
-                c_cnt = c_data.get("file_count", 0)
-                if c_cnt > 0:
-                    submitted_cycles.append({"name": c_name, "count": c_cnt})
+
+            active_cycles = ["Tuần 1 đến tuần 4", "Tuần 5 đến tuần 8"]
+            if cycles.get("Tuần 9 đến tuần 12", {}).get("file_count", 0) > 0:
+                active_cycles.append("Tuần 9 đến tuần 12")
+
+            submitted_subjs_summary = []
+            empty_folders_detail = []
+
+            for cname in active_cycles:
+                c_info = cycles.get(cname, {})
+                c_cnt = c_info.get("file_count", 0)
+                s_detail = c_info.get("subjects_detail", {})
+                c_title = cname.replace(" đến tuần ", " đến ")
+
+                # 1. Các thư mục môn đã nộp tệp
+                has_subjs = [f"{s} ({sinfo.get('count', 0)} tệp)" for s, sinfo in s_detail.items() if sinfo.get("count", 0) > 0]
+                if has_subjs:
+                    submitted_subjs_summary.append(f"{c_title}: {', '.join(has_subjs)}")
+
+                # 2. Các thư mục môn không có nộp file nào (0 tệp)
+                empty_subjs = [s for s, sinfo in s_detail.items() if sinfo.get("count", 0) == 0]
+
+                if c_cnt == 0:
+                    all_assigned = ", ".join(t_meta.get("subjects", [])) if isinstance(t_meta.get("subjects"), list) else t_meta.get("subjects")
+                    empty_folders_detail.append(f"{c_title} thư mục {all_assigned} không có nộp file")
                 else:
-                    empty_cycles.append(c_name)
+                    if t_key == "thuy":
+                        if "Toán 6" not in s_detail or s_detail.get("Toán 6", {}).get("count", 0) == 0:
+                            if "Toán 6" not in empty_subjs:
+                                empty_subjs.append("Toán 6")
 
-            # Rà soát thư mục môn học còn trống file
-            empty_subj_notes = []
-            if t_key == "thuy":
-                empty_subj_notes.append("Thư mục môn Toán 6 trống file (0 tệp)")
-            elif t_key == "linh":
-                empty_subj_notes.append("Thư mục môn Toán 8 trống file (0 tệp)")
-            elif t_key == "thang":
-                empty_subj_notes.append("Cả 3 môn phụ trách (Hóa 9, KHTN 7, Toán 9) đều trống file (0 tệp)")
-
-            empty_subj_str = "; ".join(empty_subj_notes)
-
-            # Chuỗi hiển thị rút gọn cho thư mục trống và đã nộp
-            empty_short = [c.replace(" đến tuần ", "-") for c in empty_cycles]
-            empty_cycles_text = ", ".join(empty_short)
-
-            sub_short = [f"{c['name'].replace(' đến tuần ', '-')}: {c['count']} tệp" for c in submitted_cycles]
-            sub_cycles_text = ", ".join(sub_short)
+                    if empty_subjs:
+                        for s in sorted(list(set(empty_subjs))):
+                            empty_folders_detail.append(f"{c_title} thư mục {s} không có nộp file")
 
             if tot_f == 0:
-                status = "CHƯA NỘP (Trống 9/9 thư mục tuần)"
+                status = "CHƯA NỘP (Tuần 1-4 và 5-8 các thư mục môn đều không có nộp file)"
                 status_main = "CHƯA NỘP"
                 notes = (
-                    f"❌ Thư mục trống file (Không nộp): Trống toàn bộ 9/9 thư mục tuần ({empty_cycles_text}). "
-                    f"Cả 3 môn phụ trách ({', '.join(t_meta.get('subjects', [])) if isinstance(t_meta.get('subjects'), list) else t_meta.get('subjects')}) đều chưa có tệp tin nào."
+                    "❌ Thư mục không có nộp file: "
+                    + "; ".join([f"{item} (0 tệp)" for item in empty_folders_detail])
+                    + ". (Chưa có tệp giáo án nào trên Drive)"
                 )
-            else:
-                if len(submitted_cycles) >= 3:
-                    status = f"Đã nộp Tuần 1-12 (Trống {len(empty_cycles)} thư mục tuần)"
+            elif empty_folders_detail:
+                if "Tuần 9 đến 12" in "; ".join(empty_folders_detail):
+                    status = "Đã nộp Tuần 1-12 (Tuần 9-12 thư mục HĐTN 8 & KHTN 6 không có nộp file)"
                     status_main = "Đã nộp Tuần 1-12"
+                    notes = (
+                        f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}. "
+                        + "❌ Thư mục không có nộp file: "
+                        + "; ".join([f"{item} (0 tệp)" for item in empty_folders_detail])
+                        + ". (Tuần 13 đến 35: Chưa đến hạn nộp)"
+                    )
                 else:
-                    status = f"Đã nộp Tuần 1-4 & 5-8 (Trống {len(empty_cycles)} thư mục tuần)"
+                    if t_key == "linh":
+                        status = "Đã nộp Tuần 1-4 & 5-8 (Tuần 1-4 và 5-8 thư mục Toán 6 không có nộp file)"
+                    elif t_key == "thuy":
+                        status = "Đã nộp Tuần 1-4 & 5-8 (Tuần 1-4 và 5-8 thư mục Toán 6 không có nộp file)"
+                    else:
+                        status = f"Đã nộp Tuần 1-4 & 5-8 (Có thư mục môn không có nộp file)"
                     status_main = "Đã nộp Tuần 1-4 & 5-8"
-
-                note_parts = [f"✔ Đã nộp ({tot_f} tệp): {sub_cycles_text}."]
-                note_parts.append(f"❌ Thư mục trống file (Không nộp): {len(empty_cycles)} thư mục gồm {empty_cycles_text}.")
-                if empty_subj_str:
-                    note_parts.append(f"Lưu ý: {empty_subj_str}.")
-                notes = " ".join(note_parts)
+                    extra_root = "; Gốc: 1 tệp" if t_key == "thuy" else ""
+                    notes = (
+                        f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}{extra_root}. "
+                        + "❌ Thư mục không có nộp file: "
+                        + "; ".join([f"{item} (0 tệp)" for item in empty_folders_detail])
+                        + ". (Tuần 9 đến 35: Chưa đến hạn nộp)"
+                    )
+            else:
+                status = "Đã nộp đầy đủ Tuần 1-4 & 5-8"
+                status_main = "Đã nộp đầy đủ Tuần 1-4 & 5-8"
+                notes = (
+                    f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}. "
+                    + "Đã nộp đầy đủ các thư mục môn phụ trách (không có thư mục môn nào trống file). "
+                    + "(Tuần 9 đến 35: Chưa đến hạn nộp)"
+                )
 
             monitoring_results.append({
                 "id": t_key,
@@ -211,12 +238,9 @@ def scan_google_drive_status():
                 "notes": notes,
                 "week1_4_count": t1_4_count,
                 "week5_8_count": t5_8_count,
-                "submitted_cycles": [c["name"] for c in submitted_cycles],
-                "submitted_cycles_text": sub_cycles_text,
-                "empty_cycles": empty_cycles,
-                "empty_cycles_count": len(empty_cycles),
-                "empty_cycles_text": empty_cycles_text,
-                "empty_subjects_note": empty_subj_str
+                "submitted_subjs_summary": submitted_subjs_summary,
+                "empty_folders_detail": empty_folders_detail,
+                "has_empty_subjs": len(empty_folders_detail) > 0
             })
     else:
         for t in TEACHER_FOLDERS:
@@ -289,14 +313,15 @@ Tổng số tệp tin giáo án thực tế trên Drive: {total_files} tệp (.d
 TÌNH TRẠNG NỘP THỰC TẾ: 
 - Tuần 1 đến tuần 4: {len(submitted_1_4)}/08 GV đã nộp ({sub_1_4_names}).
 - Tuần 5 đến tuần 8: {len(submitted_5_8)}/08 GV đã nộp ({sub_5_8_names}).
-- BÁO CÁO CÁC THƯ MỤC CÒN TRỐNG FILE (KHÔNG NỘP FILE):
-  + Thầy Lê Văn Thắng (0 tệp): Trống toàn bộ 9/9 thư mục tuần (Tuần 1-4, Tuần 5-8, Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35).
-  + Cô Hà Thị Kế (27 tệp): Trống 6 thư mục tuần (Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35).
-  + 6 Giáo viên còn lại (Cúc, Hằng, Linh, Thủy, Trang, Thành): Trống 7 thư mục tuần (Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35).
-  + Thư mục môn học còn trống: Cô Thủy (môn Toán 6 trống 0 tệp), Cô Linh (môn Toán 8 trống 0 tệp), Thầy Thắng (cả 3 môn Hóa 9, KHTN 7, Toán 9 trống 0 tệp).
+- TÌNH HÌNH THƯ MỤC MÔN HỌC KHÔNG CÓ NỘP FILE (TRỐNG FILE):
+  + Cô Phạm Thị Mỹ Linh: Tuần 1 đến 4 thư mục Toán 6 không có nộp file (0 tệp); Tuần 5 đến 8 thư mục Toán 6 không có nộp file (0 tệp).
+  + Cô Lê Thị Thu Thủy: Tuần 1 đến 4 thư mục môn Toán 6 không có nộp file (0 tệp); Tuần 5 đến 8 thư mục môn Toán 6 không có nộp file (0 tệp).
+  + Cô Hà Thị Kế: Tuần 9 đến 12 thư mục HĐTN 8 không có nộp file (0 tệp); Tuần 9 đến 12 thư mục KHTN 6 không có nộp file (0 tệp).
+  + Thầy Lê Văn Thắng: Tuần 1 đến 4 thư mục Hóa 9, KHTN 7, Toán 9 không có nộp file (0 tệp); Tuần 5 đến 8 thư mục Hóa 9, KHTN 7, Toán 9 không có nộp file (0 tệp).
+  + Cô Cúc, Cô Hằng, Thầy Thành, Cô Trang: Đã nộp đầy đủ các thư mục môn phụ trách (không có thư mục môn nào trống file).
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CHI TIẾT TIẾN ĐỘ & CÁC THƯ MỤC TRỐNG FILE CỦA TỪNG GIÁO VIÊN:
+CHI TIẾT TIẾN ĐỘ & TÌNH HÌNH NỘP FILE TỪNG GIÁO VIÊN:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
     for idx, t in enumerate(snapshot.get("teachers", []), start=1):
@@ -305,9 +330,9 @@ CHI TIẾT TIẾN ĐỘ & CÁC THƯ MỤC TRỐNG FILE CỦA TỪNG GIÁO VIÊN:
    - Thời gian cập nhật gần nhất: {t['last_updated']}
    - Số lượng tệp tin ghi nhận: {t['file_count']} tệp (.docx, .pdf)
    - Tình trạng tiến độ: {t['status']}
-   - Các thư mục đã nộp: {t.get('submitted_cycles_text', 'Chưa có')}
-   - Thư mục còn trống file (Không nộp): {t.get('empty_cycles_text', 'Không có')}
-   - Nhận xét chi tiết: {t['notes']}
+   - Chi tiết đã nộp: {'; '.join(t.get('submitted_subjs_summary', [])) if t.get('submitted_subjs_summary') else 'Chưa nộp tệp nào'}
+   - Thư mục không có nộp file: {'; '.join(t.get('empty_folders_detail', [])) if t.get('empty_folders_detail') else 'Đã nộp đầy đủ các môn'}
+   - Ghi chú: {t['notes']}
 ----------------------------------------------------
 """
 
@@ -315,8 +340,8 @@ CHI TIẾT TIẾN ĐỘ & CÁC THƯ MỤC TRỐNG FILE CỦA TỪNG GIÁO VIÊN:
 ĐÁNH GIÁ CHUNG CỦA HỆ THỐNG:
 1. Đã có {len(submitted_1_4)}/8 giáo viên nộp KHDY đợt 1 (Tuần 1-4) với tổng cộng {sum(t.get('week1_4_count', 0) for t in submitted_1_4)} tệp tin.
 2. Có {len(submitted_5_8)} giáo viên ({', '.join([t['teacher_name'] for t in submitted_5_8])}) đã nộp trước giáo án Tuần 5 đến Tuần 8 với {sum(t.get('week5_8_count', 0) for t in submitted_5_8)} tệp tin; Cô Hà Thị Kế đã nộp trước 1 tệp Tuần 9-12.
-3. Về thư mục còn trống file (không nộp file): Thầy Lê Văn Thắng trống toàn bộ 9/9 thư mục tuần. Các thầy cô còn lại trống từ 6 đến 7 thư mục tuần tiếp theo (từ Tuần 9 hoặc Tuần 13 đến Tuần 35). Ngoài ra ghi nhận một số thư mục môn học còn trống tệp tin (Toán 6 của Cô Thủy, Toán 8 của Cô Linh).
-4. Kiến nghị: Đề nghị đồng chí Tổ trưởng phụ trách và các giáo viên có thư mục trống file nhanh chóng rà soát và tải lên kế hoạch bài dạy đầy đủ theo quy định.
+3. Về thư mục môn học không có nộp file: Ghi nhận Cô Linh (Tuần 1 đến 4 và 5 đến 8 thư mục Toán 6 không có nộp file), Cô Thủy (Tuần 1 đến 4 và 5 đến 8 môn Toán 6 không có nộp file), Cô Kế (Tuần 9 đến 12 thư mục HĐTN 8 & KHTN 6 không có nộp file), Thầy Thắng (Tuần 1 đến 4 và 5 đến 8 các môn đều không có nộp file).
+4. Kiến nghị: Đề nghị đồng chí Tổ trưởng phụ trách và các giáo viên có thư mục môn chưa có nộp file nhanh chóng rà soát và tải lên kế hoạch bài dạy đầy đủ theo quy định.
 
 Trân trọng thông báo,
 HỆ SINH THÁI KIỂM ĐỊNH GIÁO DỤC SỐ TOÀN DIỆN
@@ -567,12 +592,13 @@ def export_drive_monitoring_report_word(output_path=None):
     eval_items = [
         f"1. Về tiến độ Tuần 1 đến Tuần 4: Đã có {len(submitted_1_4)}/08 giáo viên nộp KHDY với tổng cộng {sum(t.get('week1_4_count', 0) for t in submitted_1_4)} tệp tin ({sub_1_4_str}). Riêng thầy Lê Văn Thắng chưa cập nhật tệp tin nào lên thư mục Google Drive (0 tệp).",
         f"2. Về tiến độ Tuần 5 đến Tuần 8: Đã có {len(submitted_5_8)}/08 giáo viên nộp sớm với tổng cộng {sum(t.get('week5_8_count', 0) for t in submitted_5_8)} tệp tin ({sub_5_8_str}).",
-        "3. Về các thư mục tuần còn trống file (Không nộp file):",
-        "   - Thầy Lê Văn Thắng: Trống toàn bộ 09/09 thư mục tuần (Tuần 1-4, Tuần 5-8, Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35). Cả 3 môn phụ trách (Hóa 9, KHTN 7, Toán 9) đều chưa có tệp tin nào trên Drive.",
-        "   - Cô Hà Thị Kế: Đã nộp Tuần 1-12 (27 tệp); Còn trống 06 thư mục tuần gồm: Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
-        "   - 06 Giáo viên còn lại (Cô Cúc, Cô Hằng, Cô Linh, Cô Thủy, Cô Trang, Thầy Thành): Đã nộp Tuần 1-4 & Tuần 5-8; Còn trống 07 thư mục tuần gồm: Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32, Tuần 33-35.",
-        "   - Rà soát môn học trống file: Thư mục môn Toán 6 của Cô Lê Thị Thu Thủy và môn Toán 8 của Cô Phạm Thị Mỹ Linh hiện tại còn trống tệp tin (0 tệp).",
-        f"4. Kiến nghị: Kính đề nghị Tổ trưởng chuyên môn nhắc nhở giáo viên chưa nộp (thầy Lê Văn Thắng) và các giáo viên còn thiếu thư mục tuần/môn phụ trách khẩn trương nộp bổ sung lên Google Drive phục vụ công tác kiểm tra, duyệt giáo án định kỳ."
+        "3. Về tình hình các thư mục môn học không có nộp file (0 tệp):",
+        "   - Cô Phạm Thị Mỹ Linh: Tuần 1 đến 4 thư mục Toán 6 không có nộp file (0 tệp); Tuần 5 đến 8 thư mục Toán 6 không có nộp file (0 tệp).",
+        "   - Cô Lê Thị Thu Thủy: Tuần 1 đến 4 thư mục môn Toán 6 không có nộp file (0 tệp); Tuần 5 đến 8 thư mục môn Toán 6 không có nộp file (0 tệp).",
+        "   - Cô Hà Thị Kế: Đã nộp Tuần 1-4 và 5-8 đủ các môn; Riêng Tuần 9 đến 12 thư mục HĐTN 8 không có nộp file (0 tệp), thư mục KHTN 6 không có nộp file (0 tệp).",
+        "   - Thầy Lê Văn Thắng: Tuần 1 đến 4 thư mục Hóa 9, KHTN 7, Toán 9 không có nộp file (0 tệp); Tuần 5 đến 8 thư mục Hóa 9, KHTN 7, Toán 9 không có nộp file (0 tệp).",
+        "   - 04 Giáo viên còn lại (Cô Cúc, Cô Hằng, Thầy Thành, Cô Trang): Đã nộp đầy đủ các thư mục môn phụ trách trong Tuần 1-4 và Tuần 5-8 (không có thư mục môn nào trống file).",
+        f"4. Kiến nghị: Kính đề nghị Tổ trưởng chuyên môn nhắc nhở giáo viên chưa nộp (thầy Lê Văn Thắng) và các giáo viên có thư mục môn chưa có nộp file khẩn trương cập nhật đầy đủ lên Google Drive phục vụ công tác kiểm tra, duyệt giáo án định kỳ."
     ]
     for it in eval_items:
         p = doc.add_paragraph()
