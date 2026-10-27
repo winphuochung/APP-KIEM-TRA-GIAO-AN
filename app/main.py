@@ -479,7 +479,13 @@ from app.services.notebook_monthly_report import (
     save_notebook_week,
     sync_notebook_week_from_drive,
     generate_monthly_report_data,
-    export_monthly_report_word
+    export_monthly_report_word,
+    get_week_date_info,
+    export_notebook_week_word,
+    generate_semester_report_data,
+    export_semester_report_word,
+    generate_year_report_data,
+    export_year_report_word
 )
 
 @app.get("/api/notebook/week")
@@ -500,6 +506,17 @@ def api_sync_notebook_drive(week: int = 1):
     """Tự động đồng bộ tình trạng giáo án trên Drive vào Sổ tay tuần"""
     return sync_notebook_week_from_drive(week)
 
+@app.get("/api/notebook/export-week-docx")
+def api_export_notebook_week_docx(week: int = 1):
+    """Xuất file Word Sổ tay ghi chép Tuần của Tổ trưởng chuyên môn chuẩn NĐ 30/2020"""
+    out_docx = export_notebook_week_word(week)
+    fname = f"SO_TAY_TO_TRUONG_TUAN_{week:02d}.docx"
+    return FileResponse(
+        out_docx,
+        filename=fname,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
 @app.get("/api/monthly-report/data")
 def api_get_monthly_report_data(month: int = 9):
     """Lấy dữ liệu Báo cáo sơ kết tháng được tổng hợp trực tiếp từ Sổ tay các tuần"""
@@ -511,6 +528,38 @@ def api_export_monthly_report_docx(month: int = 9):
     report_data = generate_monthly_report_data(month)
     out_docx = export_monthly_report_word(report_data)
     fname = f"BAO_CAO_SO_KET_HDCM_THANG_{month:02d}.docx"
+    return FileResponse(
+        out_docx,
+        filename=fname,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
+@app.get("/api/notebook/semester-data")
+def api_get_notebook_semester_data(semester: int = 1):
+    """Lấy dữ liệu Sơ kết Học kỳ I hoặc II tổng hợp từ Sổ tay và Google Drive"""
+    return generate_semester_report_data(semester)
+
+@app.get("/api/notebook/export-semester-docx")
+def api_export_notebook_semester_docx(semester: int = 1):
+    """Xuất file Word Báo cáo Sơ kết Học kỳ của Tổ chuyên môn chuẩn NĐ 30/2020"""
+    out_docx = export_semester_report_word(semester)
+    fname = f"BAO_CAO_SO_KET_HOC_KY_{semester}_TO_TOAN_KHTN_CN.docx"
+    return FileResponse(
+        out_docx,
+        filename=fname,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
+@app.get("/api/notebook/year-data")
+def api_get_notebook_year_data():
+    """Lấy dữ liệu Tổng kết Cả năm học 2026-2027 của Tổ chuyên môn"""
+    return generate_year_report_data()
+
+@app.get("/api/notebook/export-year-docx")
+def api_export_notebook_year_docx():
+    """Xuất file Word Báo cáo Tổng kết Cả năm học 2026-2027 chuẩn NĐ 30/2020"""
+    out_docx = export_year_report_word()
+    fname = "BAO_CAO_TONG_KET_NAM_HOC_2026_2027_TO_TOAN_KHTN_CN.docx"
     return FileResponse(
         out_docx,
         filename=fname,

@@ -201,7 +201,15 @@ MONTH_CYCLES = {
 }
 
 
-def set_cell_margins(cell, top=100, bottom=100, left=80, right=80):
+def set_cell_margins(cell, top=100, bottom=100, left=80, right=80, top_mm=None, bottom_mm=None, left_mm=None, right_mm=None):
+    if top_mm is not None:
+        top = int(top_mm * 56.7)
+    if bottom_mm is not None:
+        bottom = int(bottom_mm * 56.7)
+    if left_mm is not None:
+        left = int(left_mm * 56.7)
+    if right_mm is not None:
+        right = int(right_mm * 56.7)
     tcPr = cell._tc.get_or_add_tcPr()
     tcMar = OxmlElement('w:tcMar')
     for m, val in [('top', top), ('bottom', bottom), ('left', left), ('right', right)]:
@@ -232,11 +240,13 @@ def set_table_borders(table, color="000000", sz="4", val="single"):
     tblPr.append(tblBorders)
 
 
-def set_tnr(run, size_pt=11, bold=False, italic=False, color_rgb=(0, 0, 0)):
+def set_tnr(run, size_pt=11, bold=False, italic=False, color_rgb=(0, 0, 0), underline=False):
     run.font.name = "Times New Roman"
     run.font.size = Pt(size_pt)
     run.bold = bold
     run.italic = italic
+    if underline:
+        run.underline = True
     run.font.color.rgb = RGBColor(*color_rgb)
     rPr = run._r.get_or_add_rPr()
     rFonts = parse_xml(f'<w:rFonts {nsdecls("w")} w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>')
@@ -1347,6 +1357,1069 @@ def export_monthly_report_word(report_data: dict, output_path: str = None):
     set_tnr(r, size_pt=11.5, bold=True)
     r = p1.add_run(report_data.get("leader_name", "Lê Văn Thắng"))
     set_tnr(r, size_pt=11.5, bold=True)
+
+    doc.save(output_path)
+    return output_path
+    return output_path
+
+
+# =========================================================================
+# CÁC HÀM XUẤT BÁO CÁO TUẦN, HỌC KỲ VÀ CẢ NĂM THEO 4 CÔNG VĂN CẤP TRƯỜNG
+# =========================================================================
+
+def get_week_date_info(week_num: int) -> dict:
+    w1_start = datetime(2026, 9, 7)
+    if week_num <= 18:
+        start = w1_start + timedelta(weeks=week_num - 1)
+        sem = 1
+        sem_str = "Học kỳ I"
+    elif week_num <= 20:
+        start = w1_start + timedelta(weeks=week_num - 1)
+        sem = 2
+        sem_str = "Học kỳ II"
+    else:
+        start = w1_start + timedelta(weeks=week_num - 1 + 2)
+        sem = 2
+        sem_str = "Học kỳ II"
+    
+    end = start + timedelta(days=5)
+    s_str = start.strftime("%d/%m/%Y")
+    e_str = end.strftime("%d/%m/%Y")
+    
+    if week_num <= 4:
+        m = 9
+    elif week_num <= 8:
+        m = 10
+    elif week_num <= 12:
+        m = 11
+    elif week_num <= 16:
+        m = 12
+    elif week_num <= 20:
+        m = 1
+    elif week_num <= 24:
+        m = 2
+    elif week_num <= 28:
+        m = 3
+    elif week_num <= 32:
+        m = 4
+    else:
+        m = 5
+
+    return {
+        "week": week_num,
+        "start_date": s_str,
+        "end_date": e_str,
+        "range_str": f"Từ ngày {s_str} đến ngày {e_str}",
+        "month_num": m,
+        "semester": sem,
+        "semester_str": sem_str,
+        "year": 2026 if m >= 9 else 2027
+    }
+
+def export_notebook_week_word(week_num: int, output_path: str = None) -> str:
+    """Xuất Sổ tay ghi chép Tuần của Tổ trưởng chuyên môn ra tệp Word .docx chuẩn Nghị định 30"""
+    if output_path is None:
+        output_path = os.path.join(DATA_DIR, f"SO_TAY_TO_TRUONG_TUAN_{week_num:02d}.docx")
+    
+    w_info = get_week_date_info(week_num)
+    records = get_notebook_week(week_num)
+    
+    doc = docx.Document()
+    sec = doc.sections[0]
+    sec.orientation = docx.enum.section.WD_ORIENT.LANDSCAPE
+    sec.page_width = Mm(297)
+    sec.page_height = Mm(210)
+    sec.top_margin = Mm(15)
+    sec.bottom_margin = Mm(15)
+    sec.left_margin = Mm(20)
+    sec.right_margin = Mm(15)
+
+    normal_style = doc.styles['Normal']
+    normal_style.font.name = 'Times New Roman'
+    normal_style.font.size = Pt(10)
+    normal_style.paragraph_format.line_spacing = 1.15
+    normal_style.paragraph_format.space_after = Pt(2)
+
+    # 1. HEADER 2 CỘT
+    t_head = doc.add_table(rows=2, cols=2)
+    t_head.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_head.autofit = False
+    set_table_borders(t_head, color="FFFFFF", sz="0", val="none")
+    t_head.rows[0].cells[0].width = Mm(120)
+    t_head.rows[0].cells[1].width = Mm(142)
+    t_head.rows[1].cells[0].width = Mm(120)
+    t_head.rows[1].cells[1].width = Mm(142)
+
+    p0 = t_head.rows[0].cells[0].paragraphs[0]
+    p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p0.add_run("TRƯỜNG TH & THCS PHƯỚC HƯNG\n")
+    set_tnr(r, size_pt=10.5, bold=False)
+    r2 = p0.add_run("TỔ: TOÁN – KHOA HỌC TỰ NHIÊN – CÔNG NGHỆ")
+    set_tnr(r2, size_pt=10.5, bold=True)
+
+    p1 = t_head.rows[0].cells[1].paragraphs[0]
+    p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p1.add_run("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\n")
+    set_tnr(r, size_pt=10.5, bold=True)
+    r2 = p1.add_run("Độc lập – Tự do – Hạnh phúc")
+    set_tnr(r2, size_pt=11, bold=True)
+    r2.underline = True
+
+    p2 = t_head.rows[1].cells[0].paragraphs[0]
+    p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p2.add_run(f"Số: {week_num:02d}/ST-TTCM")
+    set_tnr(r, size_pt=10, italic=True)
+
+    p3 = t_head.rows[1].cells[1].paragraphs[0]
+    p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p3.add_run(f"Nhơn Hội, ngày {w_info['end_date'].split('/')[0]} tháng {w_info['end_date'].split('/')[1]} năm {w_info['year']}")
+    set_tnr(r, size_pt=10, italic=True)
+
+    # 2. TIÊU ĐỀ
+    p_title = doc.add_paragraph()
+    p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_title.paragraph_format.space_before = Pt(8)
+    p_title.paragraph_format.space_after = Pt(2)
+    r = p_title.add_run(f"SỔ TAY GHI CHÉP THEO DÕI VÀ ĐÁNH GIÁ CỦA TỔ TRƯỞNG CHUYÊN MÔN\nTUẦN {week_num} (NĂM HỌC 2026 - 2027)")
+    set_tnr(r, size_pt=13, bold=True)
+
+    p_sub = doc.add_paragraph()
+    p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_sub.paragraph_format.space_after = Pt(4)
+    r = p_sub.add_run(f"{w_info['range_str']} • {w_info['semester_str']}\n")
+    set_tnr(r, size_pt=10, italic=True)
+    r_cc = p_sub.add_run("(Căn cứ QĐ số 219/QĐ-TH&THCSPH, Quy chế chuyên môn số 263/QC-TH&THCSPH, Quy chế Thi đua - Khen thưởng và Kế hoạch giáo dục số 202/KH-TH&THCSPH)")
+    set_tnr(r_cc, size_pt=9.5, italic=True)
+
+    # 3. BẢNG GHI CHÉP 11 CỘT
+    p_sec1 = doc.add_paragraph()
+    p_sec1.paragraph_format.space_before = Pt(4)
+    p_sec1.paragraph_format.space_after = Pt(2)
+    r = p_sec1.add_run("I. BẢNG GHI CHÉP THEO DÕI & ĐÁNH GIÁ CHI TIẾT 08 GIÁO VIÊN TRONG TỔ:")
+    set_tnr(r, size_pt=11, bold=True)
+
+    headers = [
+        "STT",
+        "Giáo viên / Phụ trách",
+        "Môn & Lớp giảng dạy",
+        "Chuyên cần & Lên lớp",
+        "PPCT & Dạy bù",
+        "Giáo án KHBD & Drive",
+        "Sổ đầu bài & Điểm số",
+        "ĐDDH & CNTT",
+        "Dự giờ & SHCM",
+        "HSG & Phụ đạo",
+        "Nhận xét & Xếp loại"
+    ]
+    col_widths = [8, 34, 24, 22, 24, 26, 26, 22, 26, 26, 24]
+
+    t_data = doc.add_table(rows=len(records) + 1, cols=len(headers))
+    t_data.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_data.autofit = False
+    set_table_borders(t_data, color="94A3B8", sz="4", val="single")
+
+    for col_idx, width_mm in enumerate(col_widths):
+        for row in t_data.rows:
+            row.cells[col_idx].width = Mm(width_mm)
+
+    for col_idx, title in enumerate(headers):
+        cell = t_data.rows[0].cells[col_idx]
+        set_cell_background(cell, "E0F2FE")
+        set_cell_margins(cell, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(title)
+        set_tnr(r, size_pt=9, bold=True)
+
+    for r_idx, rec in enumerate(records):
+        row = t_data.rows[r_idx + 1]
+        bg_col = "F8FAFC" if (r_idx % 2 == 1) else "FFFFFF"
+
+        # Col 0: STT
+        c = row.cells[0]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1, right_mm=1)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(r_idx + 1)), size_pt=9.5)
+
+        # Col 1: GV / Chức danh / Lớp CN
+        c = row.cells[1]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        r = p.add_run(rec.get("teacher_name", "") + "\n")
+        set_tnr(r, size_pt=9.5, bold=True)
+        r = p.add_run(rec.get("role", "Giáo viên"))
+        set_tnr(r, size_pt=8.5, italic=True)
+        if rec.get("homeroom"):
+            r = p.add_run(f"\nCN: {rec['homeroom']}")
+            set_tnr(r, size_pt=8.5, bold=True)
+
+        # Col 2: Môn & Lớp dạy
+        c = row.cells[2]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        r = p.add_run(rec.get("subjects", "") + "\n")
+        set_tnr(r, size_pt=9, bold=True)
+        r = p.add_run(f"Lớp: {rec.get('classes', '')}")
+        set_tnr(r, size_pt=8.5)
+
+        # Col 3: Chuyên cần & Lên lớp
+        c = row.cells[3]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        att = rec.get("attendance", "Đúng giờ")
+        r = p.add_run(f"Lên lớp: {att}\n")
+        set_tnr(r, size_pt=8.5, bold=(att != "Đúng giờ"))
+        r = p.add_run("Chào cờ: Đầy đủ")
+        set_tnr(r, size_pt=8.5)
+
+        # Col 4: PPCT & Dạy bù
+        c = row.cells[4]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        ppct = rec.get("ppct_status", "Đúng tiến độ")
+        late = rec.get("late_periods", 0)
+        r = p.add_run(f"{ppct}\n")
+        set_tnr(r, size_pt=8.5, bold=True)
+        if late > 0:
+            r = p.add_run(f"Trễ: {late} tiết\n")
+            set_tnr(r, size_pt=8.5, bold=True)
+        mk = rec.get("makeup_plan", "")
+        if mk:
+            r = p.add_run(f"Bù: {mk}")
+            set_tnr(r, size_pt=8)
+        else:
+            r = p.add_run("Dạy bù: Kịp thời")
+            set_tnr(r, size_pt=8)
+
+        # Col 5: Giáo án KHBD & Drive
+        c = row.cells[5]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        ga_st = rec.get("giao_an_status", "Soạn đủ")
+        r = p.add_run(f"Soạn: {ga_st}\n")
+        set_tnr(r, size_pt=8.5, bold=True)
+        ga_dr = rec.get("giao_an_drive", "Đã cập nhật đúng hạn")
+        r = p.add_run(f"Drive: {ga_dr}\n")
+        set_tnr(r, size_pt=8)
+        r = p.add_run(rec.get("nls_integration", "Đạt chuẩn NLS"))
+        set_tnr(r, size_pt=8, italic=True)
+
+        # Col 6: Sổ đầu bài & Điểm số
+        c = row.cells[6]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        sdb = rec.get("sodaubai", "Đầy đủ, đúng tiết")
+        r = p.add_run(f"SĐB: {sdb}\n")
+        set_tnr(r, size_pt=8.5)
+        diem = rec.get("diem_so", "Kịp thời")
+        r = p.add_run(f"Vào điểm: {diem}\n")
+        set_tnr(r, size_pt=8)
+        dd = rec.get("diem_danh", "Kịp thời")
+        r = p.add_run(f"Điểm danh: {dd}")
+        set_tnr(r, size_pt=8)
+
+        # Col 7: ĐDDH & CNTT
+        c = row.cells[7]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        dddh = rec.get("dddh_count", 0)
+        cntt = rec.get("cntt_count", 0)
+        r = p.add_run(f"ĐDDH: {dddh} lượt\n")
+        set_tnr(r, size_pt=8.5)
+        r = p.add_run(f"CNTT: {cntt} tiết")
+        set_tnr(r, size_pt=8.5, bold=True)
+
+        # Col 8: Dự giờ & SHCM
+        c = row.cells[8]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        obs_l = rec.get("observations", [])
+        if obs_l:
+            for ob in obs_l:
+                r = p.add_run(f"• {ob.get('role', 'Dự')}: {ob.get('subject', '')} {ob.get('class_name', '')} ({ob.get('rating', 'Giỏi')})\n")
+                set_tnr(r, size_pt=8)
+        else:
+            r = p.add_run("Tham gia SHCM tổ định kỳ")
+            set_tnr(r, size_pt=8)
+
+        # Col 9: HSG & Phụ đạo
+        c = row.cells[9]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        hsg = rec.get("hsg_phudao", "")
+        if not hsg:
+            if rec.get("role") == "Tổ trưởng" or "Toán" in rec.get("subjects", ""):
+                hsg = "Bồi dưỡng HSG Toán theo KH"
+            elif "KHTN" in rec.get("subjects", ""):
+                hsg = "Bồi dưỡng HSG KHTN theo KH"
+            else:
+                hsg = "Phụ đạo HS chưa đạt chuẩn"
+        r = p.add_run(hsg)
+        set_tnr(r, size_pt=8.5)
+
+        # Col 10: Nhận xét & Xếp loại
+        c = row.cells[10]
+        set_cell_background(c, bg_col)
+        set_cell_margins(c, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = c.paragraphs[0]
+        note = rec.get("note", f"Hoàn thành tốt nhiệm vụ tuần {week_num}")
+        r = p.add_run(note + "\n")
+        set_tnr(r, size_pt=8.5)
+        rank = rec.get("ranking", "HTT")
+        r = p.add_run(f"Xếp loại: {rank}")
+        set_tnr(r, size_pt=9, bold=True)
+
+    # 4. PHẦN II: ĐÁNH GIÁ CHUNG VÀ TỒN TẠI
+    p_sec2 = doc.add_paragraph()
+    p_sec2.paragraph_format.space_before = Pt(8)
+    p_sec2.paragraph_format.space_after = Pt(2)
+    r = p_sec2.add_run("II. ĐÁNH GIÁ CHUNG CỦA TỔ TRƯỞNG CHUYÊN MÔN:")
+    set_tnr(r, size_pt=11, bold=True)
+
+    tot_cntt = sum(r.get("cntt_count", 0) for r in records)
+    tot_dddh = sum(r.get("dddh_count", 0) for r in records)
+    soan_du = sum(1 for r in records if "Soạn đủ" in r.get("giao_an_status", ""))
+
+    items_eval = [
+        f"1. Ưu điểm nổi bật: 100% giáo viên thực hiện nghiêm túc ngày giờ công, giờ giấc lên lớp và dự chào cờ đầu tuần theo đúng quy định tại Điều 27 Quy chế 263. Toàn bộ {soan_du}/8 giáo viên soạn giảng Kế hoạch bài dạy theo đúng cấu trúc Công văn 5512/BGDĐT-GDTrH và tích hợp năng lực số (NLS). Toàn tổ thực hiện được {tot_cntt} tiết ứng dụng CNTT và {tot_dddh} lượt sử dụng ĐDDH.",
+        f"2. Tồn tại, hạn chế: Một số giáo viên cần chú ý cập nhật sổ đầu bài ngay sau tiết dạy, tránh dồn tiết cuối tuần; tiếp tục duy trì việc tải bài giảng và kế hoạch bài dạy lên thư mục Google Drive đúng tiến độ quy định.",
+        f"3. Xếp loại thi đua tuần: HTXSNV: {sum(1 for r in records if r.get('ranking') == 'HTXSNV')} đồng chí; HTT: {sum(1 for r in records if r.get('ranking') == 'HTT')} đồng chí; HTNV: {sum(1 for r in records if r.get('ranking') == 'HTNV')} đồng chí."
+    ]
+    for it in items_eval:
+        p = doc.add_paragraph()
+        p.paragraph_format.left_indent = Inches(0.15)
+        p.paragraph_format.space_after = Pt(2)
+        r = p.add_run(it)
+        set_tnr(r, size_pt=10)
+
+    # 5. PHẦN III: KẾ HOẠCH TUẦN TIẾP THEO
+    p_sec3 = doc.add_paragraph()
+    p_sec3.paragraph_format.space_before = Pt(6)
+    p_sec3.paragraph_format.space_after = Pt(2)
+    next_w = week_num + 1 if week_num < 35 else 35
+    r = p_sec3.add_run(f"III. KẾ HOẠCH VÀ NHIỆM VỤ TRỌNG TÂM TUẦN {next_w}:")
+    set_tnr(r, size_pt=11, bold=True)
+
+    items_next = [
+        f"- Tiếp tục bám sát kế hoạch dạy học, thực hiện đúng phân phối chương trình tuần {next_w}; giáo viên có tiết trễ khẩn trương dạy bù hoàn thành tiến độ.",
+        "- Thực hiện nghiêm túc quy định kiểm tra định kỳ Kế hoạch bài dạy trên hệ thống Google Drive theo chu kỳ chuyên môn.",
+        "- Tăng cường công tác bồi dưỡng học sinh giỏi các môn Toán, KHTN và phụ đạo học sinh chưa đạt chuẩn kiến thức kỹ năng.",
+        "- Thực hiện dự giờ đánh giá giáo viên và sinh hoạt chuyên môn theo hướng nghiên cứu bài học theo đúng lịch công tác."
+    ]
+    for it in items_next:
+        p = doc.add_paragraph()
+        p.paragraph_format.left_indent = Inches(0.15)
+        p.paragraph_format.space_after = Pt(2)
+        r = p.add_run(it)
+        set_tnr(r, size_pt=10)
+
+    # 6. PHẦN IV: CHỮ KÝ PHÊ DUYỆT (2 CỘT)
+    p_sp = doc.add_paragraph()
+    p_sp.paragraph_format.space_before = Pt(6)
+    p_sp.paragraph_format.space_after = Pt(2)
+
+    t_sign = doc.add_table(rows=2, cols=2)
+    t_sign.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_sign.autofit = False
+    set_table_borders(t_sign, color="FFFFFF", sz="0", val="none")
+    t_sign.rows[0].cells[0].width = Mm(130)
+    t_sign.rows[0].cells[1].width = Mm(132)
+    t_sign.rows[1].cells[0].width = Mm(130)
+    t_sign.rows[1].cells[1].width = Mm(132)
+
+    c0 = t_sign.rows[0].cells[0].paragraphs[0]
+    c0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c0.add_run("TỔ TRƯỞNG CHUYÊN MÔN\n(Ký và ghi rõ họ tên)")
+    set_tnr(r, size_pt=10.5, bold=True)
+
+    c1 = t_sign.rows[0].cells[1].paragraphs[0]
+    c1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c1.add_run("BAN GIÁM HIỆU PHÊ DUYỆT\n(Ký, đóng dấu)")
+    set_tnr(r, size_pt=10.5, bold=True)
+
+    c0_b = t_sign.rows[1].cells[0].paragraphs[0]
+    c0_b.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c0_b.add_run("\n\n\nLê Văn Thắng")
+    set_tnr(r, size_pt=11, bold=True)
+
+    c1_b = t_sign.rows[1].cells[1].paragraphs[0]
+    c1_b.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c1_b.add_run("\n\n\nNguyễn Tuấn Anh")
+    set_tnr(r, size_pt=11, bold=True)
+
+    doc.save(output_path)
+    return output_path
+    print(f"Generated Week {week_num} Docx successfully: {output_path}")
+    return output_path
+
+# =========================================================================
+# TỔNG KẾT HỌC KỲ & CẢ NĂM HỌC
+# =========================================================================
+
+def generate_semester_report_data(semester_num: int = 1) -> dict:
+    """Tổng hợp dữ liệu theo dõi đánh giá 8 giáo viên cho Học kỳ I (Tuần 1-18) hoặc Học kỳ II (Tuần 19-35)"""
+    all_data = load_all_notebook_data()
+    weeks = list(range(1, 19)) if semester_num == 1 else list(range(19, 36))
+    
+    t_summary = {}
+    for t in TEACHER_LIST:
+        t_id = t["id"]
+        t_summary[t_id] = {
+            "teacher_id": t_id,
+            "teacher_name": t["name"],
+            "role": t["role"],
+            "subjects": ", ".join(t["subjects"]),
+            "grades": t.get("grades", ""),
+            "classes": ", ".join(t.get("classes", [])),
+            "homeroom": t.get("homeroom", ""),
+            "total_cntt": 0,
+            "total_dddh": 0,
+            "late_periods_sum": 0,
+            "obs_count": 0,
+            "stem_count": 0,
+            "rank_counts": {"HTXSNV": 0, "HTT": 0, "HTNV": 0, "KHTNV": 0},
+            "giao_an_drive_on_time": 0,
+            "total_weeks": len(weeks)
+        }
+
+    for w in weeks:
+        w_records = all_data.get(str(w), [])
+        for r in w_records:
+            t_id = r.get("teacher_id")
+            if t_id in t_summary:
+                ts = t_summary[t_id]
+                ts["total_cntt"] += int(r.get("cntt_count", 0))
+                ts["total_dddh"] += int(r.get("dddh_count", 0))
+                ts["late_periods_sum"] += int(r.get("late_periods", 0))
+                ts["obs_count"] += len(r.get("observations", []))
+                ts["stem_count"] += len(r.get("stem_or_demo", []))
+                rk = r.get("ranking", "HTT")
+                if rk in ts["rank_counts"]:
+                    ts["rank_counts"][rk] += 1
+                else:
+                    ts["rank_counts"]["HTT"] += 1
+                if "Đã nộp" in r.get("giao_an_drive", "") or "Đúng hạn" in r.get("giao_an_drive", ""):
+                    ts["giao_an_drive_on_time"] += 1
+
+    # Tính xếp loại học kỳ
+    teachers_list = []
+    for t_id, ts in t_summary.items():
+        rc = ts["rank_counts"]
+        if rc.get("HTXSNV", 0) >= len(weeks) * 0.4 and rc.get("HTNV", 0) == 0 and rc.get("KHTNV", 0) == 0:
+            sem_rank = "Hoàn thành xuất sắc nhiệm vụ"
+            sem_rank_short = "HTXSNV"
+        elif rc.get("KHTNV", 0) > 0:
+            sem_rank = "Chưa hoàn thành nhiệm vụ"
+            sem_rank_short = "KHTNV"
+        elif rc.get("HTNV", 0) >= len(weeks) * 0.3:
+            sem_rank = "Hoàn thành nhiệm vụ"
+            sem_rank_short = "HTNV"
+        else:
+            sem_rank = "Hoàn thành tốt nhiệm vụ"
+            sem_rank_short = "HTT"
+        
+        ts["semester_rank"] = sem_rank
+        ts["semester_rank_short"] = sem_rank_short
+        ts["ppct_review"] = f"Đúng tiến độ (Trễ {ts['late_periods_sum']} tiết, đã bù đủ)" if ts["late_periods_sum"] > 0 else "Hoàn thành 100% đúng tiến độ"
+        ts["giao_an_review"] = f"Soạn đúng CV 5512, nộp Drive {ts['giao_an_drive_on_time']}/{len(weeks)} tuần"
+        teachers_list.append(ts)
+
+    sem_info = {
+        "semester_num": semester_num,
+        "semester_name": f"Học kỳ { 'I' if semester_num == 1 else 'II' }",
+        "weeks": weeks,
+        "period_str": "Từ Tuần 1 đến Tuần 18 (07/09/2026 - 09/01/2027)" if semester_num == 1 else "Từ Tuần 19 đến Tuần 35 (11/01/2027 - 22/05/2027)",
+        "school_year": "2026 - 2027",
+        "date_str": "Nhơn Hội, ngày 09 tháng 01 năm 2027" if semester_num == 1 else "Nhơn Hội, ngày 22 tháng 05 năm 2027",
+        "total_cntt": sum(t["total_cntt"] for t in teachers_list),
+        "total_dddh": sum(t["total_dddh"] for t in teachers_list),
+        "total_obs": sum(t["obs_count"] for t in teachers_list),
+        "total_stem": sum(t["stem_count"] for t in teachers_list),
+        "teachers": teachers_list,
+        "leader_name": "Lê Văn Thắng"
+    }
+    return sem_info
+
+def export_semester_report_word(semester_num: int = 1, output_path: str = None) -> str:
+    """Xuất Báo cáo Sơ kết Học kỳ I hoặc II ra Word chuẩn Nghị định 30"""
+    if output_path is None:
+        output_path = os.path.join(DATA_DIR, f"BAO_CAO_SO_KET_HOC_KY_{semester_num}_TO_TOAN_KHTN_CN.docx")
+    
+    sem_data = generate_semester_report_data(semester_num)
+    doc = docx.Document()
+    sec = doc.sections[0]
+    sec.orientation = docx.enum.section.WD_ORIENT.PORTRAIT
+    sec.page_width = Mm(210)
+    sec.page_height = Mm(297)
+    sec.top_margin = Mm(20)
+    sec.bottom_margin = Mm(20)
+    sec.left_margin = Mm(25)
+    sec.right_margin = Mm(20)
+
+    normal_style = doc.styles['Normal']
+    normal_style.font.name = 'Times New Roman'
+    normal_style.font.size = Pt(11)
+    normal_style.paragraph_format.line_spacing = 1.15
+    normal_style.paragraph_format.space_after = Pt(3)
+
+    # 1. Header 2 cột
+    t_head = doc.add_table(rows=2, cols=2)
+    t_head.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_head.autofit = False
+    set_table_borders(t_head, color="FFFFFF", sz="0", val="none")
+    t_head.rows[0].cells[0].width = Mm(75)
+    t_head.rows[0].cells[1].width = Mm(90)
+    t_head.rows[1].cells[0].width = Mm(75)
+    t_head.rows[1].cells[1].width = Mm(90)
+
+    p0 = t_head.rows[0].cells[0].paragraphs[0]
+    p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p0.add_run("TRƯỜNG TH & THCS PHƯỚC HƯNG\n")
+    set_tnr(r, size_pt=10.5, bold=False)
+    r2 = p0.add_run("TỔ: TOÁN – KHOA HỌC TỰ NHIÊN – CN")
+    set_tnr(r2, size_pt=10.5, bold=True)
+
+    p1 = t_head.rows[0].cells[1].paragraphs[0]
+    p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p1.add_run("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\n")
+    set_tnr(r, size_pt=10.5, bold=True)
+    r2 = p1.add_run("Độc lập – Tự do – Hạnh phúc")
+    set_tnr(r2, size_pt=11, bold=True)
+    r2.underline = True
+
+    p2 = t_head.rows[1].cells[0].paragraphs[0]
+    p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p2.add_run(f"Số: { '01' if semester_num == 1 else '02' }/BC-TTN")
+    set_tnr(r, size_pt=10, italic=True)
+
+    p3 = t_head.rows[1].cells[1].paragraphs[0]
+    p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p3.add_run(sem_data["date_str"])
+    set_tnr(r, size_pt=10, italic=True)
+
+    # 2. Tiêu đề
+    p_title = doc.add_paragraph()
+    p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_title.paragraph_format.space_before = Pt(12)
+    p_title.paragraph_format.space_after = Pt(3)
+    r = p_title.add_run(f"BÁO CÁO SƠ KẾT HOẠT ĐỘNG CHUYÊN MÔN {sem_data['semester_name'].upper()}\nNĂM HỌC 2026 - 2027")
+    set_tnr(r, size_pt=13, bold=True)
+
+    p_sub = doc.add_paragraph()
+    p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_sub.paragraph_format.space_after = Pt(8)
+    r = p_sub.add_run(f"({sem_data['period_str']})\n")
+    set_tnr(r, size_pt=10.5, italic=True)
+    r_cc = p_sub.add_run("Căn cứ QĐ 219/QĐ-TH&THCSPH, Quy chế chuyên môn 263/QC-TH&THCSPH, Quy chế Thi đua và Kế hoạch 202/KH-TH&THCSPH")
+    set_tnr(r_cc, size_pt=9.5, italic=True)
+
+    # 3. Phần I: Báo cáo kết quả
+    p_I = doc.add_paragraph()
+    p_I.paragraph_format.space_before = Pt(6)
+    p_I.paragraph_format.space_after = Pt(3)
+    r = p_I.add_run(f"I. KẾT QUẢ THỰC HIỆN CÁC MẶT CÔNG TÁC TRONG {sem_data['semester_name'].upper()}:")
+    set_tnr(r, size_pt=11.5, bold=True)
+
+    report_items = [
+        f"1. Thực hiện chương trình và PPCT: 100% giáo viên trong tổ hoàn thành đầy đủ số tiết dạy theo phân phối chương trình môn học. Không có tình trạng cắt xén chương trình; các tiết nghỉ phép đều có kế hoạch dạy bù và phân công dạy thay kịp thời.",
+        f"2. Công tác kiểm tra, duyệt Kế hoạch bài dạy (Giáo án): 100% giáo viên soạn bài theo đúng Công văn 5512/BGDĐT-GDTrH và tích hợp năng lực số (NLS). Tổ trưởng chuyên môn định kỳ kiểm tra giáo án trên hệ thống Google Drive và kiểm tra trực tiếp theo đúng quy chế.",
+        f"3. Ứng dụng CNTT và sử dụng ĐDDH: Toàn tổ thực hiện được {sem_data['total_cntt']} tiết dạy ứng dụng công nghệ thông tin (đạt và vượt chỉ tiêu đề ra). Tổng số lượt sử dụng ĐDDH phòng bộ môn là {sem_data['total_dddh']} lượt theo đúng sổ theo dõi thiết bị.",
+        f"4. Dự giờ, thao giảng và sinh hoạt chuyên môn: Toàn tổ thực hiện được {sem_data['total_obs']} tiết dự giờ học tập kinh nghiệm và kiểm tra đánh giá giáo viên; tổ chức {sem_data['total_stem']} chuyên đề chuyên môn / thao giảng / bài học STEM; duy trì sinh hoạt chuyên môn theo nghiên cứu bài học 2 tuần/lần.",
+        f"5. Bồi dưỡng học sinh giỏi và phụ đạo học sinh yếu: Duy trì đều đặn các lớp bồi dưỡng HSG Toán, KHTN các khối lớp 6, 7, 8, 9; đồng thời tổ chức phụ đạo cho các học sinh chưa đạt chuẩn kiến thức kỹ năng sau các đợt kiểm tra giữa kỳ và cuối kỳ."
+    ]
+    for it in report_items:
+        p = doc.add_paragraph()
+        p.paragraph_format.left_indent = Inches(0.15)
+        p.paragraph_format.space_after = Pt(2)
+        r = p.add_run(it)
+        set_tnr(r, size_pt=10.5)
+
+    # 4. Phần II: Bảng tổng hợp thi đua 8 GV
+    p_II = doc.add_paragraph()
+    p_II.paragraph_format.space_before = Pt(8)
+    p_II.paragraph_format.space_after = Pt(3)
+    r = p_II.add_run(f"II. BẢNG TỔNG HỢP THEO DÕI, ĐÁNH GIÁ VÀ XẾP LOẠI 08 GIÁO VIÊN TRONG {sem_data['semester_name'].upper()}:")
+    set_tnr(r, size_pt=11.5, bold=True)
+
+    headers_sem = ["STT", "Họ và tên GV", "Chức danh", "Môn phụ trách", "Tổng CNTT", "ĐDDH", "Dự giờ", "Xếp loại tuần (XS/Tốt/Đạt)", "Xếp loại HK"]
+    widths_sem = [10, 36, 18, 26, 16, 14, 14, 30, 26]
+
+    t_sem = doc.add_table(rows=len(sem_data["teachers"]) + 1, cols=len(headers_sem))
+    t_sem.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_sem.autofit = False
+    set_table_borders(t_sem, color="94A3B8", sz="4", val="single")
+
+    for col_idx, width_mm in enumerate(widths_sem):
+        for row in t_sem.rows:
+            row.cells[col_idx].width = Mm(width_mm)
+
+    for col_idx, title in enumerate(headers_sem):
+        cell = t_sem.rows[0].cells[col_idx]
+        set_cell_background(cell, "E0F2FE")
+        set_cell_margins(cell, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(title)
+        set_tnr(r, size_pt=9.5, bold=True)
+
+    for r_idx, t in enumerate(sem_data["teachers"]):
+        row = t_sem.rows[r_idx + 1]
+        bg = "F8FAFC" if (r_idx % 2 == 1) else "FFFFFF"
+
+        # Col 0: STT
+        c = row.cells[0]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(r_idx + 1)), size_pt=9.5)
+
+        # Col 1: Tên GV
+        c = row.cells[1]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        r = p.add_run(t["teacher_name"])
+        set_tnr(r, size_pt=9.5, bold=True)
+
+        # Col 2: Chức danh
+        c = row.cells[2]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(t["role"]), size_pt=9)
+
+        # Col 3: Môn
+        c = row.cells[3]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(t["subjects"]), size_pt=9)
+
+        # Col 4: CNTT
+        c = row.cells[4]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(t["total_cntt"])), size_pt=9.5, bold=True)
+
+        # Col 5: ĐDDH
+        c = row.cells[5]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(t["total_dddh"])), size_pt=9.5)
+
+        # Col 6: Dự giờ
+        c = row.cells[6]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(t["obs_count"])), size_pt=9.5)
+
+        # Col 7: Xếp loại tuần
+        c = row.cells[7]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        rc = t["rank_counts"]
+        txt_rc = f"{rc.get('HTXSNV', 0)} XS / {rc.get('HTT', 0)} Tốt / {rc.get('HTNV', 0)} Đạt"
+        set_tnr(p.add_run(txt_rc), size_pt=9)
+
+        # Col 8: Xếp loại HK
+        c = row.cells[8]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(t["semester_rank_short"])
+        set_tnr(r, size_pt=10, bold=True)
+
+    # 5. Phần III: Phương hướng tiếp theo
+    p_III = doc.add_paragraph()
+    p_III.paragraph_format.space_before = Pt(8)
+    p_III.paragraph_format.space_after = Pt(3)
+    next_txt = "HỌC KỲ II" if semester_num == 1 else "NĂM HỌC TIẾP THEO"
+    r = p_III.add_run(f"III. PHƯƠNG HƯỚNG NHIỆM VỤ TRỌNG TÂM {next_txt}:")
+    set_tnr(r, size_pt=11.5, bold=True)
+
+    p = doc.add_paragraph()
+    p.paragraph_format.left_indent = Inches(0.15)
+    r = p.add_run("- Tiếp tục phát huy các kết quả đạt được, đẩy mạnh chuyển đổi số và ứng dụng CNTT, AI trong soạn giảng Kế hoạch bài dạy theo đúng chuẩn Công văn 5512.\n- Nâng cao chất lượng sinh hoạt chuyên môn theo hướng nghiên cứu bài học, tăng cường công tác bồi dưỡng học sinh giỏi và phụ đạo học sinh còn gặp khó khăn trong học tập.")
+    set_tnr(r, size_pt=10.5)
+
+    # 6. Chữ ký 2 bên
+    p_sp = doc.add_paragraph()
+    p_sp.paragraph_format.space_before = Pt(8)
+
+    t_sign = doc.add_table(rows=2, cols=2)
+    t_sign.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_sign.autofit = False
+    set_table_borders(t_sign, color="FFFFFF", sz="0", val="none")
+    t_sign.rows[0].cells[0].width = Mm(85)
+    t_sign.rows[0].cells[1].width = Mm(85)
+    t_sign.rows[1].cells[0].width = Mm(85)
+    t_sign.rows[1].cells[1].width = Mm(85)
+
+    c0 = t_sign.rows[0].cells[0].paragraphs[0]
+    c0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c0.add_run("TỔ TRƯỞNG CHUYÊN MÔN\n(Ký và ghi rõ họ tên)")
+    set_tnr(r, size_pt=10.5, bold=True)
+
+    c1 = t_sign.rows[0].cells[1].paragraphs[0]
+    c1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c1.add_run("HIỆU TRƯỞNG PHÊ DUYỆT\n(Ký và đóng dấu)")
+    set_tnr(r, size_pt=10.5, bold=True)
+
+    c0_b = t_sign.rows[1].cells[0].paragraphs[0]
+    c0_b.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c0_b.add_run("\n\n\nLê Văn Thắng")
+    set_tnr(r, size_pt=11, bold=True)
+
+    c1_b = t_sign.rows[1].cells[1].paragraphs[0]
+    c1_b.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c1_b.add_run("\n\n\nNguyễn Tuấn Anh")
+    set_tnr(r, size_pt=11, bold=True)
+
+    doc.save(output_path)
+    return output_path
+    print(f"Generated Semester {semester_num} Docx successfully: {output_path}")
+    return output_path
+
+# =========================================================================
+# TỔNG KẾT CẢ NĂM HỌC
+# =========================================================================
+
+def generate_year_report_data() -> dict:
+    """Tổng hợp dữ liệu toàn diện 35 tuần cả năm học 2026-2027 của 8 giáo viên"""
+    all_data = load_all_notebook_data()
+    all_weeks = list(range(1, 36))
+    
+    t_summary = {}
+    for t in TEACHER_LIST:
+        t_id = t["id"]
+        t_summary[t_id] = {
+            "teacher_id": t_id,
+            "teacher_name": t["name"],
+            "role": t["role"],
+            "subjects": ", ".join(t["subjects"]),
+            "grades": t.get("grades", ""),
+            "classes": ", ".join(t.get("classes", [])),
+            "homeroom": t.get("homeroom", ""),
+            "total_cntt": 0,
+            "total_dddh": 0,
+            "late_periods_sum": 0,
+            "obs_count": 0,
+            "stem_count": 0,
+            "rank_counts": {"HTXSNV": 0, "HTT": 0, "HTNV": 0, "KHTNV": 0},
+            "giao_an_drive_on_time": 0,
+            "total_weeks": 35
+        }
+
+    for w in all_weeks:
+        w_records = all_data.get(str(w), [])
+        for r in w_records:
+            t_id = r.get("teacher_id")
+            if t_id in t_summary:
+                ts = t_summary[t_id]
+                ts["total_cntt"] += int(r.get("cntt_count", 0))
+                ts["total_dddh"] += int(r.get("dddh_count", 0))
+                ts["late_periods_sum"] += int(r.get("late_periods", 0))
+                ts["obs_count"] += len(r.get("observations", []))
+                ts["stem_count"] += len(r.get("stem_or_demo", []))
+                rk = r.get("ranking", "HTT")
+                if rk in ts["rank_counts"]:
+                    ts["rank_counts"][rk] += 1
+                else:
+                    ts["rank_counts"]["HTT"] += 1
+                if "Đã nộp" in r.get("giao_an_drive", "") or "Đúng hạn" in r.get("giao_an_drive", ""):
+                    ts["giao_an_drive_on_time"] += 1
+
+    teachers_list = []
+    for t_id, ts in t_summary.items():
+        rc = ts["rank_counts"]
+        if rc.get("HTXSNV", 0) >= 14 and rc.get("HTNV", 0) <= 2 and rc.get("KHTNV", 0) == 0:
+            year_rank = "Hoàn thành xuất sắc nhiệm vụ"
+            year_rank_short = "HTXSNV"
+            emulation_title = "Chiến sĩ thi đua cơ sở"
+        elif rc.get("KHTNV", 0) > 0:
+            year_rank = "Chưa hoàn thành nhiệm vụ"
+            year_rank_short = "KHTNV"
+            emulation_title = "Không bình xét"
+        elif rc.get("HTNV", 0) >= 10:
+            year_rank = "Hoàn thành nhiệm vụ"
+            year_rank_short = "HTNV"
+            emulation_title = "Lao động tiên tiến"
+        else:
+            year_rank = "Hoàn thành tốt nhiệm vụ"
+            year_rank_short = "HTT"
+            emulation_title = "Lao động tiên tiến"
+        
+        ts["year_rank"] = year_rank
+        ts["year_rank_short"] = year_rank_short
+        ts["emulation_title"] = emulation_title
+        ts["chuan_nghe_nghiep"] = "Tốt" if year_rank_short in ["HTXSNV", "HTT"] else "Khá"
+        teachers_list.append(ts)
+
+    year_info = {
+        "school_year": "2026 - 2027",
+        "date_str": "Nhơn Hội, ngày 22 tháng 05 năm 2027",
+        "total_weeks": 35,
+        "period_str": "Từ ngày 07/09/2026 đến ngày 22/05/2027 (35 tuần thực học)",
+        "total_cntt": sum(t["total_cntt"] for t in teachers_list),
+        "total_dddh": sum(t["total_dddh"] for t in teachers_list),
+        "total_obs": sum(t["obs_count"] for t in teachers_list),
+        "total_stem": sum(t["stem_count"] for t in teachers_list),
+        "teachers": teachers_list,
+        "leader_name": "Lê Văn Thắng"
+    }
+    return year_info
+
+def export_year_report_word(output_path: str = None) -> str:
+    """Xuất Báo cáo Tổng kết Cả Năm học ra Word chuẩn Nghị định 30"""
+    if output_path is None:
+        output_path = os.path.join(DATA_DIR, "BAO_CAO_TONG_KET_NAM_HOC_2026_2027_TO_TOAN_KHTN_CN.docx")
+    
+    y_data = generate_year_report_data()
+    doc = docx.Document()
+    sec = doc.sections[0]
+    sec.orientation = docx.enum.section.WD_ORIENT.PORTRAIT
+    sec.page_width = Mm(210)
+    sec.page_height = Mm(297)
+    sec.top_margin = Mm(20)
+    sec.bottom_margin = Mm(20)
+    sec.left_margin = Mm(25)
+    sec.right_margin = Mm(20)
+
+    normal_style = doc.styles['Normal']
+    normal_style.font.name = 'Times New Roman'
+    normal_style.font.size = Pt(11)
+    normal_style.paragraph_format.line_spacing = 1.15
+    normal_style.paragraph_format.space_after = Pt(3)
+
+    # 1. Header 2 cột
+    t_head = doc.add_table(rows=2, cols=2)
+    t_head.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_head.autofit = False
+    set_table_borders(t_head, color="FFFFFF", sz="0", val="none")
+    t_head.rows[0].cells[0].width = Mm(75)
+    t_head.rows[0].cells[1].width = Mm(90)
+    t_head.rows[1].cells[0].width = Mm(75)
+    t_head.rows[1].cells[1].width = Mm(90)
+
+    p0 = t_head.rows[0].cells[0].paragraphs[0]
+    p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p0.add_run("TRƯỜNG TH & THCS PHƯỚC HƯNG\n")
+    set_tnr(r, size_pt=10.5, bold=False)
+    r2 = p0.add_run("TỔ: TOÁN – KHOA HỌC TỰ NHIÊN – CN")
+    set_tnr(r2, size_pt=10.5, bold=True)
+
+    p1 = t_head.rows[0].cells[1].paragraphs[0]
+    p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p1.add_run("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\n")
+    set_tnr(r, size_pt=10.5, bold=True)
+    r2 = p1.add_run("Độc lập – Tự do – Hạnh phúc")
+    set_tnr(r2, size_pt=11, bold=True)
+    r2.underline = True
+
+    p2 = t_head.rows[1].cells[0].paragraphs[0]
+    p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p2.add_run("Số: 05/BC-TTN")
+    set_tnr(r, size_pt=10, italic=True)
+
+    p3 = t_head.rows[1].cells[1].paragraphs[0]
+    p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p3.add_run(y_data["date_str"])
+    set_tnr(r, size_pt=10, italic=True)
+
+    # 2. Tiêu đề
+    p_title = doc.add_paragraph()
+    p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_title.paragraph_format.space_before = Pt(12)
+    p_title.paragraph_format.space_after = Pt(3)
+    r = p_title.add_run("BÁO CÁO TỔNG KẾT HOẠT ĐỘNG CHUYÊN MÔN NĂM HỌC 2026 - 2027\nTỔ: TOÁN – KHOA HỌC TỰ NHIÊN – CÔNG NGHỆ")
+    set_tnr(r, size_pt=13, bold=True)
+
+    p_sub = doc.add_paragraph()
+    p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_sub.paragraph_format.space_after = Pt(8)
+    r = p_sub.add_run(f"({y_data['period_str']})\n")
+    set_tnr(r, size_pt=10.5, italic=True)
+    r_cc = p_sub.add_run("Căn cứ QĐ 219/QĐ-TH&THCSPH, Quy chế chuyên môn 263/QC-TH&THCSPH, Quy chế Thi đua - Khen thưởng và Kế hoạch 202/KH-TH&THCSPH")
+    set_tnr(r_cc, size_pt=9.5, italic=True)
+
+    # 3. Phần I: Báo cáo kết quả cả năm
+    p_I = doc.add_paragraph()
+    p_I.paragraph_format.space_before = Pt(6)
+    p_I.paragraph_format.space_after = Pt(3)
+    r = p_I.add_run("I. ĐÁNH GIÁ KẾT QUẢ THỰC HIỆN CẢ NĂM HỌC (35 TUẦN):")
+    set_tnr(r, size_pt=11.5, bold=True)
+
+    report_items = [
+        f"1. Về tư tưởng, đạo đức và tác phong nghề nghiệp: 100% cán bộ giáo viên chấp hành nghiêm chỉnh chủ trương, chính sách của Đảng, pháp luật của Nhà nước và quy chế cơ quan; không có giáo viên vi phạm đạo đức nhà giáo.",
+        f"2. Thực hiện chương trình GDPT 2018 và PPCT: Toàn tổ hoàn thành 100% kế hoạch dạy học 35 tuần thực học, đảm bảo đúng chuẩn kiến thức kỹ năng và yêu cầu cần đạt của môn học.",
+        f"3. Quản lý hồ sơ chuyên môn và số hóa giáo án trên Google Drive: 100% giáo viên soạn Kế hoạch bài dạy theo đúng chuẩn Công văn 5512/BGDĐT-GDTrH, tích hợp năng lực số (NLS); thực hiện nghiêm túc việc lưu trữ và kiểm duyệt giáo án điện tử trên Google Drive.",
+        f"4. Ứng dụng CNTT, AI và sử dụng ĐDDH: Đạt tổng cộng {y_data['total_cntt']} tiết dạy ứng dụng CNTT và {y_data['total_dddh']} lượt sử dụng thiết bị phòng bộ môn; tích cực đổi mới phương pháp dạy học số.",
+        f"5. Hoạt động dự giờ, hội giảng và bồi dưỡng đội ngũ: Thực hiện được {y_data['total_obs']} tiết dự giờ và {y_data['total_stem']} chuyên đề thao giảng; duy trì nền nếp sinh hoạt chuyên môn theo nghiên cứu bài học.",
+        f"6. Công tác học sinh giỏi và phụ đạo học sinh yếu: Đạt nhiều thành tích cao trong các kỳ thi chọn học sinh giỏi cấp trường, cấp huyện môn Toán, KHTN; phụ đạo 100% học sinh yếu kém đạt chuẩn lên lớp."
+    ]
+    for it in report_items:
+        p = doc.add_paragraph()
+        p.paragraph_format.left_indent = Inches(0.15)
+        p.paragraph_format.space_after = Pt(2)
+        r = p.add_run(it)
+        set_tnr(r, size_pt=10.5)
+
+    # 4. Phần II: Bảng tổng hợp thi đua 8 GV cả năm
+    p_II = doc.add_paragraph()
+    p_II.paragraph_format.space_before = Pt(8)
+    p_II.paragraph_format.space_after = Pt(3)
+    r = p_II.add_run("II. BẢNG TỔNG HỢP THEO DÕI, ĐÁNH GIÁ VÀ XẾP LOẠI 08 GIÁO VIÊN CẢ NĂM HỌC 2026 - 2027:")
+    set_tnr(r, size_pt=11.5, bold=True)
+
+    headers_y = ["STT", "Họ và tên GV", "Chức danh", "Môn dạy", "Tổng CNTT", "ĐDDH", "Dự giờ", "Xếp loại năm", "Danh hiệu thi đua đề nghị"]
+    widths_y = [10, 36, 18, 24, 16, 14, 14, 22, 30]
+
+    t_y = doc.add_table(rows=len(y_data["teachers"]) + 1, cols=len(headers_y))
+    t_y.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_y.autofit = False
+    set_table_borders(t_y, color="94A3B8", sz="4", val="single")
+
+    for col_idx, width_mm in enumerate(widths_y):
+        for row in t_y.rows:
+            row.cells[col_idx].width = Mm(width_mm)
+
+    for col_idx, title in enumerate(headers_y):
+        cell = t_y.rows[0].cells[col_idx]
+        set_cell_background(cell, "E0F2FE")
+        set_cell_margins(cell, top_mm=2, bottom_mm=2, left_mm=1.5, right_mm=1.5)
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(title)
+        set_tnr(r, size_pt=9.5, bold=True)
+
+    for r_idx, t in enumerate(y_data["teachers"]):
+        row = t_y.rows[r_idx + 1]
+        bg = "F8FAFC" if (r_idx % 2 == 1) else "FFFFFF"
+
+        # Col 0: STT
+        c = row.cells[0]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(r_idx + 1)), size_pt=9.5)
+
+        # Col 1: Tên GV
+        c = row.cells[1]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        r = p.add_run(t["teacher_name"])
+        set_tnr(r, size_pt=9.5, bold=True)
+
+        # Col 2: Chức danh
+        c = row.cells[2]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(t["role"]), size_pt=9)
+
+        # Col 3: Môn
+        c = row.cells[3]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(t["subjects"]), size_pt=9)
+
+        # Col 4: CNTT
+        c = row.cells[4]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(t["total_cntt"])), size_pt=9.5, bold=True)
+
+        # Col 5: ĐDDH
+        c = row.cells[5]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(t["total_dddh"])), size_pt=9.5)
+
+        # Col 6: Dự giờ
+        c = row.cells[6]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_tnr(p.add_run(str(t["obs_count"])), size_pt=9.5)
+
+        # Col 7: Xếp loại năm
+        c = row.cells[7]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(t["year_rank_short"])
+        set_tnr(r, size_pt=9.5, bold=True)
+
+        # Col 8: Danh hiệu thi đua
+        c = row.cells[8]
+        set_cell_background(c, bg)
+        p = c.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(t["emulation_title"])
+        set_tnr(r, size_pt=9.5, bold=True)
+
+    # 5. Phần III: Đề xuất kiến nghị
+    p_III = doc.add_paragraph()
+    p_III.paragraph_format.space_before = Pt(8)
+    p_III.paragraph_format.space_after = Pt(3)
+    r = p_III.add_run("III. ĐỀ XUẤT - KIẾN NGHỊ VỚI HỘI ĐỒNG THI ĐUA VÀ BAN GIÁM HIỆU:")
+    set_tnr(r, size_pt=11.5, bold=True)
+
+    p = doc.add_paragraph()
+    p.paragraph_format.left_indent = Inches(0.15)
+    r = p.add_run("1. Đề nghị Hội đồng Thi đua - Khen thưởng nhà trường công nhận kết quả bình xét thi đua năm học 2026 - 2027 của Tổ Toán - KHTN - Công nghệ theo đúng quy chế.\n2. Khen thưởng tập thể Tổ đạt danh hiệu 'Tập thể Lao động Tiên tiến' và các cá nhân đạt danh hiệu 'Chiến sĩ thi đua cơ sở', 'Lao động tiên tiến'.\n3. Tiếp tục đầu tư nâng cấp bổ sung thiết bị dạy học các phòng bộ môn phục vụ tốt hơn cho năm học tiếp theo.")
+    set_tnr(r, size_pt=10.5)
+
+    # 6. Chữ ký 2 bên
+    p_sp = doc.add_paragraph()
+    p_sp.paragraph_format.space_before = Pt(8)
+
+    t_sign = doc.add_table(rows=2, cols=2)
+    t_sign.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t_sign.autofit = False
+    set_table_borders(t_sign, color="FFFFFF", sz="0", val="none")
+    t_sign.rows[0].cells[0].width = Mm(85)
+    t_sign.rows[0].cells[1].width = Mm(85)
+    t_sign.rows[1].cells[0].width = Mm(85)
+    t_sign.rows[1].cells[1].width = Mm(85)
+
+    c0 = t_sign.rows[0].cells[0].paragraphs[0]
+    c0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c0.add_run("TỔ TRƯỞNG CHUYÊN MÔN\n(Ký và ghi rõ họ tên)")
+    set_tnr(r, size_pt=10.5, bold=True)
+
+    c1 = t_sign.rows[0].cells[1].paragraphs[0]
+    c1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c1.add_run("HIỆU TRƯỞNG PHÊ DUYỆT\n(Ký và đóng dấu)")
+    set_tnr(r, size_pt=10.5, bold=True)
+
+    c0_b = t_sign.rows[1].cells[0].paragraphs[0]
+    c0_b.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c0_b.add_run("\n\n\nLê Văn Thắng")
+    set_tnr(r, size_pt=11, bold=True)
+
+    c1_b = t_sign.rows[1].cells[1].paragraphs[0]
+    c1_b.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = c1_b.add_run("\n\n\nNguyễn Tuấn Anh")
+    set_tnr(r, size_pt=11, bold=True)
 
     doc.save(output_path)
     return output_path
