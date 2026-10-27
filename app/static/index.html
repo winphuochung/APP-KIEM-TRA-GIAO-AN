@@ -2927,25 +2927,6 @@
     }
 
     // =========================================================================
-    // XỬ LÝ SỔ TAY TỔ TRƯỜNG & BÁO CÁO SƠ KẾT THÁNG
-    // =========================================================================
-    let currentNotebookData = null;
-
-    function initNotebookWeekOptions() {
-      const select = document.getElementById('notebook-week-select');
-      if (!select || select.children.length > 0) return;
-      select.innerHTML = '';
-      for (let i = 1; i <= 35; i++) {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = `Tuần ${i}`;
-        if (i === 1) opt.selected = true;
-        select.appendChild(opt);
-      }
-    }
-
-    
-    // =========================================================================
     // SỔ TAY TỔ TRƯỞNG & BÁO CÁO 4 CẤP ĐỘ THEO 4 CÔNG VĂN CẤP TRƯỜNG
     // =========================================================================
     let currentNotebookSubTab = 'week';
@@ -2981,7 +2962,8 @@
 
     function initNotebookWeekOptions() {
       const select = document.getElementById('notebook-week-select');
-      if (!select || select.options.length > 0) return;
+      if (!select) return;
+      if ((select.options && select.options.length > 0) || (select.children && select.children.length > 0)) return;
       select.innerHTML = '';
       for (let i = 1; i <= 35; i++) {
         const opt = document.createElement('option');
@@ -3119,6 +3101,70 @@
         `;
         tbody.appendChild(tr);
       });
+    }
+
+    
+    async function saveNotebookWeekData() {
+      const select = document.getElementById('notebook-week-select');
+      const weekVal = select ? parseInt(select.value) : 1;
+      const rows = document.querySelectorAll('#notebook-tbody tr');
+      const records = [];
+
+      rows.forEach((tr, idx) => {
+        const orig = (currentNotebookData && currentNotebookData[idx]) ? currentNotebookData[idx] : {};
+        const attEl = tr.querySelector('[data-field="attendance"]');
+        const ppctEl = tr.querySelector('[data-field="ppct_status"]');
+        const lateEl = tr.querySelector('[data-field="late_periods"]');
+        const driveEl = tr.querySelector('[data-field="giao_an_drive"]');
+        const dddhEl = tr.querySelector('[data-field="dddh_count"]');
+        const cnttEl = tr.querySelector('[data-field="cntt_count"]');
+        const rankEl = tr.querySelector('[data-field="ranking"]');
+
+        records.push({
+          teacher_id: orig.teacher_id || `t_${idx}`,
+          teacher_name: orig.teacher_name || '',
+          role: orig.role || 'Giáo viên',
+          subjects: orig.subjects || '',
+          grades: orig.grades || '',
+          classes: orig.classes || '',
+          homeroom: orig.homeroom || '',
+          attendance: attEl ? attEl.value : (orig.attendance || 'Đúng giờ'),
+          ppct_status: ppctEl ? ppctEl.value : (orig.ppct_status || 'Đúng tiến độ'),
+          late_periods: lateEl ? (parseInt(lateEl.value) || 0) : (orig.late_periods || 0),
+          makeup_plan: orig.makeup_plan || '',
+          sodaubai: orig.sodaubai || 'Đầy đủ',
+          sodaubai_errors: orig.sodaubai_errors || 0,
+          diem_so: orig.diem_so || 'Kịp thời',
+          diem_danh: orig.diem_danh || 'Kịp thời',
+          giao_an_status: orig.giao_an_status || 'Soạn đủ',
+          giao_an_drive: driveEl ? driveEl.value : (orig.giao_an_drive || 'Đã nộp đúng hạn'),
+          nls_integration: orig.nls_integration || 'Đạt chuẩn NLS',
+          dddh_count: dddhEl ? (parseInt(dddhEl.value) || 0) : (orig.dddh_count || 0),
+          cntt_count: cnttEl ? (parseInt(cnttEl.value) || 0) : (orig.cntt_count || 0),
+          observations: orig.observations || [],
+          stem_or_demo: orig.stem_or_demo || [],
+          competitions: orig.competitions || [],
+          hsg_phudao: orig.hsg_phudao || '',
+          note: orig.note || '',
+          ranking: rankEl ? rankEl.value : (orig.ranking || 'HTT')
+        });
+      });
+
+      try {
+        const res = await fetch('/api/notebook/week', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ week: weekVal, records: records })
+        });
+        const data = await res.json();
+        currentNotebookData = records;
+        showScheduleNotification(`Đã lưu thành công Sổ tay Tổ trưởng Tuần ${weekVal}!`, 'success');
+        if (typeof loadDashboardData === 'function') loadDashboardData();
+        if (typeof checkSupabaseStatus === 'function') checkSupabaseStatus();
+      } catch (err) {
+        console.error('Lỗi lưu Sổ tay:', err);
+        showScheduleNotification('Lỗi lưu Sổ tay: ' + err.message, 'error');
+      }
     }
 
     function openNotebookTeacherDetailModal(idx) {
