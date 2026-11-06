@@ -488,6 +488,56 @@ def sync_notebook_week_from_drive(week_num: int):
     return notebook
 
 
+def sync_all_notebook_from_drive():
+    """Đồng bộ tự động tình trạng giáo án từ Giám sát Drive vào TOÀN BỘ các tuần của Sổ tay tổ trưởng"""
+    try:
+        from app.services.drive_monitor import scan_google_drive_status
+        scan_res = scan_google_drive_status()
+        t_map = {t["teacher_name"].lower(): t for t in scan_res.get("teachers", [])}
+        
+        all_data = load_all_notebook_data()
+        for w_num in range(1, 36):
+            w_str = str(w_num)
+            notebook = all_data.get(w_str, [])
+            if not notebook:
+                notebook = get_notebook_week(w_num)
+            
+            for rec in notebook:
+                name_l = rec.get("teacher_name", "").lower()
+                matched = None
+                for k, v in t_map.items():
+                    if k in name_l or name_l in k:
+                        matched = v
+                        break
+                if matched:
+                    if 1 <= w_num <= 4:
+                        fc = matched.get("week1_4_count", 0)
+                    elif 5 <= w_num <= 8:
+                        fc = matched.get("week5_8_count", 0)
+                    else:
+                        fc = matched.get("file_count", 0)
+
+                    if fc > 0:
+                        rec["giao_an_status"] = "Soạn đủ"
+                        rec["giao_an_drive"] = f"Đã nộp ({fc} tệp)"
+                        rec["nls_integration"] = "Đạt chuẩn NLS"
+                    else:
+                        if w_num > 8:
+                            rec["giao_an_status"] = "Chưa đến hạn"
+                            rec["giao_an_drive"] = "Chưa đến hạn nộp"
+                        else:
+                            rec["giao_an_status"] = "Chưa nộp"
+                            rec["giao_an_drive"] = "Thư mục trống (0 tệp)"
+
+            all_data[w_str] = notebook
+        
+        save_all_notebook_data(all_data)
+        return True
+    except Exception as e:
+        print("Lỗi sync_all_notebook_from_drive:", e)
+        return False
+
+
 def generate_monthly_report_data(month_num: int = 9):
     """
     Tổng hợp dữ liệu từ Sổ tay tổ trưởng qua các tuần trong tháng

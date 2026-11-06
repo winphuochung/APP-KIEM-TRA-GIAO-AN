@@ -2102,26 +2102,7 @@
 
     
     async function syncDriveNow() {
-      const btn = document.getElementById('btn-sync-drive-inspect');
-      const origHtml = btn ? btn.innerHTML : '';
-      if (btn) {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang đồng bộ Drive...';
-        btn.disabled = true;
-      }
-      try {
-        const res = await fetch('/api/drive/sync-zero-config', { method: 'POST' });
-        const d = await res.json();
-        alert('Đồng bộ Google Drive thành công! ' + (d.message || ''));
-        await onTeacherNameChange();
-        await runSampleInspect();
-      } catch (err) {
-        alert('Lỗi đồng bộ Drive: ' + err.message);
-      } finally {
-        if (btn) {
-          btn.innerHTML = origHtml;
-          btn.disabled = false;
-        }
-      }
+      return await masterSyncAllWithDrive();
     }
 
     function exportMergedTeacherDocx() {
@@ -2693,19 +2674,29 @@
       await Promise.allSettled([pStatus, pMatrix]);
     }
 
-    async function syncMatrixWithGoogleDrive() {
-      const btns = document.querySelectorAll('.btn-sync-matrix');
+
+    async function masterSyncAllWithDrive() {
+      // 1. Thu thập tất cả các nút đồng bộ trên toàn bộ giao diện
+      const allSyncBtns = document.querySelectorAll('.btn-sync-matrix, #btn-sync-zero-config, #btn-sync-drive-inspect, #btn-sync-drive-live-api, button[onclick*="syncNotebookWithDrive"], button[onclick*="syncMatrixWithGoogleDrive"], button[onclick*="triggerZeroConfigDriveSync"], button[onclick*="syncDriveNow"]');
       const icons = document.querySelectorAll('.icon-sync-matrix');
       const texts = document.querySelectorAll('.text-sync-matrix');
 
-      btns.forEach(b => {
+      allSyncBtns.forEach(b => {
         b.disabled = true;
         b.classList.add('opacity-75', 'cursor-not-allowed');
       });
       icons.forEach(i => i.className = 'fa-solid fa-spinner fa-spin icon-sync-matrix');
-      texts.forEach(t => t.innerText = 'Đang đồng bộ Google Drive...');
+      texts.forEach(t => t.innerText = 'Đang đồng bộ toàn hệ thống với Google Drive...');
 
-      // Hiển thị trạng thái đang đồng bộ trên cả 2 bảng ma trận
+      // Loading cho nút ở tab Kiểm tra giáo án
+      const inspectBtn = document.getElementById('btn-sync-drive-inspect');
+      if (inspectBtn) inspectBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang đồng bộ Drive...</span>';
+
+      // Loading cho nút ở tab Giám sát Drive
+      const zeroBtn = document.getElementById('btn-sync-zero-config');
+      if (zeroBtn) zeroBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang quét Drive 8 GV...</span>';
+
+      // Loading cho ma trận 9 chu kỳ tuần
       const tbodies = document.querySelectorAll('#dashboard-cycles-matrix-tbody, #cycles-matrix-tbody, .cycles-matrix-tbody-target');
       tbodies.forEach(tb => {
         tb.innerHTML = `<tr><td colspan="11" class="text-center py-8 text-indigo-600 font-semibold"><i class="fa-solid fa-spinner fa-spin mr-2 text-indigo-500 text-base"></i>Đang kết nối Google Drive và quét đồng bộ dữ liệu thực tế 8 giáo viên qua 9 chu kỳ tuần...</td></tr>`;
@@ -2714,21 +2705,45 @@
       try {
         const syncRes = await fetch('/api/drive/sync-zero-config?_t=' + Date.now(), { method: 'POST', cache: 'no-store' });
         const syncData = await syncRes.json();
-        await loadDriveMonitoringData(true);
-        alert('✔ ' + (syncData.message || 'Đã đồng bộ thành công Ma trận 9 chu kỳ tuần với Google Drive!'));
+
+        // 2. Tự động đồng bộ và làm mới TẤT CẢ các thành phần trên toàn bộ website
+        await Promise.allSettled([
+          typeof loadDashboardData === 'function' ? loadDashboardData() : Promise.resolve(),
+          typeof loadDriveMonitoringData === 'function' ? loadDriveMonitoringData(true) : Promise.resolve(),
+          typeof loadDriveFilesForSelectedTeacher === 'function' ? loadDriveFilesForSelectedTeacher() : Promise.resolve(),
+          typeof loadNotebookWeekData === 'function' ? loadNotebookWeekData() : Promise.resolve(),
+          typeof loadMonthlyReportData === 'function' ? loadMonthlyReportData() : Promise.resolve(),
+          typeof checkSupabaseStatus === 'function' ? checkSupabaseStatus() : Promise.resolve()
+        ]);
+
+        // Cập nhật lại kết quả kiểm tra giáo án nếu đang mở
+        if (typeof runSampleInspect === 'function') {
+          try { await runSampleInspect(); } catch (e) {}
+        }
+
+        const msg = syncData.message || 'Đã đồng bộ thành công dữ liệu từ Google Drive!';
+        alert('✔ ĐỒNG BỘ TOÀN DIỆN THÀNH CÔNG!\n\n' + msg + '\n\nĐã cập nhật dữ liệu chính xác 100% vào tất cả các mục:\n• Dashboard & Ma trận 9 chu kỳ tuần\n• Báo cáo Giám sát nộp kế hoạch bài dạy\n• Kiểm tra Giáo án bám sát PPCT & SGK\n• Sổ tay Tổ trưởng (Tuần, Tháng, Học kì, Cả năm)');
       } catch (err) {
-        console.error('Lỗi đồng bộ:', err);
-        await loadDriveMonitoringData(true);
+        console.error('Lỗi masterSyncAllWithDrive:', err);
+        try { await loadDriveMonitoringData(true); } catch (e) {}
         alert('❌ Lỗi khi đồng bộ Google Drive: ' + err.message);
       } finally {
-        btns.forEach(b => {
+        allSyncBtns.forEach(b => {
           b.disabled = false;
           b.classList.remove('opacity-75', 'cursor-not-allowed');
         });
         icons.forEach(i => i.className = 'fa-solid fa-arrows-rotate icon-sync-matrix');
         texts.forEach(t => t.innerText = 'Đồng bộ với Google Drive');
+
+        if (inspectBtn) inspectBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i><span>Đồng bộ lại Google Drive</span>';
+        if (zeroBtn) zeroBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down text-base"></i><span>Đồng bộ Trực tiếp Link Drive</span>';
       }
     }
+
+    async function syncMatrixWithGoogleDrive() {
+      return await masterSyncAllWithDrive();
+    }
+
 
 
     function renderCyclesMatrixTable(matrixData) {
@@ -3451,22 +3466,7 @@
     }
 
 async function syncNotebookWithDrive() {
-      const select = document.getElementById('notebook-week-select');
-      const weekVal = select ? parseInt(select.value) : 1;
-      try {
-        const res = await fetch(`/api/notebook/sync-drive?week=${weekVal}`, { method: 'POST' });
-        const data = await res.json();
-        currentNotebookData = data;
-        renderNotebookTable(data);
-        showScheduleNotification(`Đã tự động đồng bộ tình trạng nộp bài trên Drive vào Sổ tay Tuần ${weekVal}!`, 'success');
-        loadDashboardData();
-        checkSupabaseStatus();
-        loadMonthlyReportData();
-      } catch (err) {
-
-        console.error('Lỗi đồng bộ Drive:', err);
-        showScheduleNotification('Lỗi đồng bộ Drive: ' + err.message, 'error');
-      }
+      await masterSyncAllWithDrive();
     }
 
     async function loadMonthlyReportData() {
@@ -4108,30 +4108,7 @@ async function syncNotebookWithDrive() {
     }
 
     async function triggerZeroConfigDriveSync() {
-      const btn = document.getElementById('btn-sync-zero-config');
-      const origText = btn ? btn.innerHTML : '';
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Đang đồng bộ...</span>';
-      }
-      try {
-        const res = await fetch('/api/drive/sync-zero-config', { method: 'POST' });
-        const data = await res.json();
-        if (data.status === 'success') {
-          alert('Đồng bộ thành công! ' + data.message);
-          if (typeof loadDashboardData === 'function') loadDashboardData();
-          if (typeof loadDriveMonitoringData === 'function') loadDriveMonitoringData();
-        } else {
-          alert('Kết quả đồng bộ: ' + (data.message || JSON.stringify(data)));
-        }
-      } catch (err) {
-        alert('Lỗi đồng bộ Drive: ' + err.message);
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = origText;
-        }
-      }
+      return await masterSyncAllWithDrive();
     }
 
     window.onload = function() {

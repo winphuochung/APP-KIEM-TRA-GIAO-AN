@@ -266,6 +266,13 @@ def perform_zero_config_drive_sync():
     except Exception as e:
         print(f"Error updating monitoring log: {e}")
 
+    # 4. Cập nhật đồng bộ toàn bộ Sổ tay tổ trưởng (so_tay_to_truong.json)
+    try:
+        from app.services.notebook_monthly_report import sync_all_notebook_from_drive
+        sync_all_notebook_from_drive()
+    except Exception as e:
+        print(f"Error updating notebook from drive: {e}")
+
     return {
         "status": "success",
         "message": f"Đã tự động quét và đồng bộ trực tiếp dữ liệu Google Drive của {scanned_teachers_count} giáo viên!",
