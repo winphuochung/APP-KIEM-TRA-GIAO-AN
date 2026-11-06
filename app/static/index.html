@@ -145,7 +145,7 @@
             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng số Giáo viên</p>
             <h3 class="text-2xl font-bold text-slate-800 mt-1">8 Thầy/Cô</h3>
             <span class="inline-flex items-center text-xs font-medium text-emerald-600 mt-1">
-              <i class="fa-solid fa-check-circle mr-1"></i> 100% hồ sơ Tuần 1-4
+              <i class="fa-solid fa-check-circle mr-1"></i> 100% Tuần 1-8 • 87.5% Tuần 9-12
             </span>
           </div>
           <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
@@ -182,12 +182,12 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tiến độ Giảng dạy</p>
-            <h3 class="text-2xl font-bold text-slate-800 mt-1">Đúng tiến độ</h3>
-            <span class="inline-flex items-center text-xs font-medium text-blue-600 mt-1">
-              <i class="fa-solid fa-clock-rotate-left mr-1"></i> Đón đầu Tuần 5-6
+            <h3 id="dashboard-progress-title" class="text-2xl font-bold text-slate-800 mt-1">Vượt tiến độ</h3>
+            <span id="dashboard-progress-subtitle" class="inline-flex items-center text-xs font-medium text-emerald-600 mt-1">
+              <i class="fa-solid fa-clock-rotate-left mr-1"></i> Đón đầu Tuần 9-12 (7/8 GV)
             </span>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
             <i class="fa-solid fa-diagram-project"></i>
           </div>
         </div>
@@ -1120,12 +1120,12 @@
 
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tiến Độ Tuần 5 - 8</p>
-            <h4 class="text-xl font-bold text-indigo-600 mt-0.5">Đang Thu Nhận</h4>
-            <span class="text-[11px] text-indigo-600 font-medium">Theo lịch tuần 04 của tổ</span>
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tiến Độ Tuần 5 - 8 & 9 - 12</p>
+            <h4 class="text-xl font-bold text-emerald-600 mt-0.5">Vượt Tiến Độ</h4>
+            <span class="text-[11px] text-emerald-600 font-medium">Tuần 5-8 (100%) • Tuần 9-12 (87.5%)</span>
           </div>
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-circle-check"></i>
           </div>
         </div>
 
@@ -1917,7 +1917,13 @@
             <td class="px-6 py-3.5 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs font-bold">${t.completion_rate}%</span></td>
             <td class="px-6 py-3.5 text-center font-bold text-blue-600">${t.tii_score}</td>
             <td class="px-6 py-3.5 text-center font-bold text-indigo-600">${t.car_score}%</td>
-            <td class="px-6 py-3.5 text-center"><span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-medium">${t.progress_status}</span></td>
+            <td class="px-6 py-3.5 text-center">
+              <span class="text-xs px-2.5 py-1 rounded-md font-semibold inline-block ${
+                (t.progress_status || '').includes('Vượt') ? 'bg-purple-100 text-purple-800 border border-purple-200' :
+                (t.progress_status || '').includes('Đúng') ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
+                'bg-slate-100 text-slate-700'
+              }">${t.progress_status}</span>
+            </td>
             <td class="px-6 py-3.5 text-right">
               <button onclick="quickInspectTeacher('${t.id}')" class="text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold px-2.5 py-1 rounded-lg transition">Kiểm định</button>
             </td>

@@ -299,7 +299,7 @@ def generate_inspection_report(teacher_name="Phạm Thị Cúc", inspector_name=
 
     doc.add_paragraph("a) Ưu điểm:").runs[0].font.bold = True
     for u in [
-        "Tiến độ: Hoàn thành 100% kế hoạch bài dạy từ Tuần 1 đến 4, có sự chuẩn bị đón đầu sang tuần 5 và 6.",
+        "Tiến độ: Hoàn thành 100% kế hoạch bài dạy từ Tuần 1 đến 8, 7/8 giáo viên đã đón đầu hoàn thành nộp Tuần 9 đến 12, Thầy Thắng đã nộp vượt tiến độ đến Tuần 32.",
         "Sư phạm (5512): Tuân thủ đầy đủ chuỗi 4 hoạt động và cấu trúc mục tiêu theo định hướng GDPT 2018.",
         "Đổi mới kiểm tra đánh giá: Điểm sáng mẫu mực là hệ thống Rubrics 3 mức độ ở môn KHTN 9."
     ]:

@@ -15,7 +15,7 @@
     ],
     "homeroom": "9A2",
     "completion_rate": 100,
-    "progress_status": "Đúng tiến độ",
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 9-12)",
     "tii_score": 88,
     "car_score": 92,
     "radar": {
@@ -49,7 +49,7 @@
     ],
     "homeroom": "9A1",
     "completion_rate": 100,
-    "progress_status": "Đúng tiến độ",
+    "progress_status": "Vượt tiến độ (Đã nộp đến Tuần 32)",
     "tii_score": 94,
     "car_score": 96,
     "radar": {
@@ -76,7 +76,7 @@
     ],
     "homeroom": "",
     "completion_rate": 100,
-    "progress_status": "Đúng tiến độ",
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 9-12)",
     "tii_score": 89,
     "car_score": 90,
     "radar": {
@@ -105,7 +105,7 @@
     ],
     "homeroom": "7A1",
     "completion_rate": 95,
-    "progress_status": "Đúng tiến độ",
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 5-8)",
     "tii_score": 85,
     "car_score": 88,
     "radar": {
@@ -134,8 +134,8 @@
       "9A2"
     ],
     "homeroom": "8A2",
-    "completion_rate": 92,
-    "progress_status": "Đúng tiến độ",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 9-12)",
     "tii_score": 84,
     "car_score": 87,
     "radar": {
@@ -163,8 +163,8 @@
       "9A2"
     ],
     "homeroom": "",
-    "completion_rate": 94,
-    "progress_status": "Đúng tiến độ",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 9-12)",
     "tii_score": 86,
     "car_score": 89,
     "radar": {
@@ -195,8 +195,8 @@
       "7A2"
     ],
     "homeroom": "6A1",
-    "completion_rate": 90,
-    "progress_status": "Đúng tiến độ",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 9-12)",
     "tii_score": 82,
     "car_score": 85,
     "radar": {
@@ -223,8 +223,8 @@
       "8A1"
     ],
     "homeroom": "6A1",
-    "completion_rate": 90,
-    "progress_status": "Đúng tiến độ",
+    "completion_rate": 100,
+    "progress_status": "Đúng tiến độ (Đã nộp Tuần 9-12)",
     "tii_score": 83,
     "car_score": 86,
     "radar": {
