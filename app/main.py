@@ -584,6 +584,45 @@ def api_export_notebook_year_docx():
     )
 
 # =========================================================================
+# TÍNH NĂNG: ĐÁNH GIÁ KPI & XẾP LOẠI VIÊN CHỨC (Nghị định 90/2020/NĐ-CP & TT 20/2018)
+# =========================================================================
+@app.get("/api/kpi/data")
+def api_get_kpi_data(type: str = "week", val: int = 1):
+    """
+    Lấy bảng điểm KPI & Xếp loại viên chức/giáo viên:
+    type: 'week' | 'month' | 'semester' | 'year'
+    val: số tuần (1-35), số tháng (9-5), số học kỳ (1-2)
+    """
+    from app.services.kpi_evaluation_engine import (
+        calculate_all_teachers_kpi_week,
+        calculate_all_teachers_kpi_month,
+        calculate_all_teachers_kpi_semester,
+        calculate_all_teachers_kpi_year
+    )
+    if type == "week":
+        return calculate_all_teachers_kpi_week(val)
+    elif type == "month":
+        return calculate_all_teachers_kpi_month(val)
+    elif type == "semester":
+        return calculate_all_teachers_kpi_semester(val)
+    elif type == "year":
+        return calculate_all_teachers_kpi_year()
+    return calculate_all_teachers_kpi_week(1)
+
+
+@app.get("/api/kpi/export-docx")
+def api_export_kpi_docx(type: str = "week", val: int = 1):
+    """Xuất Báo cáo KPI Word chuẩn Nghị định 30/2020/NĐ-CP"""
+    from app.services.kpi_evaluation_engine import export_kpi_report_word
+    out_file = export_kpi_report_word(period_type=type, period_val=val)
+    filename = os.path.basename(out_file)
+    return FileResponse(
+        out_file,
+        filename=filename,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
+# =========================================================================
 # TÍNH NĂNG: KẾT NỐI VÀ ĐỒNG BỘ CƠ SỞ DỮ LIỆU SUPABASE CLOUD
 # =========================================================================
 from app.services.supabase_client import get_supabase_status, sync_all_to_supabase

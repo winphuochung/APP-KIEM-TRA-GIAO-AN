@@ -1298,6 +1298,10 @@
             <i class="fa-solid fa-trophy text-amber-500"></i>
             <span>4. Tổng Kết Cả Năm Học</span>
           </button>
+          <button onclick="switchNotebookSubTab('kpi')" id="nb-subtab-btn-kpi" class="px-4 py-2 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900 hover:bg-white/60 flex items-center gap-2 cursor-pointer border border-transparent hover:border-emerald-300">
+            <i class="fa-solid fa-chart-line text-emerald-600"></i>
+            <span>5. Đánh Giá KPI Giáo Viên (Thang 100đ - NĐ 90)</span>
+          </button>
         </div>
 
         <!-- =================================================================== -->
@@ -1547,6 +1551,182 @@
                 <!-- Rendered via JS -->
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- SUB-TAB 5: ĐÁNH GIÁ KPI GIÁO VIÊN (THANG 100 ĐIỂM - NGHỊ ĐỊNH 90 & 48) -->
+        <!-- =================================================================== -->
+        <div id="nb-pane-kpi" class="hidden space-y-5">
+          <!-- Control bar -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 p-4 bg-gradient-to-r from-emerald-50/80 via-white to-teal-50/80 border border-emerald-200/80 rounded-xl shadow-xs">
+            <div class="flex flex-wrap items-center gap-3">
+              <!-- Scope selector -->
+              <div class="flex items-center gap-2 bg-white border border-slate-300 rounded-lg px-3 py-1.5 shadow-xs">
+                <i class="fa-solid fa-filter text-emerald-600 text-xs"></i>
+                <label class="text-xs font-bold text-slate-700 whitespace-nowrap">Kỳ đánh giá:</label>
+                <select id="kpi-scope-type" onchange="onKpiScopeChange()" class="bg-transparent text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer">
+                  <option value="week" selected>Theo Từng Tuần (Tuần 1 - 35)</option>
+                  <option value="month">Theo Từng Tháng (Tháng 9 - 5)</option>
+                  <option value="semester-1">Sơ Kết Học Kỳ I (Tuần 1 - 18)</option>
+                  <option value="semester-2">Sơ Kết Học Kỳ II (Tuần 19 - 35)</option>
+                  <option value="year">Tổng Kết Đánh Giá Cả Năm Học</option>
+                </select>
+              </div>
+
+              <!-- Scope value select (for week or month) -->
+              <div id="kpi-scope-val-container" class="flex items-center gap-2 bg-white border border-slate-300 rounded-lg px-3 py-1.5 shadow-xs">
+                <label id="kpi-scope-val-label" class="text-xs font-bold text-slate-700 whitespace-nowrap">Chọn tuần:</label>
+                <select id="kpi-scope-val-select" onchange="loadKpiData()" class="bg-transparent text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer">
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+
+              <span id="kpi-period-title-badge" class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-200">
+                Tuần 1 (08/09/2026 - 13/09/2026) - HK I
+              </span>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="syncKpiWithDrive()" class="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-xs hover:border-emerald-400 cursor-pointer" title="Đồng bộ lại dữ liệu Drive & tính lại điểm KPI">
+                <i class="fa-solid fa-rotate text-emerald-600"></i>
+                <span>Đồng bộ từ Drive</span>
+              </button>
+              <button onclick="downloadKpiDocx()" class="px-4 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-xs cursor-pointer" title="Xuất báo cáo bảng điểm KPI bản Word chuẩn Nghị định 30/2020">
+                <i class="fa-solid fa-file-word"></i>
+                <span>Xuất Báo Cáo KPI Word (.docx)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Legal & Standard Reference Banner -->
+          <div class="p-3.5 bg-blue-50/70 border border-blue-200/70 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-blue-900">
+            <div class="flex items-start gap-2.5">
+              <i class="fa-solid fa-scale-balanced text-blue-600 text-sm mt-0.5"></i>
+              <div>
+                <span class="font-bold">Căn cứ pháp lý đánh giá xếp loại:</span> 
+                Nghị định 90/2020/NĐ-CP & NĐ 48/2023/NĐ-CP (Đánh giá xếp loại viên chức) • Thông tư 20/2018/TT-BGDĐT (Chuẩn nghề nghiệp GV) • Công văn 5512/BGDĐT-GDTrH (KHBD 4 hoạt động) • Thông tư 22/2021/TT-BGDĐT • Nghị định 30/2020/NĐ-CP • QĐ 219 & Quy chế 263, 265 Trường TH & THCS Phước Hưng.
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[11px]">HTXSNV: ≥90đ</span>
+              <span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded font-bold text-[11px]">HTTNV: 70-89đ</span>
+              <span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-bold text-[11px]">HTNV: 50-69đ</span>
+              <span class="px-2 py-0.5 bg-red-100 text-red-800 rounded font-bold text-[11px]">KHTNV: <50đ</span>
+            </div>
+          </div>
+
+          <!-- KPI Summary Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="p-3.5 bg-white border border-slate-200 rounded-xl shadow-xs">
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Điểm KPI Trung Bình Tổ</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="kpi-stat-avg-score" class="text-2xl font-black text-emerald-600">--</span>
+                <span class="text-xs text-slate-400 font-semibold">/ 100 điểm</span>
+              </div>
+            </div>
+            <div class="p-3.5 bg-emerald-50/60 border border-emerald-200 rounded-xl shadow-xs">
+              <p class="text-[11px] font-semibold text-emerald-800 uppercase tracking-wide">Hoàn Thành Xuất Sắc</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="kpi-stat-excellent" class="text-2xl font-black text-emerald-700">--</span>
+                <span id="kpi-stat-excellent-pct" class="text-xs text-emerald-600 font-semibold">(0%)</span>
+              </div>
+            </div>
+            <div class="p-3.5 bg-blue-50/60 border border-blue-200 rounded-xl shadow-xs">
+              <p class="text-[11px] font-semibold text-blue-800 uppercase tracking-wide">Hoàn Thành Tốt</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="kpi-stat-good" class="text-2xl font-black text-blue-700">--</span>
+                <span id="kpi-stat-good-pct" class="text-xs text-blue-600 font-semibold">(0%)</span>
+              </div>
+            </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl shadow-xs">
+              <p class="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">Hoàn Thành / Chưa Đạt</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="kpi-stat-other" class="text-2xl font-black text-slate-700">--</span>
+                <span class="text-xs text-slate-400 font-semibold">giáo viên</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI Teachers Table -->
+          <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+            <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-600"></i>
+                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider" id="kpi-table-title">
+                  BẢNG ĐIỂM KPI ĐÁNH GIÁ XẾP LOẠI GIÁO VIÊN TỔ TOÁN - KHTN - CÔNG NGHỆ (THANG 100 ĐIỂM)
+                </h4>
+              </div>
+              <span class="text-[11px] text-slate-500 italic">Dữ liệu công khai, minh bạch, đối chiếu tự động với Drive & Sổ theo dõi</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-100/90 text-slate-700 font-bold border-b border-slate-200 uppercase text-[11px] tracking-wider">
+                    <th class="py-2.5 px-2 text-center w-10">STT</th>
+                    <th class="py-2.5 px-3 min-w-[150px]">Giáo viên & Chức danh</th>
+                    <th class="py-2.5 px-2.5 text-center min-w-[110px]" title="Kỷ luật lao động, Ngày công & Tiến độ PPCT (Tối đa 25.0đ)">
+                      TC I: Ngày công<br><span class="text-[10px] text-slate-500 font-normal">(Max 25đ)</span>
+                    </th>
+                    <th class="py-2.5 px-2.5 text-center min-w-[120px]" title="Chất lượng KHBD theo CV 5512, thể thức NĐ 30, nộp Drive (Tối đa 30.0đ)">
+                      TC II: Soạn giảng<br><span class="text-[10px] text-slate-500 font-normal">(Max 30đ)</span>
+                    </th>
+                    <th class="py-2.5 px-2.5 text-center min-w-[110px]" title="Giảng dạy, Dự giờ, Thao giảng, ĐDDH/CNTT (Tối đa 25.0đ)">
+                      TC III: Dự giờ<br><span class="text-[10px] text-slate-500 font-normal">(Max 25đ)</span>
+                    </th>
+                    <th class="py-2.5 px-2.5 text-center min-w-[110px]" title="Phong trào HSG/TTN-NĐ, Kiêm nhiệm, Đạo đức (Tối đa 20.0đ)">
+                      TC IV: Phong trào<br><span class="text-[10px] text-slate-500 font-normal">(Max 20đ)</span>
+                    </th>
+                    <th class="py-2.5 px-3 text-center min-w-[130px]">
+                      Tổng Điểm KPI<br><span class="text-[10px] text-emerald-700 font-normal">(Thang 100)</span>
+                    </th>
+                    <th class="py-2.5 px-2.5 text-center min-w-[130px]">
+                      Xếp Loại NĐ 90
+                    </th>
+                    <th class="py-2.5 px-2.5 text-center min-w-[110px]">
+                      Đề Xuất Danh Hiệu
+                    </th>
+                    <th class="py-2.5 px-2.5 text-center w-20">
+                      Chi Tiết
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="kpi-tbody" class="divide-y divide-slate-100 text-slate-700">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODAL CHI TIẾT PHIẾU ĐÁNH GIÁ KPI TỪNG GIÁO VIÊN -->
+        <div id="kpi-detail-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div class="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-4 bg-gradient-to-r from-emerald-700 to-teal-800 text-white flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold flex items-center gap-2">
+                  <i class="fa-solid fa-file-lines"></i>
+                  <span id="kpi-modal-teacher-name">PHIẾU ĐÁNH GIÁ TIÊU CHÍ KPI CHI TIẾT</span>
+                </h3>
+                <p id="kpi-modal-subtitle" class="text-xs text-emerald-100 mt-0.5">Thời gian đánh giá: Tuần 1 (HK I)</p>
+              </div>
+              <button onclick="closeKpiDetailModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+              </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-4 text-xs" id="kpi-modal-body">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+              <span class="text-[11px] text-slate-500 italic">Thang điểm 100đ đối chiếu theo Nghị định 90/2020/NĐ-CP & CV 5512/BGDĐT</span>
+              <button onclick="closeKpiDetailModal()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                Đóng
+              </button>
+            </div>
           </div>
         </div>
 
@@ -3022,7 +3202,7 @@
 
     function switchNotebookSubTab(subTab) {
       currentNotebookSubTab = subTab;
-      ['week', 'month', 'semester', 'year'].forEach(s => {
+      ['week', 'month', 'semester', 'year', 'kpi'].forEach(s => {
         const pane = document.getElementById('nb-pane-' + s);
         const btn = document.getElementById('nb-subtab-btn-' + s);
         if (pane) {
@@ -3044,6 +3224,10 @@
       if (subTab === 'week') loadNotebookWeekData();
       if (subTab === 'semester') loadNotebookSemesterData();
       if (subTab === 'year') loadNotebookYearData();
+      if (subTab === 'kpi') {
+        initKpiControls();
+        loadKpiData();
+      }
     }
 
     function initNotebookWeekOptions() {
@@ -3467,6 +3651,399 @@
 
 async function syncNotebookWithDrive() {
       await masterSyncAllWithDrive();
+    }
+
+
+    /* ========================================================================== */
+    /* 5. PHÂN HỆ ĐÁNH GIÁ KPI GIÁO VIÊN (THANG 100 ĐIỂM - NĐ 90 & NĐ 48) */
+    /* ========================================================================== */
+    let currentKpiData = null;
+
+    function initKpiControls() {
+      const scopeType = document.getElementById('kpi-scope-type');
+      if (!scopeType) return;
+      onKpiScopeChange(false);
+    }
+
+    function onKpiScopeChange(shouldReload = true) {
+      const scopeType = document.getElementById('kpi-scope-type').value;
+      const valContainer = document.getElementById('kpi-scope-val-container');
+      const valLabel = document.getElementById('kpi-scope-val-label');
+      const valSelect = document.getElementById('kpi-scope-val-select');
+
+      if (scopeType === 'week') {
+        valContainer.classList.remove('hidden');
+        valLabel.textContent = 'Chọn tuần:';
+        valSelect.innerHTML = '';
+        for (let i = 1; i <= 35; i++) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          const sem = i <= 18 ? 'HK I' : 'HK II';
+          opt.textContent = `Tuần ${i} (${sem})`;
+          if (i === 1) opt.selected = true;
+          valSelect.appendChild(opt);
+        }
+      } else if (scopeType === 'month') {
+        valContainer.classList.remove('hidden');
+        valLabel.textContent = 'Chọn tháng:';
+        valSelect.innerHTML = '';
+        const months = [
+          { val: 9, label: 'Tháng 9 (HK I)' },
+          { val: 10, label: 'Tháng 10 (HK I)' },
+          { val: 11, label: 'Tháng 11 (HK I)' },
+          { val: 12, label: 'Tháng 12 (HK I)' },
+          { val: 1, label: 'Tháng 1 (HK II)' },
+          { val: 2, label: 'Tháng 2 (HK II)' },
+          { val: 3, label: 'Tháng 3 (HK II)' },
+          { val: 4, label: 'Tháng 4 (HK II)' },
+          { val: 5, label: 'Tháng 5 (Tổng kết HK II)' },
+        ];
+        months.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m.val;
+          opt.textContent = m.label;
+          valSelect.appendChild(opt);
+        });
+      } else {
+        // Semester or Year - hide valSelect
+        valContainer.classList.add('hidden');
+      }
+
+      if (shouldReload) {
+        loadKpiData();
+      }
+    }
+
+    function getKpiRequestParams() {
+      const scopeType = document.getElementById('kpi-scope-type') ? document.getElementById('kpi-scope-type').value : 'week';
+      const valSelect = document.getElementById('kpi-scope-val-select');
+      let reqType = 'week';
+      let reqVal = 1;
+
+      if (scopeType === 'week') {
+        reqType = 'week';
+        reqVal = valSelect ? parseInt(valSelect.value) || 1 : 1;
+      } else if (scopeType === 'month') {
+        reqType = 'month';
+        reqVal = valSelect ? parseInt(valSelect.value) || 9 : 9;
+      } else if (scopeType === 'semester-1') {
+        reqType = 'semester';
+        reqVal = 1;
+      } else if (scopeType === 'semester-2') {
+        reqType = 'semester';
+        reqVal = 2;
+      } else if (scopeType === 'year') {
+        reqType = 'year';
+        reqVal = 1;
+      }
+      return { reqType, reqVal };
+    }
+
+    async function loadKpiData() {
+      const { reqType, reqVal } = getKpiRequestParams();
+      const tbody = document.getElementById('kpi-tbody');
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="10" class="py-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-emerald-600 text-lg mr-2"></i> Đang tính toán bảng điểm KPI tự động...</td></tr>`;
+      }
+
+      try {
+        const res = await fetch(`/api/kpi/data?type=${reqType}&val=${reqVal}`);
+        if (!res.ok) throw new Error('Không thể tải dữ liệu KPI');
+        const data = await res.json();
+        currentKpiData = data;
+        renderKpiTable(data);
+      } catch (err) {
+        console.error('Lỗi tải KPI:', err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="10" class="py-6 text-center text-rose-500 font-semibold">Lỗi: ${err.message}</td></tr>`;
+        }
+      }
+    }
+
+    function renderKpiTable(data) {
+      // Update Title & Badge
+      const titleBadge = document.getElementById('kpi-period-title-badge');
+      if (titleBadge) {
+        titleBadge.textContent = data.period_label || 'Kỳ đánh giá KPI';
+      }
+
+      const tableTitle = document.getElementById('kpi-table-title');
+      if (tableTitle) {
+        tableTitle.textContent = `BẢNG ĐIỂM KPI ĐÁNH GIÁ XẾP LOẠI GIÁO VIÊN - ${(data.period_label || '').toUpperCase()}`;
+      }
+
+      const teachers = data.teachers || [];
+      const stats = data.stats || {};
+
+      // Update Summary Cards
+      const avgElem = document.getElementById('kpi-stat-avg-score');
+      if (avgElem) avgElem.textContent = (stats.avg_score || 0).toFixed(1);
+
+      const excElem = document.getElementById('kpi-stat-excellent');
+      const excPctElem = document.getElementById('kpi-stat-excellent-pct');
+      if (excElem) excElem.textContent = stats.count_excellent || 0;
+      if (excPctElem) excPctElem.textContent = `(${stats.pct_excellent || 0}%)`;
+
+      const goodElem = document.getElementById('kpi-stat-good');
+      const goodPctElem = document.getElementById('kpi-stat-good-pct');
+      if (goodElem) goodElem.textContent = stats.count_good || 0;
+      if (goodPctElem) goodPctElem.textContent = `(${stats.pct_good || 0}%)`;
+
+      const otherElem = document.getElementById('kpi-stat-other');
+      if (otherElem) otherElem.textContent = (stats.count_satisfactory || 0) + (stats.count_unsatisfactory || 0);
+
+      // Render table rows
+      const tbody = document.getElementById('kpi-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (teachers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="py-6 text-center text-slate-400 italic">Không có dữ liệu giáo viên</td></tr>`;
+        return;
+      }
+
+      teachers.forEach((t, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-emerald-50/30 transition border-b border-slate-100 text-xs';
+
+        // Badge classification style
+        let badgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
+        if (t.classification === 'Hoàn thành xuất sắc nhiệm vụ') {
+          badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300 font-bold';
+        } else if (t.classification === 'Hoàn thành tốt nhiệm vụ') {
+          badgeClass = 'bg-blue-100 text-blue-800 border-blue-300 font-bold';
+        } else if (t.classification === 'Hoàn thành nhiệm vụ') {
+          badgeClass = 'bg-amber-100 text-amber-800 border-amber-300 font-bold';
+        } else {
+          badgeClass = 'bg-rose-100 text-rose-800 border-rose-300 font-bold';
+        }
+
+        // Progress bar color
+        let barColor = 'bg-emerald-600';
+        if (t.total_score < 50) barColor = 'bg-rose-500';
+        else if (t.total_score < 70) barColor = 'bg-amber-500';
+        else if (t.total_score < 90) barColor = 'bg-blue-500';
+
+        const tc1 = (t.tc1_score !== undefined) ? t.tc1_score : (t.standards?.tc1_discipline?.total ?? 0);
+        const tc2 = (t.tc2_score !== undefined) ? t.tc2_score : (t.standards?.tc2_lesson_plan?.total ?? 0);
+        const tc3 = (t.tc3_score !== undefined) ? t.tc3_score : (t.standards?.tc3_teaching_observ?.total ?? 0);
+        const tc4 = (t.tc4_score !== undefined) ? t.tc4_score : (t.standards?.tc4_movement_ethics?.total ?? 0);
+        const awardStr = t.emulation_title || t.proposed_award || '';
+
+        // Award badge
+        let awardHtml = '<span class="text-slate-400 italic text-[11px]">-</span>';
+        if (awardStr) {
+          if (awardStr.includes('Chiến sĩ thi đua')) {
+            awardHtml = `<span class="px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-md font-bold text-[10px] inline-flex items-center gap-1 shadow-2xs"><i class="fa-solid fa-medal text-amber-600"></i> ${awardStr}</span>`;
+          } else if (awardStr.includes('Lao động tiên tiến')) {
+            awardHtml = `<span class="px-2 py-0.5 bg-blue-100 text-blue-800 border border-blue-200 rounded-md font-semibold text-[10px] inline-flex items-center gap-1"><i class="fa-solid fa-award text-blue-500"></i> ${awardStr}</span>`;
+          } else {
+            awardHtml = `<span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-md text-[10px] font-semibold">${awardStr}</span>`;
+          }
+        }
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-2 text-center font-bold text-slate-400">${idx + 1}</td>
+          <td class="py-2.5 px-3">
+            <span class="font-bold text-slate-900 block text-xs hover:text-emerald-700 cursor-pointer" onclick="viewTeacherKpiDetail('${t.teacher_id}')">${t.teacher_name}</span>
+            <span class="text-[10px] text-slate-500 block">${t.role} • ${t.subjects || ''}</span>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <span class="font-bold text-slate-800 text-xs">${tc1.toFixed(1)}</span>
+            <span class="text-[10px] text-slate-400 block">/ 25.0</span>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <span class="font-bold text-slate-800 text-xs">${tc2.toFixed(1)}</span>
+            <span class="text-[10px] text-slate-400 block">/ 30.0</span>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <span class="font-bold text-slate-800 text-xs">${tc3.toFixed(1)}</span>
+            <span class="text-[10px] text-slate-400 block">/ 25.0</span>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <span class="font-bold text-slate-800 text-xs">${tc4.toFixed(1)}</span>
+            <span class="text-[10px] text-slate-400 block">/ 20.0</span>
+          </td>
+          <td class="py-2.5 px-3 text-center">
+            <div class="flex items-baseline justify-center gap-1">
+              <span class="text-sm font-black text-emerald-700">${t.total_score.toFixed(1)}</span>
+              <span class="text-[10px] text-slate-400 font-semibold">/ 100</span>
+            </div>
+            <div class="w-24 mx-auto bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
+              <div class="${barColor} h-1.5 rounded-full" style="width: ${Math.min(100, Math.max(0, t.total_score))}%"></div>
+            </div>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <span class="px-2 py-1 rounded-md text-[10px] border block whitespace-nowrap ${badgeClass}">
+              ${t.classification}
+            </span>
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            ${awardHtml}
+          </td>
+          <td class="py-2.5 px-2 text-center">
+            <button onclick="viewTeacherKpiDetail('${t.teacher_id}')" class="px-2.5 py-1 bg-white hover:bg-emerald-50 text-emerald-700 border border-emerald-300 rounded-md text-[11px] font-semibold transition cursor-pointer shadow-2xs hover:border-emerald-500" title="Xem bảng điểm chi tiết từng tiêu chí con">
+              <i class="fa-solid fa-eye"></i> Xem
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function viewTeacherKpiDetail(teacherId) {
+      if (!currentKpiData || !currentKpiData.teachers) return;
+      const t = currentKpiData.teachers.find(item => item.teacher_id === teacherId);
+      if (!t) return;
+
+      const modal = document.getElementById('kpi-detail-modal');
+      const teacherNameElem = document.getElementById('kpi-modal-teacher-name');
+      const subtitleElem = document.getElementById('kpi-modal-subtitle');
+      const bodyElem = document.getElementById('kpi-modal-body');
+
+      teacherNameElem.textContent = `PHIẾU ĐÁNH GIÁ KPI: ${t.teacher_name.toUpperCase()} (${t.role})`;
+      subtitleElem.textContent = `Kỳ đánh giá: ${currentKpiData.period_label || ''} • Tổng điểm: ${t.total_score.toFixed(1)}/100đ • Xếp loại: ${t.classification}`;
+
+      const st = t.standards;
+
+      bodyElem.innerHTML = `
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <div><span class="text-slate-500 block text-[10px]">Tiêu chuẩn I:</span><span class="font-bold text-slate-800">${(st.tc1_discipline.total || 0).toFixed(1)}/25.0đ</span></div>
+          <div><span class="text-slate-500 block text-[10px]">Tiêu chuẩn II:</span><span class="font-bold text-slate-800">${(st.tc2_lesson_plan.total || 0).toFixed(1)}/30.0đ</span></div>
+          <div><span class="text-slate-500 block text-[10px]">Tiêu chuẩn III:</span><span class="font-bold text-slate-800">${(st.tc3_teaching_observ.total || 0).toFixed(1)}/25.0đ</span></div>
+          <div><span class="text-slate-500 block text-[10px]">Tiêu chuẩn IV:</span><span class="font-bold text-slate-800">${(st.tc4_movement_ethics.total || 0).toFixed(1)}/20.0đ</span></div>
+        </div>
+
+        <!-- Tiêu chuẩn 1 -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <div class="bg-slate-100 px-3 py-1.5 font-bold text-slate-800 flex justify-between">
+            <span>TIÊU CHUẨN I: KỶ LUẬT LAO ĐỘNG, NGÀY CÔNG & TIẾN ĐỘ PPCT</span>
+            <span class="text-emerald-700">${(st.tc1_discipline.total || 0).toFixed(1)} / 25.0đ</span>
+          </div>
+          <table class="w-full text-left text-xs border-collapse">
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">1. Thực hiện ngày giờ công, lên lớp đúng giờ, sinh hoạt chuyên môn (Max: ${st.tc1_discipline.items.attendance_punctuality.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc1_discipline.items.attendance_punctuality.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc1_discipline.items.attendance_punctuality.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">2. Thực hiện kế hoạch dạy học, tiến độ PPCT, kiểm tra bù giờ (Max: ${st.tc1_discipline.items.curriculum_pacing.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc1_discipline.items.curriculum_pacing.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc1_discipline.items.curriculum_pacing.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">3. Nộp hồ sơ KHBD đầy đủ lên Google Drive đúng quy chế (Max: ${st.tc1_discipline.items.drive_submission_rate.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc1_discipline.items.drive_submission_rate.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc1_discipline.items.drive_submission_rate.note}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tiêu chuẩn 2 -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <div class="bg-slate-100 px-3 py-1.5 font-bold text-slate-800 flex justify-between">
+            <span>TIÊU CHUẨN II: CHẤT LƯỢNG KẾ HOẠCH BÀI DẠY (KHBD) & HỒ SƠ</span>
+            <span class="text-emerald-700">${(st.tc2_lesson_plan.total || 0).toFixed(1)} / 30.0đ</span>
+          </div>
+          <table class="w-full text-left text-xs border-collapse">
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">1. Cấu trúc bài dạy chuỗi 4 hoạt động theo Công văn 5512/BGDĐT (Max: ${st.tc2_lesson_plan.items.format_5512_compliance.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc2_lesson_plan.items.format_5512_compliance.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc2_lesson_plan.items.format_5512_compliance.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">2. Chuẩn thể thức văn bản hành chính theo Nghị định 30/2020 (Max: ${st.tc2_lesson_plan.items.format_nd30_standard.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc2_lesson_plan.items.format_nd30_standard.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc2_lesson_plan.items.format_nd30_standard.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">3. Tích hợp giáo dục Năng lực số, Dinh dưỡng, QPAN, ĐP (Max: ${st.tc2_lesson_plan.items.integration_topics.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc2_lesson_plan.items.integration_topics.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc2_lesson_plan.items.integration_topics.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">4. Hồ sơ sổ sách chuyên môn, theo dõi ĐGHS theo TT 22 (Max: ${st.tc2_lesson_plan.items.academic_records.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc2_lesson_plan.items.academic_records.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc2_lesson_plan.items.academic_records.note}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tiêu chuẩn 3 -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <div class="bg-slate-100 px-3 py-1.5 font-bold text-slate-800 flex justify-between">
+            <span>TIÊU CHUẨN III: GIẢNG DẠY, DỰ GIỜ, THAO GIẢNG & ĐỔI MỚI PPDH</span>
+            <span class="text-emerald-700">${(st.tc3_teaching_observ.total || 0).toFixed(1)} / 25.0đ</span>
+          </div>
+          <table class="w-full text-left text-xs border-collapse">
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">1. Dự giờ đồng nghiệp đủ số tiết theo quy chế trường (Max: ${st.tc3_teaching_observ.items.peer_observation.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc3_teaching_observ.items.peer_observation.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc3_teaching_observ.items.peer_observation.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">2. Thực hiện thao giảng, dạy chuyên đề, bài học STEM (Max: ${st.tc3_teaching_observ.items.demonstration_stem.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc3_teaching_observ.items.demonstration_stem.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc3_teaching_observ.items.demonstration_stem.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">3. Ứng dụng CNTT & Sử dụng Đồ dùng dạy học, phòng bộ môn (Max: ${st.tc3_teaching_observ.items.equipment_ict.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc3_teaching_observ.items.equipment_ict.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc3_teaching_observ.items.equipment_ict.note}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tiêu chuẩn 4 -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <div class="bg-slate-100 px-3 py-1.5 font-bold text-slate-800 flex justify-between">
+            <span>TIÊU CHUẨN IV: PHONG TRÀO, KIÊM NHIỆM, PHỐI HỢP & ĐẠO ĐỨC NGHỀ NGHIỆP</span>
+            <span class="text-emerald-700">${(st.tc4_movement_ethics.total || 0).toFixed(1)} / 20.0đ</span>
+          </div>
+          <table class="w-full text-left text-xs border-collapse">
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">1. Bồi dưỡng HSG, Hướng dẫn TTN-NĐ, NCKH, phong trào (Max: ${st.tc4_movement_ethics.items.student_movement.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc4_movement_ethics.items.student_movement.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc4_movement_ethics.items.student_movement.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">2. Tinh thần trách nhiệm, sinh hoạt tổ, kiêm nhiệm, đoàn kết (Max: ${st.tc4_movement_ethics.items.responsibility_teamwork.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc4_movement_ethics.items.responsibility_teamwork.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc4_movement_ethics.items.responsibility_teamwork.note}</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="p-2 w-2/3">3. Phẩm chất đạo đức nhà giáo, lối sống, tác phong chuẩn mực (Max: ${st.tc4_movement_ethics.items.teacher_ethics.max_score}đ)</td>
+                <td class="p-2 font-bold text-slate-800 text-center">${st.tc4_movement_ethics.items.teacher_ethics.score}đ</td>
+                <td class="p-2 text-slate-500 text-[11px]">${st.tc4_movement_ethics.items.teacher_ethics.note}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeKpiDetailModal() {
+      const modal = document.getElementById('kpi-detail-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function downloadKpiDocx() {
+      const { reqType, reqVal } = getKpiRequestParams();
+      window.location.href = `/api/kpi/export-docx?type=${reqType}&val=${reqVal}`;
+    }
+
+    async function syncKpiWithDrive() {
+      await masterSyncAllWithDrive();
+      await loadKpiData();
     }
 
     async function loadMonthlyReportData() {
