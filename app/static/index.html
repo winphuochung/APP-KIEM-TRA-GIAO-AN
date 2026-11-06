@@ -3083,7 +3083,7 @@
             <div class="space-y-1.5 py-0.5">
               <div class="text-[11px] text-emerald-800 font-semibold flex items-start gap-1">
                 <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 flex-shrink-0"></i>
-                <span><strong>Đã nộp (${t.file_count} tệp):</strong> ${submittedItems.join('; ') || `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp)`}</span>
+                <span><strong>Đã nộp (${t.file_count} tệp):</strong> ${submittedItems.join('; ') || `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp), Tuần 9-12 (${t.week9_12_count || 0} tệp)`}</span>
               </div>
               ${hasEmpty ? `
                 <div class="p-1.5 rounded-lg bg-rose-50 border border-rose-200/90 text-[11px] text-rose-900 space-y-0.5">
@@ -3102,7 +3102,7 @@
                 </div>
               `}
               <div class="text-[10px] text-slate-400 italic pl-1">
-                ${t.id === 'ke' ? '(Tuần 13 đến 35: Chưa đến hạn nộp)' : '(Tuần 9 đến 35: Chưa đến hạn nộp)'}
+                (Tuần 13 đến 35: Chưa đến hạn nộp)
               </div>
             </div>
           `;
@@ -3160,7 +3160,7 @@
             + `   - Thư mục Drive: ${t.folder_name}\n`
             + `   - Cập nhật: ${t.last_updated} | Số tệp: ${t.file_count} tệp\n`
             + `   - Tình trạng: ${t.status}\n`
-            + `   - Đã nộp: ${(t.submitted_subjs_summary && t.submitted_subjs_summary.join('; ')) || (t.file_count > 0 ? `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp)` : 'Chưa có')}\n`
+            + `   - Đã nộp: ${(t.submitted_subjs_summary && t.submitted_subjs_summary.join('; ')) || (t.file_count > 0 ? `Tuần 1-4 (${t.week1_4_count || 0} tệp), Tuần 5-8 (${t.week5_8_count || 0} tệp), Tuần 9-12 (${t.week9_12_count || 0} tệp)` : 'Chưa có')}\n`
             + `   - Thư mục không có nộp file: ${emp}\n`;
         });
         prevBox.innerText = emailPreview;
