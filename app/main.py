@@ -447,9 +447,25 @@ def get_inspection_drive_files(teacher_id: str = "thanh", period: str = "Tuần 
 
     t_info = TEACHERS_INFO.get(teacher_id, {})
     t_data = live.get(teacher_id, {})
-    cycle = t_data.get("cycles", {}).get(period, {})
+    cycles = t_data.get("cycles", {})
+    cycle = cycles.get(period, {})
+    if not cycle:
+        for ck, cv in cycles.items():
+            if re.sub(r'[^0-9]+', '', ck) == re.sub(r'[^0-9]+', '', period) or ck.lower() in period.lower() or period.lower() in ck.lower():
+                cycle = cv
+                break
     subjs_detail = cycle.get("subjects_detail", {})
     files = []
+    folders_summary = []
+    for sname, sinfo in subjs_detail.items():
+        s_cnt = sinfo.get("count", len(sinfo.get("files", [])))
+        folders_summary.append({
+            "subject": sname,
+            "count": s_cnt,
+            "status": f"ĐÃ NỘP ({s_cnt} tệp)" if s_cnt > 0 else "CHƯA NỘP (Thư mục trống)",
+            "has_files": s_cnt > 0
+        })
+
     if subject == "all":
         for sname, sinfo in subjs_detail.items():
             for fn in sinfo.get("files", []):
@@ -464,6 +480,7 @@ def get_inspection_drive_files(teacher_id: str = "thanh", period: str = "Tuần 
 
     return {
         "files": files,
+        "folders_summary": folders_summary,
         "teacher": t_info,
         "is_empty": is_empty,
         "total_files": len(files),

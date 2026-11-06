@@ -11,12 +11,13 @@
       ],
       "subjects_str": "CN 8, CN 9"
     },
-    "total_files": 9,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 18,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
         "status": "ĐÃ NỘP (4 tệp)",
         "file_count": 4,
+        "has_files": true,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1NXBCSoufadualtfSNY017CUntx_OuQEE",
@@ -39,6 +40,7 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1tYdwYDWLtFl66J4m937kyCY7xaZyPqDp",
@@ -55,6 +57,7 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1KYekwrK2lxFZSytgLQX4eEQL5tZRa6KO",
@@ -71,6 +74,7 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1bs6k4TXQ5gnkTOW2RYG-F2Fo4j0VLZ7K",
@@ -87,6 +91,7 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1bvzZdsEyiQUjjnTsdxs8fE74p8qBrSv4",
@@ -103,6 +108,7 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1mV9nhmnwzeFYX9qU4RvEZnAoyzx_LL1t",
@@ -119,6 +125,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1iLkFC8AELkEkhFhZBlwuftIMYxkbXlcy",
@@ -135,6 +142,7 @@
       "Tuần 5 đến tuần 8": {
         "status": "ĐÃ NỘP (5 tệp)",
         "file_count": 5,
+        "has_files": true,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1Vfvvku5VtVH9m-faxBzNu0g2VnL5pPAO",
@@ -156,18 +164,30 @@
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (9 tệp)",
+        "file_count": 9,
+        "has_files": true,
         "subjects_detail": {
           "CN 8": {
             "folder_id": "1T2JkQ6064BZ8aOJHpZN_r44ANZr6zj1r",
-            "count": 0,
-            "files": []
+            "count": 5,
+            "files": [
+              "KẾ HOẠCH KIỂM TRA ĐÁNH GIÁ GIỮA KÌ.docx",
+              "OnTap_CongNghe 8_Tuần 9.docx",
+              "PL2 ĐỀ KIỂM TRA CN8 26 27.docx",
+              "Tiết 11 BÀI 6.docx",
+              "Tiết 12 13 14 bài 7.docx"
+            ]
           },
           "CN 9": {
             "folder_id": "1JO7cXc-DKz5OfX_jAS-IqzT3X0SrXrmA",
-            "count": 0,
-            "files": []
+            "count": 4,
+            "files": [
+              "Bài 5. Tính toán chi phí.....docx",
+              "KẾ HOẠCH KIỂM TRA ĐÁNH GIÁ GIỮA KÌ.docx",
+              "PL2 ĐỀ KIỂM TRA CN9 26 27.docx",
+              "ÔN TẬP GIỮA KÌ I_Tuần 9.docx"
+            ]
           }
         }
       }
@@ -181,34 +201,47 @@
       "folder_name": "Thầy Thắng (Tổ trưởng)",
       "drive_id": "1S1wipWDzCGRaEonbFDFClIzmui1yEXZJ",
       "subjects": [
-        "Hóa 9",
         "KHTN 7",
-        "Toán 9"
+        "Hóa 9"
       ],
-      "subjects_str": "Hóa 9, KHTN 7, Toán 9"
+      "subjects_str": "KHTN 7, Hóa 9"
     },
-    "total_files": 0,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 62,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (10 tệp)",
+        "file_count": 10,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1f-HW_wR6wiT5kX8w-NxSXlFTQmY5vJ4Y",
-            "count": 0,
-            "files": []
+            "count": 4,
+            "files": [
+              "Bài 18. TÍNH CHẤT CHUNG CỦA KIM LOẠI KNTT.docx",
+              "Bài 19. DÃY HOẠT ĐỘNG HOÁ HỌC CỦA KIM LỌAI KNTT.docx",
+              "Tuần 3-4 - Tiết 10 đến 13 - BÀI 3. NGUYÊN TỐ HOÁ HỌC.docx",
+              "Tuần 4-5 - Tiết 14 đến 18 - BÀI 4. SƠ LƯỢC VỀ BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC.docx"
+            ]
           },
           "KHTN 7": {
             "folder_id": "1mMGvzVk3TzyabyHz_CBMdHn5AOABuEHy",
-            "count": 0,
-            "files": []
+            "count": 6,
+            "files": [
+              "Giao_An_KHTN7_Bai1_NangLucSo.docx",
+              "Giao_An_KHTN7_Bai2_NguyenTu_NLS_AI.docx",
+              "Giao_An_KHTN7_Bai3_NguyenToHoaHoc_NLS_AI.docx",
+              "Giao_An_KHTN7_Bai4_BangTuanHoan_NLS_AI.docx",
+              "Tuần 1-2 - Tiết 1 đến 5 - BÀI 1. PHƯƠNG PHÁP VÀ KĨ NĂNG HỌC TẬP MÔN KHOA HỌC TỰ NHIÊN.docx",
+              "Tuần 2-3 - Tiết 6 đến 9 - BÀI 2. NGUYÊN TỬ.docx"
+            ]
           }
         }
       },
       "Tuần 13 đến tuần 16": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (6 tệp)",
+        "file_count": 6,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1o9zvDV_Cm1DaXh0ycOU1AGVvAtOxk8GN",
@@ -217,67 +250,107 @@
           },
           "KHTN 7": {
             "folder_id": "1h-NVVDZ8erFKuIQ6MtsMYB2kd6oMQeOj",
-            "count": 0,
-            "files": []
+            "count": 6,
+            "files": [
+              "Tuần 13 - Tiết 49 đến 51 - BÀI 15. NĂNG LƯỢNG ÁNH SÁNG. TIA SÁNG, VÙNG TỐI.docx",
+              "Tuần 13 - Tiết 52 đến 54 - BÀI 16. SỰ PHẢN XẠ ÁNH SÁNG.docx",
+              "Tuần 14 - Tiết 55 đến 57 - BÀI 17. ẢNH CỦA VẬT TẠO BỞI GƯƠNG PHẲNG.docx",
+              "Tuần 14-15 - Tiết 58 đến 60 - BÀI 18. NAM CHÂM.docx",
+              "Tuần 15 - Tiết 61 đến 62 - BÀI 19. TỪ TRƯỜNG.docx",
+              "Tuần 16 - Tiết 63 đến 64 - BÀI 20. CHẾ TẠO NAM CHÂM ĐIỆN ĐƠN GIẢN.docx"
+            ]
           }
         }
       },
       "Tuần 17 đến tuần 20": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (3 tệp)",
+        "file_count": 3,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "12ypKOec_gARLQR7z8Wqmf8p7-0rDdMKO",
-            "count": 0,
-            "files": []
+            "count": 1,
+            "files": [
+              "Tuần 19 - Tiết 73 đến 75 - BÀI 21. KHÁI QUÁT VỀ TRAO ĐỔI CHẤT VÀ CHUYỂN HOÁ NĂNG LƯỢNG.docx"
+            ]
           },
           "KHTN 7": {
             "folder_id": "1B1EbQPs8UvGvvxhHxAT7DAGvim1e0kEd",
-            "count": 0,
-            "files": []
+            "count": 2,
+            "files": [
+              "Tuần 19-20 - Tiết 76 đến 78 - BÀI 22. QUANG HỢP Ở THỰC VẬT.docx",
+              "Tuần 20 - Tiết 79 đến 80 - BÀI 23. MỘT SỐ YẾU TỐ ẢNH HƯỞNG ĐẾN QUANG HỢP.docx"
+            ]
           }
         }
       },
       "Tuần 21 đến tuần 24": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (7 tệp)",
+        "file_count": 7,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1xwIbaDSoONJkc_Bu_cIr-s6XUeU0Drqh",
-            "count": 0,
-            "files": []
+            "count": 2,
+            "files": [
+              "Tuần 23 - Tiết 90 đến 92 - BÀI 28. TRAO ĐỔI KHÍ Ở SINH VẬT.docx",
+              "Tuần 24 - Tiết 93 đến 95 - BÀI 29. VAI TRÒ CỦA NƯỚC VÀ CHẤT DINH DƯỠNG ĐỐI VỚI SINH VẬT.docx"
+            ]
           },
           "KHTN 7": {
             "folder_id": "1xIFiyen4I9VGOabpwQzRdZ9T4sOezowr",
-            "count": 0,
-            "files": []
+            "count": 5,
+            "files": [
+              "Tuần 21 - Tiết 81 đến 82 - BÀI 24. THỰC HÀNH: CHỨNG MINH QUANG HỢP Ở CÂY XANH.docx",
+              "Tuần 21-22 - Tiết 83 đến 85 - BÀI 25. HÔ HẤP TẾ BÀO.docx",
+              "Tuần 22 - Tiết 86 đến 87 - BÀI 26. MỘT SỐ YẾU TỐ ẢNH HƯỞNG ĐẾN HÔ HẤP TẾ BÀO.docx",
+              "Tuần 22-23 - Tiết 88 đến 89 - BÀI 27. THỰC HÀNH: HÔ HẤP Ở THỰC VẬT.docx",
+              "Tuần 24-25 - Tiết 96 đến 98 - BÀI 30. TRAO ĐỔI NƯỚC VÀ CHẤT DINH DƯỠNG Ở THỰC VẬT.docx"
+            ]
           }
         }
       },
       "Tuần 25 đến tuần 28": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (4 tệp)",
+        "file_count": 4,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1RpZCS2d4M0fE1xWsL-6UyxBKlXvablnP",
-            "count": 0,
-            "files": []
+            "count": 3,
+            "files": [
+              "Tuần 26 - Tiết 102 đến 103 - BÀI 32. THỰC HÀNH: CHỨNG MINH THÂN VẬN CHUYỂN NƯỚC VÀ LÁ THOÁT HƠI NƯỚC.docx",
+              "Tuần 26-28 - Tiết 104, 109 đến 110 - BÀI 33. CẢM ỨNG Ở SINH VẬT VÀ TẬP TÍNH Ở ĐỘNG VẬT.docx",
+              "Tuần 28 - Tiết 111 đến 112 - BÀI 34. VẬN DỤNG HIỆN TƯỢNG CẢM ỨNG Ở SINH VẬT VÀO THỰC TIỄN.docx"
+            ]
           },
           "KHTN 7": {
             "folder_id": "1XPBrIXlFqJiPa52BG6SsU8bgqu9cHdcp",
-            "count": 0,
-            "files": []
+            "count": 1,
+            "files": [
+              "Tuần 25-26 - Tiết 99 đến 101 - BÀI 31. TRAO ĐỔI NƯỚC VÀ CHẤT DINH DƯỠNG Ở ĐỘNG VẬT.docx"
+            ]
           }
         }
       },
       "Tuần 29 đến tuần 32": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (8 tệp)",
+        "file_count": 8,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1nXrCzWPjkDtcHQv7pEcrCfjIgPXx8Zth",
-            "count": 0,
-            "files": []
+            "count": 8,
+            "files": [
+              "Tuần 29 - Tiết 113 đến 114 - BÀI 35. THỰC HÀNH: CẢM ỨNG Ở SINH VẬT.docx",
+              "Tuần 29 - Tiết 115 đến 116 - BÀI 36. KHÁI QUÁT VỀ SINH TRƯỞNG VÀ PHÁT TRIỂN Ở SINH VẬT.docx",
+              "Tuần 30 - Tiết 117 đến 119 - BÀI 37. ỨNG DỤNG SINH TRƯỞNG VÀ PHÁT TRIỂN Ở SINH VẬT VÀO THỰC TIỄN.docx",
+              "Tuần 30-31 - Tiết 120 đến 121 - BÀI 38. THỰC HÀNH: QUAN SÁT, MÔ TẢ SỰ SINH TRƯỞNG VÀ PHÁT TRIỂN Ở MỘT SỐ SINH VẬT.docx",
+              "Tuần 31 - Tiết 122 đến 124 - BÀI 39. SINH SẢN VÔ TÍNH Ở SINH VẬT.docx",
+              "Tuần 31-32 - Tiết 125 đến 127 - BÀI 40. SINH SẢN HỮU TÍNH Ở SINH VẬT.docx",
+              "Tuần 32 - Tiết 128 đến 129 - BÀI 41. MỘT SỐ YẾU TỐ ẢNH HƯỞNG VÀ ĐIỀU HOÀ, ĐIỀU KHIỂN SINH SẢN Ở SINH VẬT.docx",
+              "Tuần 32 - Tiết 130 - BÀI 42. CƠ THỂ SINH VẬT LÀ MỘT THỂ THỐNG NHẤT.docx"
+            ]
           },
           "KHTN 7": {
             "folder_id": "1V4afhzgnOSMcsYhIPVPXpaj0CZsDHqaD",
@@ -289,6 +362,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1zRqlVI6TCCs0_yD12qCRoNi-I9b1jvBG",
@@ -303,24 +377,40 @@
         }
       },
       "Tuần 5 đến tuần 8": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (12 tệp)",
+        "file_count": 12,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1eUJ2rSoGvqj8608KtkyX87WdXkK0X9uW",
-            "count": 0,
-            "files": []
+            "count": 5,
+            "files": [
+              "Bài 20. TÁCH KIM LOẠI SỬ DỤNG HỢP KIM KNTT.docx",
+              "Bài 21. SỰ KHÁC NHAU CƠ BẢN GIỮA PHI KIM VÀ KIM LOẠI KNTT.docx",
+              "Bài 22. GIỚI THIỆU VỀ HỢP CHẤT HỮU CƠ KNTT.docx",
+              "Tuần 6-7 - Tiết 23 đến 26 - BÀI 6. GIỚI THIỆU VỀ LIÊN KẾT HOÁ HỌC.docx",
+              "Tuần 7-8 - Tiết 27 đến 29 - BÀI 7. HOÁ TRỊ VÀ CÔNG THỨC HOÁ HỌC.docx"
+            ]
           },
           "KHTN 7": {
             "folder_id": "13Cq-Mhx6TooZCyzxDwl8GD-5JnmcRx9A",
-            "count": 0,
-            "files": []
+            "count": 7,
+            "files": [
+              "Giao_An_KHTN7_Bai5_PhanTu_DonChat_HopChat_v2.docx",
+              "Giao_An_KHTN7_Bai6_LienKetHoaHoc_NLS_AI.docx",
+              "Giao_An_KHTN7_Bai7_HoaTri_CongThucHoaHoc_NLS_AI.docx",
+              "Giao_An_KHTN7_Bai8_TocDoChuyenDong_NLS_AI.docx",
+              "Giao_An_KHTN7_Bai9_DoTocDo_NLS_AI.docx",
+              "Tuần 5-6 - Tiết 19 đến 22 - BÀI 5. PHÂN TỬ – ĐƠN CHẤT – HỢP CHẤT.docx",
+              "Tuần 8 - Tiết 30 đến 31 - BÀI 8. TỐC ĐỘ CHUYỂN ĐỘNG.docx"
+            ]
           }
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (6 tệp)",
+        "file_count": 6,
+        "has_files": true,
         "subjects_detail": {
           "Hóa 9": {
             "folder_id": "1llMCfBbKK-tDy6nVh6yv1_oamJU1Lw72",
@@ -329,13 +419,27 @@
           },
           "KHTN 7": {
             "folder_id": "1a5eokNw34woWLxwLwM-cXsdPdunFQzrp",
-            "count": 0,
-            "files": []
+            "count": 6,
+            "files": [
+              "Tuần 10-11 - Tiết 40 đến 41 - BÀI 11. THẢO LUẬN VỀ ẢNH HƯỞNG CỦA TỐC ĐỘ TRONG AN TOÀN GIAO THÔNG.docx",
+              "Tuần 11 - Tiết 42 đến 44 - BÀI 12. SÓNG ÂM.docx",
+              "Tuần 12 - Tiết 45 đến 46 - BÀI 13. ĐỘ TO VÀ ĐỘ CAO CỦA ÂM.docx",
+              "Tuần 8-9 - Tiết 32 đến 33 - BÀI 9. ĐO TỐC ĐỘ.docx",
+              "Tuần 9 - Tiết 34 đến 35 - BÀI 10. ĐỒ THỊ QUÃNG ĐƯỜNG – THỜI GIAN.docx",
+              "Tuần 12 - Tiết 47 đến 48 - BÀI 14. PHẢN XẠ ÂM, CHỐNG Ô NHIỄM TIẾNG ỒN.docx"
+            ]
           }
         }
       }
     },
-    "root_files": []
+    "root_files": [
+      "HÓA HỌC 7 - KNTT - BÀI 4. SƠ LƯỢC BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC.docx",
+      "phu-luc-1-bang-ma-chi-bao-nang-luc-so.docx",
+      "PL17_ KHTN 6 - 2026-2027-NLS.pdf",
+      "PL18_ KHTN 7 - 26-27_NLS.pdf",
+      "PL19_ KHTN 8 năm học 2026-2027_NLS.pdf",
+      "PL20_ môn KHTN 9_26-27_NLS.pdf"
+    ]
   },
   "cuc": {
     "teacher": {
@@ -349,12 +453,13 @@
       ],
       "subjects_str": "KHTN 7, Sinh 9"
     },
-    "total_files": 17,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 28,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
         "status": "ĐÃ NỘP (9 tệp)",
         "file_count": 9,
+        "has_files": true,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "10ypc7wavrO_CTWHjScXj63hPvmIrwYQF",
@@ -382,6 +487,7 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1Gzy3i412jRwLKkI6F9WPkXh_BLBrHKrk",
@@ -398,6 +504,7 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1IoDDWn8JO95_DBvl0m1ipCPKol8sxX8z",
@@ -414,6 +521,7 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1fxQqLIzNQ_DCTwqslmNIE5ohOAjU-Qne",
@@ -430,6 +538,7 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "10r5DfCmbiloLRBBIoEoutuI75_fhWoBR",
@@ -446,6 +555,7 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1mOJzFhA8ZnwlgL8WYycmNWFbo-h6bulI",
@@ -462,6 +572,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1h9IVkBgoWvwwAhq9ZbqfK0nR9UYOlOQ_",
@@ -476,8 +587,9 @@
         }
       },
       "Tuần 5 đến tuần 8": {
-        "status": "ĐÃ NỘP (8 tệp)",
-        "file_count": 8,
+        "status": "ĐÃ NỘP (9 tệp)",
+        "file_count": 9,
+        "has_files": true,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1n2Jf-gCS45cg84QQ2DEwz7T4s5zwPHWy",
@@ -493,27 +605,41 @@
           },
           "Sinh 9": {
             "folder_id": "1RrT4O1oxGfcBBUTJSwAQwruxcrv6dVNg",
-            "count": 2,
+            "count": 3,
             "files": [
               "Tuần 3,4,5,6  BÀI 37. NLS .docx",
-              "Tuần 7,9 BÀI 38. NLS  (1).docx"
+              "Tuần 7,9 BÀI 38. NLS  (1).docx",
+              "Tuần 8    Tiết 8.docx"
             ]
           }
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (10 tệp)",
+        "file_count": 10,
+        "has_files": true,
         "subjects_detail": {
           "KHTN 7": {
             "folder_id": "1nXfD-4dJjG8sM7BbvLhhvidYI9bMCv12",
-            "count": 0,
-            "files": []
+            "count": 7,
+            "files": [
+              "Tuần 10  Tiết 36-37  ôn tập GK 1.docx",
+              "Tuần 10, 11 Tiết 40,41 BÀI 11..docx",
+              "Tuần 11Tiết 42,43,44  bài 12 sóng âm- Thu.docx",
+              "Tuần 12 tiết 45,46  bai 13-do cao va do to cua am.docx",
+              "Tuần 12 Tiết 47,48 Bài 14 - Phản xạ âm - Chống ô nhiễm tiếng ồn.docx",
+              "Tuần 8,9 Tiết 32-33 BÀI 9. ĐO TỐC ĐỘ.docx",
+              "Tuần 9 Tiết 34,35 BÀI 10. ĐỒ THỊ QUÃNG ĐƯỜNG - THỜI GIAN.docx"
+            ]
           },
           "Sinh 9": {
             "folder_id": "1i7YzPTJaOeF8EslAoESQfbbPogNVWB6r",
-            "count": 0,
-            "files": []
+            "count": 3,
+            "files": [
+              "Tuần 10,11 B39_TÁI BẢN DNA VÀ PHIÊN MÃ TẠO RNA.docx",
+              "Tuần 12,13,14   B40_dichmavamoiquanhetgdtt_sinh9_kntt (1).docx",
+              "Tuần 7,9 BÀI 38. NLS  (1).docx"
+            ]
           }
         }
       }
@@ -527,18 +653,18 @@
       "folder_name": "Cô Thủy",
       "drive_id": "1vRyDMAB4lLyxDyPgYsit2VdO7ZcPyuNi",
       "subjects": [
-        "Toán 6",
         "Toán 7",
         "Toán 8"
       ],
-      "subjects_str": "Toán 6, Toán 7, Toán 8"
+      "subjects_str": "Toán 7, Toán 8"
     },
     "total_files": 40,
-    "last_updated": "08/10/2026 13:07",
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
         "status": "ĐÃ NỘP (19 tệp)",
         "file_count": 19,
+        "has_files": true,
         "subjects_detail": {
           "Toán 7": {
             "folder_id": "195kNCQlrgc2HRAJ68GkhUeL7mSj_lK3M",
@@ -576,14 +702,15 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "1dJQ1FJWm91Zwnpot8G023iqyr8tlT9Wg",
+          "Toán 7": {
+            "folder_id": "1-4pz3M_SYrInuaUEAhT7HYtPQf_CYl_L",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1-4pz3M_SYrInuaUEAhT7HYtPQf_CYl_L",
+          "Toán 8": {
+            "folder_id": "1dJQ1FJWm91Zwnpot8G023iqyr8tlT9Wg",
             "count": 0,
             "files": []
           }
@@ -592,14 +719,15 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "1sp29KD4OMekY3W0cRgLaPNYKeSl80LWz",
+          "Toán 7": {
+            "folder_id": "1asz1GkO4qNwIzFWxj1FMiarbXEjx0xYV",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1asz1GkO4qNwIzFWxj1FMiarbXEjx0xYV",
+          "Toán 8": {
+            "folder_id": "1sp29KD4OMekY3W0cRgLaPNYKeSl80LWz",
             "count": 0,
             "files": []
           }
@@ -608,14 +736,15 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "1iaxfKBsZ_MsYWaL6mdruR8Ckpeye12tM",
+          "Toán 7": {
+            "folder_id": "1cTE3sa8AcLC6cwhO24aXUesACb_IqK2T",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1cTE3sa8AcLC6cwhO24aXUesACb_IqK2T",
+          "Toán 8": {
+            "folder_id": "1iaxfKBsZ_MsYWaL6mdruR8Ckpeye12tM",
             "count": 0,
             "files": []
           }
@@ -624,14 +753,15 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "1FxMbpQMwhPINofeQSrZ5mmy1ueoz5Xk4",
+          "Toán 7": {
+            "folder_id": "1Vu1RydBI4EiGeBuIZaWYf5iQ7G6ylbH-",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1Vu1RydBI4EiGeBuIZaWYf5iQ7G6ylbH-",
+          "Toán 8": {
+            "folder_id": "1FxMbpQMwhPINofeQSrZ5mmy1ueoz5Xk4",
             "count": 0,
             "files": []
           }
@@ -640,14 +770,15 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "1_TZnN3SVz23HBG6yqd4MNcPeJmbWG8qa",
+          "Toán 7": {
+            "folder_id": "1RGCd7tCjW4cqFVkG_GdGx1hGvf_Rt9Ej",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1RGCd7tCjW4cqFVkG_GdGx1hGvf_Rt9Ej",
+          "Toán 8": {
+            "folder_id": "1_TZnN3SVz23HBG6yqd4MNcPeJmbWG8qa",
             "count": 0,
             "files": []
           }
@@ -656,14 +787,15 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "170yGoXc_b4SDVNOzxaSRTwVWC8G70wqI",
+          "Toán 7": {
+            "folder_id": "1e2uU5bzQLbN-4lKVyRLu8CppM5008ZGJ",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1e2uU5bzQLbN-4lKVyRLu8CppM5008ZGJ",
+          "Toán 8": {
+            "folder_id": "170yGoXc_b4SDVNOzxaSRTwVWC8G70wqI",
             "count": 0,
             "files": []
           }
@@ -672,6 +804,7 @@
       "Tuần 5 đến tuần 8": {
         "status": "ĐÃ NỘP (20 tệp)",
         "file_count": 20,
+        "has_files": true,
         "subjects_detail": {
           "Toán 7": {
             "folder_id": "1dvzZ8HAjuZMkdHa23ZFS8S8VXlSUaqaK",
@@ -710,14 +843,15 @@
       "Tuần 9 đến tuần 12": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
-          "Toán 6": {
-            "folder_id": "1jGPQ1ofg2elkZhhZqLYiC64EtgLEZRCD",
+          "Toán 7": {
+            "folder_id": "1r6I3Pk9uPtQosPGEkswoS-qLpWETpX3c",
             "count": 0,
             "files": []
           },
-          "Toán 7": {
-            "folder_id": "1r6I3Pk9uPtQosPGEkswoS-qLpWETpX3c",
+          "Toán 8": {
+            "folder_id": "1jGPQ1ofg2elkZhhZqLYiC64EtgLEZRCD",
             "count": 0,
             "files": []
           }
@@ -741,12 +875,13 @@
       ],
       "subjects_str": "KHTN 6, KHTN 8, HĐTN 8"
     },
-    "total_files": 27,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 40,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
         "status": "ĐÃ NỘP (13 tệp)",
         "file_count": 13,
+        "has_files": true,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "10wF05ypGbISzo-VQwyRIDuXofWPOUEDY",
@@ -784,6 +919,7 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1yRF7lTs5ZP-pH0TlyurYvhKEJaHOUckS",
@@ -805,6 +941,7 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1PaJUyuCUeNvmkryPv0mNIoKYnbNO_w9T",
@@ -826,6 +963,7 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1iZ9BdFCfmqnTgQ7TSkgKqqxkG7G5UO7h",
@@ -847,6 +985,7 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1YNa6C0K4We8THTwl_-l8hN0NfR9A-uaD",
@@ -868,6 +1007,7 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1Z2h_NJe2J391f95rWrV1ZGyJCJGOGzon",
@@ -889,6 +1029,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1N2Sln5I8RPXI9OyTvNvWb7gccdNwi_zI",
@@ -908,8 +1049,9 @@
         }
       },
       "Tuần 5 đến tuần 8": {
-        "status": "ĐÃ NỘP (13 tệp)",
-        "file_count": 13,
+        "status": "ĐÃ NỘP (14 tệp)",
+        "file_count": 14,
+        "has_files": true,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1rgqqeQp30kaVHwIEZt1kms03eKatKUoO",
@@ -919,18 +1061,19 @@
               "HDTN8(QML), Tuần 7, tiết 4,Chủ đề.Tranh Bien Cam Xuc nên hay không nên thể hiện.pdf",
               "HDTN8(QMT), Tuần 6, tiết 3-4_Chủ đề.Ngay Hoi.Kham Pha Ban Than.pdf",
               "HĐTN 8 (Tuần 4-7, tiết 7 đến 13) CĐ2.Khám phá bản thân.pdf",
-              "HĐTN 8, Tuần 8, Tiết 14-15, Kiểm tra Giữa kì 1, HĐTN8..pdf"
+              "Tuần 8, Đề KTGK I, HĐTN 8 năm 26-27.pdf"
             ]
           },
           "KHTN 6": {
             "folder_id": "1gZusZ-hCZmF5-JGIrLaq0CkTzm8mAmc9",
-            "count": 5,
+            "count": 6,
             "files": [
               "Tuần 5, tiết 17-18, Bai 9, KHTN 6.pdf",
               "Tuần 5-6, tiết 19,20,21, BÀI 10.pdf",
               "Tuần 6, Tiết 22 đến 24, KHTN 6, bai 11.pdf",
               "Tuần 7, tiết 25-26, Bài 12.pdf",
-              "Tuần 7, tiết 27-28, Bai_13.pdf"
+              "Tuần 7, tiết 27-28, Bai_13.pdf",
+              "Tuần 8,Tiết 29-30-Ôn tập GKI.pdf"
             ]
           },
           "KHTN 8": {
@@ -945,24 +1088,39 @@
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "ĐÃ NỘP (1 tệp)",
-        "file_count": 1,
+        "status": "ĐÃ NỘP (13 tệp)",
+        "file_count": 13,
+        "has_files": true,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1PlJrySPzpBDds8ZQBcxiCSGzep4i7I2X",
-            "count": 0,
-            "files": []
+            "count": 4,
+            "files": [
+              "HDTN8(QMT),Tuan10, Tiết 5-6,Cuộc thi viết.Câu chuyện về trách nhiệm .pdf",
+              "HĐTN 8 (Tuần 8-11, tiết 16 đến 21) CĐ3.Trách nhiệm với bản thân.pdf",
+              "HĐTN8(QML), Tuần 11, tiết 6,Sắm vai nghệ thuat_Tu_Chối.pdf",
+              "HĐTN8(QML),Tuần9, Tiết 5, Nhat_ky_trach_nhiem.pdf"
+            ]
           },
           "KHTN 6": {
             "folder_id": "1GhggJm34xCWD1JjHYyngoDxI4I6o9sxv",
-            "count": 0,
-            "files": []
+            "count": 6,
+            "files": [
+              "Tuần 10, tiết 37, 38,39. BÀI 16. HỖN HỢP CÁC CHẤT.pdf",
+              "Tuần 10-11, Tiết 40,41. BÀI 17. TÁCH CHẤT KHỎI HỖN HỢP (1).pdf",
+              "Tuần 11, tiết 42. Bài ôn tập chương 5.pdf",
+              "Tuần 11, Tiết 43-44,Bài 18. TẾ BÀO. ĐƠN VỊ CƠ BẢN CỦA SỰ SỐNG.pdf",
+              "Tuần 9, tiết 33-34, BÀI 14.MỘT SỐ NHIÊN LIỆU.pdf",
+              "Tuần 9,Tiết 35-36. BÀI 15. MỘT SỐ LƯƠNG THỰC, THỰC PHẨM.pdf"
+            ]
           },
           "KHTN 8": {
             "folder_id": "1vTn2Y89bUYWgN41hFZ6avwVXzg-ZfUMI",
-            "count": 1,
+            "count": 3,
             "files": [
-              "Tuần 8-9, tiết 8 đến 10, Bai 33.pdf"
+              "Tuần 10-12, tiết 12-14. BÀI 34 HỆ HÔ HẤP Ở NGƯỜI (1).pdf",
+              "Tuần 8-9, tiết 8 đến 10, Bai 33.pdf",
+              "Tuần 9, Tiết 11, ÔN Tập GK I KHTN 8(Sinh).pdf"
             ]
           }
         }
@@ -977,22 +1135,42 @@
       "folder_name": "Cô Linh",
       "drive_id": "1slzRqoYLd7pkSfeK3sxDBwzS_5fYA7vd",
       "subjects": [
-        "Toán 8",
+        "Toán 6",
         "Toán 9"
       ],
-      "subjects_str": "Toán 8, Toán 9"
+      "subjects_str": "Toán 6, Toán 9"
     },
-    "total_files": 14,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 48,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
-        "status": "ĐÃ NỘP (7 tệp)",
-        "file_count": 7,
+        "status": "ĐÃ NỘP (25 tệp)",
+        "file_count": 25,
+        "has_files": true,
         "subjects_detail": {
           "Toán 6": {
             "folder_id": "1SWhcij0wHLKltdmsG77Q-B0hHmqcfNwb",
-            "count": 0,
-            "files": []
+            "count": 18,
+            "files": [
+              "tiết 1,2.pdf",
+              "tiết 10.pdf",
+              "tiết 11,12.pdf",
+              "tiết 13,14.pdf",
+              "tiết 15,16.pdf",
+              "tiết 17,18.pdf",
+              "tiết 19.pdf",
+              "tiết 20,21.pdf",
+              "tiết 22,23.pdf",
+              "tiết 24.pdf",
+              "tiết 25.pdf",
+              "tiết 26,27,28.pdf",
+              "tiết 29,30,31.pdf",
+              "tiết 3.pdf",
+              "tiết 32,33,34.pdf",
+              "tiết 4,7,8.pdf",
+              "tiết 5,6.pdf",
+              "tiết 8,9.pdf"
+            ]
           },
           "Toán 9": {
             "folder_id": "17eRCT6B56Zf4Hq_pSX15Ca75eNPLOCjp",
@@ -1012,6 +1190,7 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Toán 8": {
             "folder_id": "1J3DZBkjWvhUDpXtrQAZvM4Cd7uEpXbn6",
@@ -1028,6 +1207,7 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Toán 8": {
             "folder_id": "1zHYh-Y3lW0XbRb_bKnWKbdmcBootlxA3",
@@ -1044,6 +1224,7 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Toán 8": {
             "folder_id": "1hdC7EfORBVOTJjObuqhimmOsvK0taqkY",
@@ -1060,6 +1241,7 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Toán 8": {
             "folder_id": "1l9yQiA_dNMjE3poQefjxzhFmrKQgpGQw",
@@ -1076,6 +1258,7 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Toán 8": {
             "folder_id": "1OdM7M9W7DN17s5jUSs5I2v8dxjx9eJLp",
@@ -1092,6 +1275,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "Toán 8": {
             "folder_id": "1ueWFd9RUXMKn4a5mcmC0svyB0PHWzNVR",
@@ -1108,6 +1292,7 @@
       "Tuần 5 đến tuần 8": {
         "status": "ĐÃ NỘP (7 tệp)",
         "file_count": 7,
+        "has_files": true,
         "subjects_detail": {
           "Toán 6": {
             "folder_id": "16pCe3gUt1gRwnEntuX6CqrrcBhYvxNgb",
@@ -1130,18 +1315,37 @@
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (16 tệp)",
+        "file_count": 16,
+        "has_files": true,
         "subjects_detail": {
-          "Toán 8": {
+          "Toán 6": {
             "folder_id": "1we8r9k126bF7BXrqgU-wYDiiXx5adBr8",
-            "count": 0,
-            "files": []
+            "count": 8,
+            "files": [
+              "tiết 32,33,34.pdf",
+              "tiết 35,36.pdf",
+              "tiết 37.pdf",
+              "tiết 41,42.pdf",
+              "tiết 43,44,45.pdf",
+              "tiết 46.pdf",
+              "tiết 47,48.pdf",
+              "tiết 49,50.pdf"
+            ]
           },
           "Toán 9": {
             "folder_id": "18De31NE6Z_5AP7TCDAWkoHrwE6uLbhiR",
-            "count": 0,
-            "files": []
+            "count": 8,
+            "files": [
+              "tiết 32,33.pdf",
+              "tiết 34,35.pdf",
+              "tiết 39,40.pdf",
+              "tiết 41,42.pdf",
+              "tiết 43,44.pdf",
+              "tiết 45,46,47.pdf",
+              "tiết 48.pdf",
+              "tiết 49,50.pdf"
+            ]
           }
         }
       }
@@ -1162,12 +1366,13 @@
       ],
       "subjects_str": "KHTN 6, KHTN 8, KHTN 9, HĐTN 8"
     },
-    "total_files": 30,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 45,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
         "status": "ĐÃ NỘP (17 tệp)",
         "file_count": 17,
+        "has_files": true,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1V4kykZ38tmmk-Isa5MjE4bzDYT555ytn",
@@ -1215,6 +1420,7 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1j5tgOK0tUp4L7NLsPZ_U9P8dvoZnZzun",
@@ -1241,6 +1447,7 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1HzsoZ5V4agl8Et1L1p-RPetPEQ4WrkMD",
@@ -1267,6 +1474,7 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1FapCvkMskK2c1_YlcPF6-nbFPj2BFIlt",
@@ -1293,6 +1501,7 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1x7vK-lgtIpUP-38SOXhRrTXsMCLv4ktH",
@@ -1319,6 +1528,7 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1liFwiHMIyMj-DpqLirn27XIOmIqBzjlS",
@@ -1345,6 +1555,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1NmIwe7v400DF-ks93VzNw9FsccdWpPtv",
@@ -1371,6 +1582,7 @@
       "Tuần 5 đến tuần 8": {
         "status": "ĐÃ NỘP (13 tệp)",
         "file_count": 13,
+        "has_files": true,
         "subjects_detail": {
           "HĐTN 8": {
             "folder_id": "1Tk2vgzVM5sSA_hwuOSFwA2JkQRLyePs9",
@@ -1412,28 +1624,48 @@
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (15 tệp)",
+        "file_count": 15,
+        "has_files": true,
         "subjects_detail": {
           "HĐTN 8": {
-            "folder_id": "12eRzj8DpRCE_PAo_O4JNARR2SvCyV_NY",
-            "count": 0,
-            "files": []
+            "folder_id": "1vm-hGmf6wiImnJWU0oDfEybFrhjWrevf",
+            "count": 2,
+            "files": [
+              "chủ đề 3 Trách nhiệm với bản thân.docx.docx",
+              "chủ đề 4 Rèn luyện bản thân.docx"
+            ]
           },
           "KHTN 6": {
-            "folder_id": "13CgO2FZyzy5kBssU85r1OuEXtWIYpc5T",
-            "count": 0,
-            "files": []
+            "folder_id": "1QEjfWI-M9Vmf5oRS7cYIU4CD0Qxj7_js",
+            "count": 8,
+            "files": [
+              "Tuần 10 -  tiết 37, 38, 39_b16_hon_hop_cac_chat.eb79.docx",
+              "Tuần 10, 11 - tiết 40, 41_ b17_tach_chat_khoi_hon_hop.1005.docx",
+              "Tuần 11 -  tiết 43, 44_ b18_te_bao_don_vi_co_ban_cua_su_song.cc3c.docx",
+              "Tuần 11 - tiết 42_on_tap_chuơng_4.docx",
+              "Tuần 12 - tiết 45, 46_ b19_cau_tao_va_chuc_nang_cac_thanh_phan_cua_te_bao.dbc4.docx",
+              "Tuần 12 - tiết 47, 48_ b20_su_lon_len_va_sinh_san_cua_te_bao.27a6.docx",
+              "Tuần 9 - tiết 33, 34. b14_mot_so_nhien_lieu.cb15.docx",
+              "Tuần 9 - tiết 35, 36_ b15_mot_so_lg_thuc_thuc_pham.c2a3.docx"
+            ]
           },
           "KHTN 8": {
-            "folder_id": "13FPnLwhN6cdHn8XJYn3BRgod03aYw_82",
-            "count": 0,
-            "files": []
+            "folder_id": "16bXhwfX9dMq4vtLAACOq3q2Ph3oyOmwM",
+            "count": 3,
+            "files": [
+              "Tuần 12, 13 - tiết 15, 16, 17_ b19_don_bay.27e9.docx",
+              "Tuần 7, 8, 11 - tiết 11,12, 14_b18_tac_dung_lam_quay.8e43916ff3_DA_SUA.docx",
+              "Tuần ̣9, tiết _13_bt_ÔN TẬP_.docx"
+            ]
           },
           "KHTN 9": {
-            "folder_id": "1HbTLeYbMU0cdyHiuj50CramJm1ah4Qn9",
-            "count": 0,
-            "files": []
+            "folder_id": "1x7hs4Eab9IUD4VWvYQO8_jv0DclM6rKB",
+            "count": 2,
+            "files": [
+              "Tuần 12,13,14 - T 12, 13, 14. bai5_khucxaanhsangcd_vatli9_kntt (1).docx",
+              "Tuần 9, 10, 11 - tiết 9, 10, 11_b4_cong_suat.ea2b (1).docx"
+            ]
           }
         }
       }
@@ -1455,12 +1687,13 @@
       ],
       "subjects_str": "CN 6, CN 7, HĐTN 6, HĐTN 7, HĐTN 9"
     },
-    "total_files": 35,
-    "last_updated": "08/10/2026 13:07",
+    "total_files": 49,
+    "last_updated": "06/11/2026 07:34",
     "cycles": {
       "Tuần 1 đến tuần 4": {
         "status": "ĐÃ NỘP (15 tệp)",
         "file_count": 15,
+        "has_files": true,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "15i0Lpy67l-nJ_QEhlBWb7n0tI72vpbqH",
@@ -1512,6 +1745,7 @@
       "Tuần 13 đến tuần 16": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "1U5fWjihtE57Hd-cPKJonPH8Nq1-SVW1-",
@@ -1543,6 +1777,7 @@
       "Tuần 17 đến tuần 20": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "11YNK7j8RPaHi8g9UDJEc-r0gdiby3O0q",
@@ -1574,6 +1809,7 @@
       "Tuần 21 đến tuần 24": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "19h4ytLjPwo8Pfrh0SXUY1KyDcOTLoyGq",
@@ -1605,6 +1841,7 @@
       "Tuần 25 đến tuần 28": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "1Src6CvilXz_onG6eolbPVNY69YTJeXMG",
@@ -1636,6 +1873,7 @@
       "Tuần 29 đến tuần 32": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "1NGz7E2bKx0TZ-wwKxPWSAEEfBGQFFAjm",
@@ -1667,6 +1905,7 @@
       "Tuần 33 đến tuần 35": {
         "status": "CHƯA NỘP",
         "file_count": 0,
+        "has_files": false,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "1PPxTqApunXCnHaY-Na1xUj-ylWclQypc",
@@ -1698,6 +1937,7 @@
       "Tuần 5 đến tuần 8": {
         "status": "ĐÃ NỘP (20 tệp)",
         "file_count": 20,
+        "has_files": true,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "1bfsZYMM48Vbov09GGyopwYrIbIw05dCz",
@@ -1752,33 +1992,53 @@
         }
       },
       "Tuần 9 đến tuần 12": {
-        "status": "CHƯA NỘP",
-        "file_count": 0,
+        "status": "ĐÃ NỘP (14 tệp)",
+        "file_count": 14,
+        "has_files": true,
         "subjects_detail": {
           "CN 6": {
             "folder_id": "1eAsr5B2J15dSK4SklIvVKIa1vs-2jQ5E",
-            "count": 0,
-            "files": []
+            "count": 2,
+            "files": [
+              "CN 6 TUẦN 12- 13.docx",
+              "CN 6 tuần 8, 11.docx"
+            ]
           },
           "CN 7": {
             "folder_id": "1rsf1s8738drDwX-fBWXn_8GeyDDhyldh",
-            "count": 0,
-            "files": []
+            "count": 2,
+            "files": [
+              "Tuần 12, 13.docx",
+              "Tuần 8, 11.docx"
+            ]
           },
           "HĐTN 6": {
             "folder_id": "1xr-zdrxdzrjWYz43DS2L-e1unPh_EcUP",
-            "count": 0,
-            "files": []
+            "count": 3,
+            "files": [
+              "HĐTN 6 CĐ3 SHCĐ T 8, 10, 11, 12.docx",
+              "HĐTN 6 QML CĐ3 T10, 12.docx",
+              "HĐTN 6 QMT CĐ3 T9, T11.docx"
+            ]
           },
           "HĐTN 7": {
             "folder_id": "1de4FCFWKVODQVTp8NbR4E1pzfmG_BpTB",
-            "count": 0,
-            "files": []
+            "count": 4,
+            "files": [
+              "CĐ3 HĐTN SHCĐ T 7, 8, 9, 10.docx",
+              "HĐTN 7 CĐ3 QML T9.docx",
+              "HĐTN 7 QML T11 CĐ4.docx",
+              "HĐTN 7 QMT T 10 CĐ4.docx"
+            ]
           },
           "HĐTN 9": {
             "folder_id": "1yrnz_6rH31xou-52o3GCONdY_kpfcbqc",
-            "count": 0,
-            "files": []
+            "count": 3,
+            "files": [
+              "HĐTN 9 CĐ3 SHCĐ T8, 9, 10, 11.docx",
+              "HĐTN 9 QML CĐ3 T9, T11.docx",
+              "HĐTN 9 QMT CĐ3 T10.docx"
+            ]
           }
         }
       }

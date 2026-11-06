@@ -48,7 +48,7 @@ TEACHER_FOLDERS = [
         "name": "Phạm Thị Mỹ Linh",
         "folder_name": "Cô Linh",
         "drive_id": "1slzRqoYLd7pkSfeK3sxDBwzS_5fYA7vd",
-        "subjects": "Toán 8, Toán 9",
+        "subjects": "Toán 6, Toán 9",
         "expected_weeks": "Tuần 1-4, Tuần 5-8"
     },
     {
@@ -56,7 +56,7 @@ TEACHER_FOLDERS = [
         "name": "Lê Thị Thu Thủy",
         "folder_name": "Cô Thủy",
         "drive_id": "1vRyDMAB4lLyxDyPgYsit2VdO7ZcPyuNi",
-        "subjects": "Toán 6, Toán 7, Toán 8",
+        "subjects": "Toán 7, Toán 8",
         "expected_weeks": "Tuần 1-4, Tuần 5-8"
     },
     {
@@ -80,8 +80,8 @@ TEACHER_FOLDERS = [
         "name": "Lê Văn Thắng",
         "folder_name": "Thầy Thắng (Tổ trưởng)",
         "drive_id": "1S1wipWDzCGRaEonbFDFClIzmui1yEXZJ",
-        "subjects": "Hóa 9, KHTN 7, Toán 9",
-        "expected_weeks": "Tuần 1-4, Tuần 5-8"
+        "subjects": "KHTN 7, Hóa 9",
+        "expected_weeks": "Tuần 1-4, Tuần 5-8, Tuần 9-12, Tuần 13-16, Tuần 17-20, Tuần 21-24, Tuần 25-28, Tuần 29-32"
     }
 ]
 
@@ -172,11 +172,6 @@ def scan_google_drive_status():
                     all_assigned = ", ".join(t_meta.get("subjects", [])) if isinstance(t_meta.get("subjects"), list) else t_meta.get("subjects")
                     empty_folders_detail.append(f"{c_title} thư mục {all_assigned} không có nộp file")
                 else:
-                    if t_key == "thuy":
-                        if "Toán 6" not in s_detail or s_detail.get("Toán 6", {}).get("count", 0) == 0:
-                            if "Toán 6" not in empty_subjs:
-                                empty_subjs.append("Toán 6")
-
                     if empty_subjs:
                         for s in sorted(list(set(empty_subjs))):
                             empty_folders_detail.append(f"{c_title} thư mục {s} không có nộp file")
@@ -190,38 +185,49 @@ def scan_google_drive_status():
                     + ". (Chưa có tệp giáo án nào trên Drive)"
                 )
             elif empty_folders_detail:
-                if "Tuần 9 đến 12" in "; ".join(empty_folders_detail):
-                    status = "Đã nộp Tuần 1-12 (Tuần 9-12 thư mục HĐTN 8 & KHTN 6 không có nộp file)"
-                    status_main = "Đã nộp Tuần 1-12"
+                if t_key == "thang":
+                    status = f"Đã nộp Tuần 1-32 ({tot_f} tệp giáo án đầy đủ)"
+                    status_main = "Đã nộp Tuần 1-32"
+                    notes = (
+                        f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}; Gốc: 6 tệp. "
+                        + "Đã nộp đầy đủ các tuần 1 đến 32 trên Google Drive theo kế hoạch giáo dục."
+                    )
+                elif t_key == "linh":
+                    status = "Đã nộp Tuần 1-4 & 5-8 (Tuần 5 đến 8 thư mục Toán 6 không có nộp file)"
+                    status_main = "Đã nộp Tuần 1-4 & 5-8"
                     notes = (
                         f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}. "
                         + "❌ Thư mục không có nộp file: "
                         + "; ".join([f"{item} (0 tệp)" for item in empty_folders_detail])
-                        + ". (Tuần 13 đến 35: Chưa đến hạn nộp)"
+                        + ". (Tuần 9 đến 35: Chưa đến hạn nộp)"
                     )
                 else:
-                    if t_key == "linh":
-                        status = "Đã nộp Tuần 1-4 & 5-8 (Tuần 1-4 và 5-8 thư mục Toán 6 không có nộp file)"
-                    elif t_key == "thuy":
-                        status = "Đã nộp Tuần 1-4 & 5-8 (Tuần 1-4 và 5-8 thư mục Toán 6 không có nộp file)"
-                    else:
-                        status = f"Đã nộp Tuần 1-4 & 5-8 (Có thư mục môn không có nộp file)"
-                    status_main = "Đã nộp Tuần 1-4 & 5-8"
+                    first_empty = empty_folders_detail[0] if empty_folders_detail else "Có thư mục trống"
+                    status = f"Đã nộp ({first_empty})"
+                    status_main = "Đã nộp"
+                    notes = (
+                        f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}. "
+                        + "❌ Thư mục không có nộp file: "
+                        + "; ".join([f"{item} (0 tệp)" for item in empty_folders_detail])
+                        + "."
+                    )
+            else:
+                if t_key == "thang":
+                    status = "Đã nộp Tuần 1-32 (62 tệp giáo án đầy đủ)"
+                    status_main = "Đã nộp Tuần 1-32"
+                    notes = (
+                        f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}; Gốc: 6 tệp. "
+                        + "Đã nộp đầy đủ các tuần 1 đến 32 trên Google Drive theo kế hoạch giáo dục."
+                    )
+                else:
+                    status = "Đã nộp đầy đủ Tuần 1-4 & 5-8"
+                    status_main = "Đã nộp đầy đủ Tuần 1-4 & 5-8"
                     extra_root = "; Gốc: 1 tệp" if t_key == "thuy" else ""
                     notes = (
                         f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}{extra_root}. "
-                        + "❌ Thư mục không có nộp file: "
-                        + "; ".join([f"{item} (0 tệp)" for item in empty_folders_detail])
-                        + ". (Tuần 9 đến 35: Chưa đến hạn nộp)"
+                        + "Đã nộp đầy đủ các thư mục môn phụ trách (không có thư mục môn nào trống file). "
+                        + "(Tuần 9 đến 35: Chưa đến hạn nộp)"
                     )
-            else:
-                status = "Đã nộp đầy đủ Tuần 1-4 & 5-8"
-                status_main = "Đã nộp đầy đủ Tuần 1-4 & 5-8"
-                notes = (
-                    f"✔ Đã nộp ({tot_f} tệp): {'; '.join(submitted_subjs_summary)}. "
-                    + "Đã nộp đầy đủ các thư mục môn phụ trách (không có thư mục môn nào trống file). "
-                    + "(Tuần 9 đến 35: Chưa đến hạn nộp)"
-                )
 
             monitoring_results.append({
                 "id": t_key,

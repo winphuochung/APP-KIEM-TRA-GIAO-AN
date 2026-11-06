@@ -409,6 +409,7 @@
             <p class="text-xs text-slate-500 mt-0.5">Kiểm định nghiệp vụ sư phạm (CV 5512, GDPT 2018) và tự động chuẩn hóa thể thức (Nghị định 30/2020/NĐ-CP).</p>
           </div>
           <button onclick="openDriveApiModal()" class="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-sm transition cursor-pointer mr-2"><i class="fa-solid fa-key"></i><span>Cấu hình Drive API</span></button>
+          <button onclick="syncDriveNow()" id="btn-sync-drive-inspect" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-sm transition cursor-pointer mr-2"><i class="fa-solid fa-arrows-rotate"></i><span>Đồng bộ lại Google Drive</span></button>
           <a href="https://drive.google.com/drive/folders/1cdqOhxb05lt7r6cyu3YwPVecvBLcmHoR?usp=sharing" target="_blank" class="inline-flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition">
             <i class="fa-brands fa-google-drive text-amber-600 text-base"></i>
             <span>Google Drive Hồ sơ Giáo án</span>
@@ -458,11 +459,11 @@
                   <option value="Phạm Thị Cúc (Cô Cúc - KHTN 7, Sinh 9)"></option>
                   <option value="Lê Thị Thúy Hằng (Cô Hằng - CN 6, CN 7, HĐTN 6, 7, 9)"></option>
                   <option value="Hà Thị Kế (Cô Kế - HĐTN 8, KHTN 6, KHTN 8)"></option>
-                  <option value="Phạm Thị Mỹ Linh (Cô Linh - Toán 8, Toán 9)"></option>
-                  <option value="Lê Thị Thu Thủy (Cô Thủy - Toán 6, Toán 7, Toán 8)"></option>
+                  <option value="Phạm Thị Mỹ Linh (Cô Linh - Toán 6, Toán 9)"></option>
+                  <option value="Lê Thị Thu Thủy (Cô Thủy - Toán 7, Toán 8)"></option>
                   <option value="Nguyễn Thị Thùy Trang (Cô Trang - CN 8, CN 9)"></option>
                   <option value="Nguyễn Chí Thành (Thầy Thành - HĐTN 8, KHTN 6, KHTN 8, KHTN 9)"></option>
-                  <option value="Lê Văn Thắng (Thầy Thắng - Hóa 9, KHTN 7)"></option>
+                  <option value="Lê Văn Thắng (Thầy Thắng - KHTN 7, Hóa 9)"></option>
                 </datalist>
               </div>
             </div>
@@ -551,6 +552,7 @@
 
       <!-- INSPECTION RESULTS CONTAINER -->
       <div id="inspect-result-card" class="hidden space-y-6">
+        <div id="res-drive-folders-summary"></div>
         <!-- TEACHER & FILE INFO BANNER -->
         <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-5 rounded-2xl shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="flex items-center space-x-3.5">
@@ -1983,11 +1985,11 @@
       'cuc': ['KHTN 7', 'Sinh 9'],
       'hang': ['CN 6', 'CN 7', 'HĐTN 6', 'HĐTN 7', 'HĐTN 9'],
       'ke': ['KHTN 6', 'KHTN 8', 'HĐTN 8'],
-      'linh': ['Toán 8', 'Toán 9'],
-      'thuy': ['Toán 6', 'Toán 7', 'Toán 8'],
+      'linh': ['Toán 6', 'Toán 9'],
+      'thuy': ['Toán 7', 'Toán 8'],
       'trang': ['CN 8', 'CN 9'],
       'thanh': ['KHTN 6', 'KHTN 8', 'KHTN 9', 'HĐTN 8'],
-      'thang': ['Hóa 9', 'KHTN 7']
+      'thang': ['KHTN 7', 'Hóa 9']
     };
 
     function findTeacherKey(query) {
@@ -2098,6 +2100,30 @@
       }
     }
 
+    
+    async function syncDriveNow() {
+      const btn = document.getElementById('btn-sync-drive-inspect');
+      const origHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang đồng bộ Drive...';
+        btn.disabled = true;
+      }
+      try {
+        const res = await fetch('/api/drive/sync-zero-config', { method: 'POST' });
+        const d = await res.json();
+        alert('Đồng bộ Google Drive thành công! ' + (d.message || ''));
+        await onTeacherNameChange();
+        await runSampleInspect();
+      } catch (err) {
+        alert('Lỗi đồng bộ Drive: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.innerHTML = origHtml;
+          btn.disabled = false;
+        }
+      }
+    }
+
     function exportMergedTeacherDocx() {
       const pSelect = document.getElementById('period-select');
       const period = pSelect ? pSelect.value.trim() : 'Tuần 1 đến tuần 4';
@@ -2106,6 +2132,51 @@
 
     function displayComprehensiveInspection(data) {
       document.getElementById('inspect-result-card').classList.remove('hidden');
+      
+      // Hiển thị thanh trạng thái thư mục Google Drive thực tế
+      const driveBox = document.getElementById('res-drive-folders-summary');
+      if (driveBox) {
+        let fList = data.drive_folders_summary || [];
+        if (fList.length === 0 && data.teacher && data.teacher.subjects) {
+          fList = data.teacher.subjects.map(s => ({
+            subject: s,
+            count: data.has_files ? 1 : 0,
+            status: data.has_files ? 'ĐÃ NỘP' : 'CHƯA NỘP (Thư mục trống)',
+            has_files: data.has_files
+          }));
+        }
+        let badgesHtml = fList.map(f => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl border ${f.has_files ? 'bg-emerald-50/80 border-emerald-200 text-emerald-900' : 'bg-rose-50/80 border-rose-200 text-rose-900'}">
+            <span class="font-bold flex items-center gap-1.5">
+              <i class="fa-solid ${f.has_files ? 'fa-folder-check text-emerald-600' : 'fa-folder-open text-rose-600'}"></i>
+              Môn ${f.subject}
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${f.has_files ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800 animate-pulse'}">
+              ${f.status}
+            </span>
+          </div>
+        `).join('');
+
+        driveBox.innerHTML = `
+          <div class="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-2">
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-brands fa-google-drive text-amber-600 text-base"></i>
+                Tình trạng Thư mục Google Drive thực tế (${data.period})
+              </h4>
+              <span class="text-xs font-bold px-3 py-1 rounded-xl ${data.has_files ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-rose-100 text-rose-800 border border-rose-300'}">
+                ${data.overall_grade}
+              </span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+              ${badgesHtml}
+            </div>
+            <div class="p-3 bg-white rounded-xl border border-slate-200/90 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-slate-900">Chi tiết đối chiếu:</strong> ${data.summary || ''}
+            </div>
+          </div>
+        `;
+      }
       const tInfo = data.teacher;
       document.getElementById('res-teacher-name').innerText = tInfo.name + ' (' + tInfo.subjects_str + ')';
       document.getElementById('res-filename').innerText = data.has_files ? `Đã kiểm tra ${data.total_files} bài dạy (Gộp các môn)` : 'Chưa có tệp tin trên Drive';

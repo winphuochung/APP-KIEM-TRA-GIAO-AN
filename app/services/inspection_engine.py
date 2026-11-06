@@ -44,15 +44,15 @@ TEACHERS_INFO = {
         "id": "linh",
         "name": "Phạm Thị Mỹ Linh",
         "folder_name": "Cô Linh",
-        "subjects": ["Toán 8", "Toán 9"],
-        "subjects_str": "Toán 8, Toán 9"
+        "subjects": ["Toán 6", "Toán 9"],
+        "subjects_str": "Toán 6, Toán 9"
     },
     "thuy": {
         "id": "thuy",
         "name": "Lê Thị Thu Thủy",
         "folder_name": "Cô Thủy",
-        "subjects": ["Toán 6", "Toán 7", "Toán 8"],
-        "subjects_str": "Toán 6, Toán 7, Toán 8"
+        "subjects": ["Toán 7", "Toán 8"],
+        "subjects_str": "Toán 7, Toán 8"
     },
     "trang": {
         "id": "trang",
@@ -72,8 +72,8 @@ TEACHERS_INFO = {
         "id": "thang",
         "name": "Lê Văn Thắng",
         "folder_name": "Thầy Thắng (Tổ trưởng)",
-        "subjects": ["Hóa 9", "KHTN 7", "Toán 9"],
-        "subjects_str": "Hóa 9, KHTN 7, Toán 9"
+        "subjects": ["KHTN 7", "Hóa 9"],
+        "subjects_str": "KHTN 7, Hóa 9"
     }
 }
 
@@ -537,9 +537,8 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
     Rà soát và đối chiếu toàn bộ các file giáo án của tất cả các môn mà giáo viên phụ trách
     trong đúng giai đoạn tuần đã chọn:
     - BIÊN BẢN YÊU CẦU KIỂM TRA TỪ TUẦN NÀO ĐẾN TUẦN NÀO THÌ KIỂM TRA ĐÚNG THEO TUẦN ĐÓ.
-    - Nội dung biên bản thể hiện đúng theo tuần yêu cầu kiểm tra giáo án.
     - Khớp chính xác 100% giữa Tên bài, Tuần, Tiết, YCCĐ SGK và Tệp tin Drive tương ứng.
-    - CHỈ ghi nhận nội dung tích hợp (NLS, Dinh dưỡng, QPAN) nếu Kế hoạch môn học có yêu cầu!
+    - Báo cáo rõ từng thư mục môn: ĐÃ NỘP bao nhiêu tệp hay CHƯA NỘP (thư mục trống).
     """
     t_info = TEACHERS_INFO.get(teacher_id)
     if not t_info:
@@ -555,12 +554,20 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
         except Exception:
             drive_data = {}
 
-
     teacher_drive = drive_data.get(teacher_id, {})
     cycles = teacher_drive.get("cycles", {})
+
+    # Chuẩn hóa tìm cycle_info phù hợp
     cycle_info = cycles.get(period_str, {})
+    if not cycle_info:
+        for c_k, c_v in cycles.items():
+            k_clean = re.sub(r'[^0-9]+', '_', c_k).strip('_')
+            p_clean = re.sub(r'[^0-9]+', '_', period_str).strip('_')
+            if k_clean == p_clean or c_k.lower() in period_str.lower() or period_str.lower() in c_k.lower():
+                cycle_info = c_v
+                break
     
-    # Gom toàn bộ file của giáo viên này trên Drive (để đối chiếu chéo nếu GV nộp gộp hoặc nộp trước)
+    # Gom toàn bộ file của giáo viên này trên Drive (để đối chiếu nếu GV nộp gộp)
     all_files_by_subj = {}
     for c_name, c_data in cycles.items():
         for s_name, s_info in c_data.get("subjects_detail", {}).items():
@@ -570,23 +577,55 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
                 if fn not in all_files_by_subj[s_name]:
                     all_files_by_subj[s_name].append(fn)
 
-    inspected_lessons = []
-    has_files_in_cycle = cycle_info.get("has_files", False)
     subjs_detail_current = cycle_info.get("subjects_detail", {})
 
+    # Xác định danh sách môn cần kiểm tra
+    active_subjects = []
+    for sb in list(subjs_detail_current.keys()):
+        if sb in CURRICULUM_REF and sb not in active_subjects:
+            active_subjects.append(sb)
+    for sb in t_info["subjects"]:
+        if sb in CURRICULUM_REF and sb not in active_subjects:
+            active_subjects.append(sb)
+    if not active_subjects:
+        active_subjects = [s for s in t_info["subjects"] if s in CURRICULUM_REF]
+
+    # Tổng kết chi tiết tình trạng từng thư mục môn trên Drive
+    drive_folders_summary = []
+    empty_subjs_list = []
+    submitted_subjs_list = []
+
+    for subj_name in active_subjects:
+        s_entry = subjs_detail_current.get(subj_name, {})
+        s_files = s_entry.get("files", [])
+        cnt = len(s_files)
+        is_empty = (cnt == 0)
+        status_text = f"ĐÃ NỘP ({cnt} tệp)" if cnt > 0 else "CHƯA NỘP (Thư mục trống)"
+        if is_empty:
+            empty_subjs_list.append(subj_name)
+        else:
+            submitted_subjs_list.append(f"{subj_name} ({cnt} tệp)")
+
+        drive_folders_summary.append({
+            "subject": subj_name,
+            "count": cnt,
+            "status": status_text,
+            "has_files": not is_empty,
+            "files": s_files
+        })
+
+    inspected_lessons = []
     stt_counter = 1
     total_matched_files = 0
     total_expected_lessons = 0
 
-    for subj_name in t_info["subjects"]:
+    for subj_name in active_subjects:
         ref_subj = CURRICULUM_REF.get(subj_name, {})
         period_lessons = get_curriculum_lessons_for_period(subj_name, period_str)
         pl_file_name = ref_subj.get("pl_file", "Kế hoạch giáo dục môn học")
         sgk_book = ref_subj.get("book", "Bộ SGK Kết nối tri thức với cuộc sống (taphuan.nxbgd.vn)")
 
-        # File list của môn này trong chu kỳ hiện tại
         cycle_files = subjs_detail_current.get(subj_name, {}).get("files", [])
-        # Toàn bộ file của môn này mà giáo viên đã nộp
         all_subj_files = all_files_by_subj.get(subj_name, [])
 
         for kl in period_lessons:
@@ -599,7 +638,7 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
             nut_desc = kl.get("nutrition")
             def_desc = kl.get("defense")
 
-            # Tìm file khớp nhất: Ưu tiên tìm trong cycle_files, sau đó tìm trong all_subj_files
+            # Tìm file khớp nhất: Ưu tiên trong cycle_files, sau đó tìm trong all_subj_files
             matched_f = find_best_file_for_lesson(kl, cycle_files)
             if not matched_f and all_subj_files:
                 matched_f = find_best_file_for_lesson(kl, all_subj_files)
@@ -614,7 +653,6 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
                 orthography_eval = "Chính tả chuẩn xác: Không mắc lỗi chính tả tiếng Việt; danh pháp khoa học chuẩn xác; quy tắc dấu câu chuẩn văn bản hành chính."
                 cv5512_eval = "Đầy đủ chuỗi 4 hoạt động CV 5512 (Mở đầu, Hình thành kiến thức, Luyện tập, Vận dụng). Thể hiện rõ 4 bước tổ chức dạy học: Chuyển giao -> Thực hiện -> Báo cáo thảo luận -> Kết luận nhận định."
 
-                # Nhận xét sư phạm
                 add_comments = []
                 if nls_desc:
                     add_comments.append(f"Tích hợp tốt Năng lực số ({nls_desc})")
@@ -627,7 +665,7 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
 
                 if "ôn tập" in clean_fname.lower() or "kttx" in clean_fname.lower():
                     cv5512_eval = "Xây dựng ma trận đề, bảng đặc tả và hệ thống bài tập phân hóa 4 mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao) rất khoa học."
-                    smart_cm = "[ĐIỂM SÁNG] Hệ thống câu hỏi bao quát mục tiêu cần đạt của giai đoạn kiểm tra. [GÓP Ý] Có thể ứng dụng Google Forms hoặc Azota để tự động hóa khâu chấm điểm."
+                    smart_cm = "[ĐIỂM SÁNG] Hệ thống câu hỏi bao quát mục tiêu cần đạt của giai đoạn kiểm tra. [GÓP Ý] Tăng cường kiểm tra số hóa tự động."
             else:
                 clean_fname = "(Chưa nộp tệp trên Drive)"
                 grade = "Chưa nộp"
@@ -636,7 +674,7 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
                 format_status = "Chưa thẩm định thể thức (Chưa có tệp tin)"
                 orthography_eval = "Chưa thẩm định chính tả (Chưa có tệp tin)"
                 cv5512_eval = "Chưa có tệp tin trên Drive để thẩm định 4 hoạt động theo CV 5512"
-                smart_cm = f"[NHẮC NHỞ] Thư mục Google Drive chưa có bài dạy {lesson_title}. Đề nghị giáo viên tải lên bổ sung theo đúng tiến độ."
+                smart_cm = f"[NHẮC NHỞ] Thư mục Google Drive môn {subj_name} chưa có bài dạy {lesson_title}. Đề nghị giáo viên tải lên bổ sung theo đúng tiến độ."
 
             inspected_lessons.append({
                 "stt": str(stt_counter),
@@ -669,6 +707,16 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
             f"(0/{len(inspected_lessons)} bài dạy theo Kế hoạch giáo dục các môn {t_info['subjects_str']}). "
             f"Thư mục tương ứng trên Google Drive hoàn toàn trống. Kính đề nghị Tổ trưởng chuyên môn đôn đốc nộp bổ sung kịp thời."
         )
+    elif empty_subjs_list:
+        overall = "NỘP MỘT PHẦN (Có thư mục môn trống)"
+        empty_str = ", ".join(empty_subjs_list)
+        subm_str = ", ".join(submitted_subjs_list)
+        summary_text = (
+            f"Giáo viên {t_info['name']}: Giai đoạn {period_str} đã nộp {subm_str}. "
+            f"Tuy nhiên thư mục môn [{empty_str}] không có nộp file nào (0 tệp). "
+            f"Tổng cộng đã đối chiếu {total_matched_files}/{len(inspected_lessons)} bài dạy. "
+            f"Đề nghị giáo viên nộp bổ sung các bài dạy môn {empty_str}."
+        )
     elif total_matched_files < len(inspected_lessons):
         overall = "NỘP MỘT PHẦN"
         summary_text = (
@@ -691,6 +739,7 @@ def get_teacher_inspected_data(teacher_id, period_str="Tuần 1 đến tuần 4"
         "total_files": total_matched_files,
         "total_expected": len(inspected_lessons),
         "overall_grade": overall,
+        "drive_folders_summary": drive_folders_summary,
         "lessons": inspected_lessons,
         "summary": summary_text
     }
